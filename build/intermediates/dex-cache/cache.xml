@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="C:\Users\blessing.ekundayo\.android\build-cache\82bfb80005582bd8e8a3bdd302628c6cc19c64c6\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="44ee06abb66da30f5855e6bf54574e64cdcd982a">
+        <dex dex="C:\Users\blessing.ekundayo\Desktop\MyDist\app\build\intermediates\pre-dexed\debug\classes_f4e09fbe4d929cb162de7d49379af0f2341e2e50.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\blessing.ekundayo\AppData\Local\Android\sdk\extras\m2repository\com\android\support\constraint\constraint-layout-solver\1.0.2\constraint-layout-solver-1.0.2.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="b9cd8fc6bd15cb915735d34535db30ece0c44603">
+        <dex dex="C:\Users\blessing.ekundayo\Desktop\MyDist\app\build\intermediates\pre-dexed\debug\constraint-layout-solver-1.0.2_b1a744872ad21a3e6463c01dbe13ed3ac0e5a118.jar" />
+    </item>
+
+</items>
