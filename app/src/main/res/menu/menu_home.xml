@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item  android:title="@string/settings"/>
+    <group>
+    <item
+        android:id="@+id/menu_home_settings"
+        android:title="@string/settings"></item>
+    <item
+        android:id="@+id/menu_home_logout"
+        android:title="@string/logout">
+        </item>
+
+    </group>
 
 
 </menu>

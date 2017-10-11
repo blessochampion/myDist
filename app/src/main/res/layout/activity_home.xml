@@ -154,6 +154,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_synchronization"
                     android:padding="0.5dp"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"

@@ -20,7 +20,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     Button mDownload;
     Button mLogin;
     ProgressDialog  mLoadingIndicator;
-    static final int INDICATOR_DELAY = 30000;
+    static final int INDICATOR_DELAY = 3000;
     static final String TEST_USERNAME = "Blessing";
     static final String TEST_PASSWORD = "password";
 

@@ -26,30 +26,31 @@
             android:scrollbars="none">
 
             <LinearLayout
+                android:paddingTop="64dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:orientation="vertical">
 
-                <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="48dp"
-                    app:cardBackgroundColor="@color/colorPrimary"
-                    app:cardCornerRadius="32dp"
-                    app:cardElevation="10dp">
+                <!--<android.support.v7.widget.CardView-->
+                    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+                    <!--android:layout_width="64dp"-->
+                    <!--android:layout_height="64dp"-->
+                    <!--android:layout_gravity="center_horizontal"-->
+                    <!--android:layout_marginBottom="48dp"-->
+                    <!--app:cardBackgroundColor="@color/colorPrimary"-->
+                    <!--app:cardCornerRadius="32dp"-->
+                    <!--app:cardElevation="10dp">-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="@string/my_dist"
-                        android:textAllCaps="true"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small.Inverse"
-                        android:textColor="@color/white_grey" />
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:text="@string/my_dist"-->
+                        <!--android:textAllCaps="true"-->
+                        <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Small.Inverse"-->
+                        <!--android:textColor="@color/white_grey" />-->
 
-                </android.support.v7.widget.CardView>
+                <!--</android.support.v7.widget.CardView>-->
 
                 <EditText
                     android:id="@+id/login_activity_username"
@@ -87,22 +88,25 @@
                     android:orientation="horizontal">
 
                     <Button
+                        android:layout_marginRight="8dp"
+                        android:textAllCaps="false"
                         android:id="@+id/login_activity_download"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/login_activity_download_button"
+                        android:background="@color/colorPrimary"
                         android:text="@string/download"
-                        android:textColor="@color/colorPrimary" />
+                        android:textColor="@color/white" />
 
                     <Button
+                        android:textAllCaps="false"
                         android:id="@+id/login_activity_login"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@color/colorPrimary"
                         android:text="@string/login"
-                        android:textColor="@color/white_grey" />
+                        android:textColor="@color/white" />
 
                 </LinearLayout>
 
