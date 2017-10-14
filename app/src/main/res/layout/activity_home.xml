@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        app:cardBackgroundColor="@color/white_grey"
+        app:cardBackgroundColor="@color/crispy_white"
         app:cardElevation="10dp">
 
         <LinearLayout
@@ -39,7 +39,7 @@
                 android:gravity="center_horizontal"
                 android:text="Welcome Damilola"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                android:textColor="@color/secondary_text" />
+                android:textColor="@color/home_username" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -51,16 +51,20 @@
 
 
                 <LinearLayout
+                    android:id="@+id/ll_coverage"
+                    android:padding="0.1dp"
+                    android:elevation="2dp"
                     android:layout_width="match_parent"
-                    android:layout_height="64dp"
+                    android:layout_height="48dp"
                     android:layout_gravity="center"
                     android:layout_marginBottom="16dp"
                     android:background="@drawable/item_background"
                     android:orientation="horizontal"
-                    android:padding="0.5dp">
+                    >
 
                     <FrameLayout
-                        android:layout_width="64dp"
+
+                        android:layout_width="56dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/item_background_image">
 
@@ -73,11 +77,11 @@
                     </FrameLayout>
 
                     <TextView
+                        android:paddingRight="36dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/item_background_button"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="24dp"
+                        android:gravity="center"
                         android:text="@string/trade_coverage"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="@color/white_grey" />
@@ -86,17 +90,18 @@
 
 
                 <LinearLayout
+                    android:elevation="2dp"
                     android:id="@+id/ll_new_retailer"
-                    android:padding="0.5dp"
+                    android:padding="0.1dp"
                     android:layout_width="match_parent"
-                    android:layout_height="64dp"
+                    android:layout_height="48dp"
                     android:layout_gravity="center"
                     android:layout_marginBottom="16dp"
                     android:background="@drawable/item_background"
                     android:orientation="horizontal"
 >
                     <FrameLayout
-                        android:layout_width="64dp"
+                        android:layout_width="56dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/item_background_image">
 
@@ -109,11 +114,11 @@
                     </FrameLayout>
 
                     <TextView
+                        android:paddingRight="12dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/item_background_button"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="24dp"
+                        android:gravity="center"
                         android:text="@string/new_retailer"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="@color/white_grey" />
@@ -121,16 +126,18 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:padding="0.5dp"
+                    android:id="@+id/ll_reports"
+                    android:elevation="2dp"
+                    android:padding="0.1dp"
                     android:layout_width="match_parent"
-                    android:layout_height="64dp"
+                    android:layout_height="48dp"
                     android:layout_gravity="center"
                     android:layout_marginBottom="16dp"
                     android:background="@drawable/item_background"
                     android:orientation="horizontal"
 >
                     <FrameLayout
-                        android:layout_width="64dp"
+                        android:layout_width="56dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/item_background_image">
 
@@ -142,11 +149,11 @@
                     </FrameLayout>
 
                     <TextView
+                        android:paddingRight="56dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/item_background_button"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="24dp"
+                        android:gravity="center"
                         android:text="@string/reports"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="@color/white_grey" />
@@ -154,17 +161,18 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:elevation="2dp"
                     android:id="@+id/ll_synchronization"
-                    android:padding="0.5dp"
+                    android:padding="0.1dp"
                     android:layout_width="match_parent"
-                    android:layout_height="64dp"
+                    android:layout_height="48dp"
                     android:layout_gravity="center"
                     android:background="@drawable/item_background"
                     android:orientation="horizontal"
                     >
 
                     <FrameLayout
-                        android:layout_width="64dp"
+                        android:layout_width="56dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/item_background_image">
 
@@ -179,8 +187,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/item_background_button"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="24dp"
+                        android:gravity="center"
                         android:text="@string/synchronization"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="@color/white_grey" />

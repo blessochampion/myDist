@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ab3F51B5</color>
-    <color name="colorPrimaryDark">#aa303F9F</color>
+    <color name="colorPrimary">#73E5D1</color>
+    <!--<color name="colorPrimary">#ab3F51B5</color>-->
+    <color name="colorPrimaryDark">#59DAC3</color>
+   <!-- <color name="colorPrimaryDark">#aa303F9F</color>-->
     <color name="colorAccent">#FF4081</color>
 
     <color name="primary_text">#212121</color>
@@ -11,4 +13,8 @@
     <color name="white_grey">#fafafa</color>
     <color name="edit_text_bacground_border">#262626</color>
     <color name="white">#ffffff</color>
+    <color name="crispy_white">#f0f0f0</color>
+    <color name="home_username">#6d6e71</color>
+    <color name="crispy_green">#16A765</color>
+    <color name="crispy_red">#EA4335</color>
 </resources>

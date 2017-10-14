@@ -11,7 +11,7 @@
     <string name="login_dialog_title">%s Distributor</string>
     <string name="login_error_message">Please check username and password</string>
     <string name="ok">Ok</string>
-    <string name="trade_coverage">Trade Coverage</string>
+    <string name="trade_coverage">Coverage</string>
     <string name="new_retailer">New Retailer</string>
     <string name="reports">Reports</string>
     <string name="synchronization">Synchronization</string>
@@ -44,4 +44,31 @@
     <string name="synchronization_close_for_the_day">Close for the day</string>
     <string name="start_sync">Start Sync</string>
     <string name="closing_message">You are closing Sunday (08/10/2017)</string>
+    <string name="day">Day</string>
+    <string name="order_p_order">Order/P.Order</string>
+    <string name="sku_report">SKU Report</string>
+    <string name="stock_report">Stock Report</string>
+    <string name="invoice_report">Invoice Report</string>
+    <string name="close">Close</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="specify_report_key">Specify Report Key</string>
+    <string name="name">Name</string>
+    <string name="value">Value</string>
+    <string name="total_earned_value">Total Earned Value</string>
+    <string name="distribution_extension">Distribution Extension</string>
+    <string name="sales">Sales</string>
+    <string name="calls">Calls</string>
+    <string name="productive_calls">Productive Calls</string>
+    <string name="average_line">Average lines</string>
+    <string name="sbd_distribution_rate">SBD Distribution Rate</string>
+    <string name="sbd_merchandising_rate">SBD Merchandising Rate</string>
+    <string name="total_value">Total Value</string>
+    <string name="store_name">Store Name</string>
+    <string name="lines">Lines</string>
+    <string name="order_no">Order No</string>
+    <string name="retailers">retailers</string>
+    <string name="brand">Brand</string>
+    <string name="product_name">Product Name</string>
+    <string name="qty">Qty</string>
 </resources>

@@ -2,6 +2,7 @@ package mydist.mydist.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +18,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     LinearLayout mNewRetailer;
     LinearLayout mSynchronization;
+    LinearLayout mReports;
+    LinearLayout mCoverage;
     private boolean logoutRequested = false;
 
     @Override
@@ -31,12 +34,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     {
         mNewRetailer.setOnClickListener(this);
         mSynchronization.setOnClickListener(this);
+        mReports.setOnClickListener(this);
+        mCoverage.setOnClickListener(this);
     }
 
     public void getReferencesToViews() {
         setupToolBar();
         mNewRetailer = (LinearLayout) findViewById(R.id.ll_new_retailer);
         mSynchronization = (LinearLayout) findViewById(R.id.ll_synchronization);
+        mReports = (LinearLayout) findViewById(R.id.ll_reports);
+        mCoverage = (LinearLayout) findViewById(R.id.ll_coverage);
 
     }
 
@@ -65,6 +72,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
             return;
         }
+        if(v.getId() == R.id.ll_reports){
+            Intent intent = new Intent(HomeActivity.this, ReportsActivity.class);
+            startActivity(intent);
+            return;
+        }
+        if(v.getId() == R.id.ll_coverage){
+            Intent intent = new Intent(HomeActivity.this, CoverageActivity.class);
+            startActivity(intent);
+            return;
+        }
+
     }
 
     @Override

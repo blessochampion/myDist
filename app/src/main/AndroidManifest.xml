@@ -20,8 +20,11 @@
         </activity>
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.HomeActivity" />
-        <activity android:name=".activities.NewRetailerActivity"></activity>
-        <activity android:name=".activities.SynchronizationActivity"></activity>
+        <activity android:name=".activities.NewRetailerActivity" />
+        <activity android:name=".activities.SynchronizationActivity" />
+        <activity android:name=".activities.ReportsActivity" />
+        <activity android:name=".activities.ReportDetailsActivity" />
+        <activity android:name=".activities.CoverageActivity"></activity>
     </application>
 
 </manifest>

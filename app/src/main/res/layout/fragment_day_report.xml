@@ -1,0 +1,249 @@
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="mydist.mydist.fragments.DayReportFragment">
+
+    <LinearLayout
+        android:padding="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="36dp">
+        <TextView
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:text="@string/name"
+            android:background="@color/colorPrimary"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:textColor="@color/white"
+            android:text="@string/value"
+            android:gravity="center"
+            android:layout_marginLeft="1dp"
+            android:background="@color/colorPrimary"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:padding="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="36dp">
+        <TextView
+            android:textColor="@color/secondary_text"
+            android:paddingLeft="8dp"
+            android:gravity="center_vertical"
+            android:text="@string/total_earned_value"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:paddingRight="8dp"
+            android:textColor="@color/secondary_text"
+            android:text="0"
+            android:gravity="right|center_vertical"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:padding="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="36dp">
+        <TextView
+            android:textColor="@color/secondary_text"
+            android:paddingLeft="8dp"
+            android:gravity="center_vertical"
+            android:text="@string/distribution_extension"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:text="0/8"
+            android:paddingRight="8dp"
+            android:textColor="@color/secondary_text"
+            android:gravity="right|center_vertical"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:padding="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="36dp">
+        <TextView
+            android:textColor="@color/secondary_text"
+            android:paddingLeft="8dp"
+            android:gravity="center_vertical"
+            android:text="@string/sales"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:text="153,123.00"
+            android:paddingRight="8dp"
+            android:textColor="@color/secondary_text"
+            android:gravity="right|center_vertical"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:padding="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="36dp">
+        <TextView
+            android:textColor="@color/secondary_text"
+            android:paddingLeft="8dp"
+            android:gravity="center_vertical"
+            android:text="@string/trade_coverage"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:text="1"
+            android:paddingRight="8dp"
+            android:textColor="@color/secondary_text"
+            android:gravity="right|center_vertical"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:padding="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="36dp">
+        <TextView
+            android:textColor="@color/secondary_text"
+            android:paddingLeft="8dp"
+            android:gravity="center_vertical"
+            android:text="@string/calls"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:text="1/5"
+            android:paddingRight="8dp"
+            android:textColor="@color/secondary_text"
+            android:gravity="right|center_vertical"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:padding="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="36dp">
+        <TextView
+            android:textColor="@color/secondary_text"
+            android:paddingLeft="8dp"
+            android:gravity="center_vertical"
+            android:text="@string/productive_calls"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:text="1/4"
+            android:paddingRight="8dp"
+            android:textColor="@color/secondary_text"
+            android:gravity="right|center_vertical"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:padding="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="36dp">
+        <TextView
+            android:textColor="@color/secondary_text"
+            android:paddingLeft="8dp"
+            android:gravity="center_vertical"
+            android:text="@string/average_line"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:text="6.00"
+            android:paddingRight="8dp"
+            android:textColor="@color/secondary_text"
+            android:gravity="right|center_vertical"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:padding="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="36dp">
+        <TextView
+            android:textColor="@color/secondary_text"
+            android:paddingLeft="8dp"
+            android:gravity="center_vertical"
+            android:text="@string/sbd_distribution_rate"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:text="0/5"
+            android:paddingRight="8dp"
+            android:textColor="@color/secondary_text"
+            android:gravity="right|center_vertical"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:padding="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="36dp">
+        <TextView
+            android:textColor="@color/secondary_text"
+            android:paddingLeft="8dp"
+            android:gravity="center_vertical"
+            android:text="@string/sbd_merchandising_rate"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:text="3/5"
+            android:paddingRight="8dp"
+            android:textColor="@color/secondary_text"
+            android:gravity="right|center_vertical"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</LinearLayout>

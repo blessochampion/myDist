@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                app:cardBackgroundColor="@color/white_grey"
+                app:cardBackgroundColor="@color/crispy_white"
                 app:cardElevation="10dp">
 
                 <LinearLayout
@@ -141,11 +141,12 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:background="@drawable/download_button"
+                            android:background="@color/colorPrimary"
                             android:text="@string/download"
-                            android:textColor="@color/colorPrimary" />
+                            android:textColor="@color/white" />
 
                         <Button
+                            android:layout_marginLeft="8dp"
                             android:textAllCaps="false"
                             android:id="@+id/bt_start_sync"
                             android:layout_width="0dp"
@@ -156,6 +157,7 @@
                             android:textColor="@color/white_grey" />
 
                     </LinearLayout>
+
 
 
 
