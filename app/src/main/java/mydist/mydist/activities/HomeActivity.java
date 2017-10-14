@@ -89,7 +89,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_home_settings:
-                return super.onOptionsItemSelected(item);
+                launchSettingsActivity();
+                return true;
             case R.id.menu_home_logout :
                 showLogoutDialog();
                 return true;
@@ -97,6 +98,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    private void launchSettingsActivity()
+    {
+        Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     private void showLogoutDialog()

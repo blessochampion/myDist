@@ -11,20 +11,29 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.SplashActivity"
-            android:noHistory="true">
+            android:noHistory="true" />
+        <activity android:name=".activities.LoginActivity" />
+        <activity android:name=".activities.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.LoginActivity" />
-        <activity android:name=".activities.HomeActivity" />
         <activity android:name=".activities.NewRetailerActivity" />
         <activity android:name=".activities.SynchronizationActivity" />
         <activity android:name=".activities.ReportsActivity" />
         <activity android:name=".activities.ReportDetailsActivity" />
-        <activity android:name=".activities.CoverageActivity"></activity>
+        <activity android:name=".activities.CoverageActivity" />
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:exported="false"
+            android:parentActivityName=".activities.HomeActivity" />
+        <activity
+            android:name=".activities.StoreOverviewActivity"
+            android:label="@string/title_activity_store_details"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".activities.StoreInfoDetailsActivity"></activity>
     </application>
 
 </manifest>

@@ -1,0 +1,270 @@
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="mydist.mydist.fragments.StoreProfileFragment">
+
+   <TableLayout
+       android:dividerPadding="3dp"
+       android:divider="@drawable/profile_divider"
+       android:showDividers="middle"
+       android:padding="8dp"
+       android:background="@color/crispy_white"
+       android:layout_weight="1"
+       android:layout_width="match_parent"
+       android:layout_height="0dp">
+
+       <TableRow
+           android:gravity="center"
+           android:minHeight="36dp"
+           android:layout_marginBottom="8dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content">
+
+           <TextView
+               android:textColor="@color/primary_text"
+               android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+               android:text="@string/name"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="2" />
+
+           <TextView
+               android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+               android:text="Ekundayo Blessing"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:id="@+id/textClock"
+               android:layout_weight="4" />
+
+       </TableRow>
+
+       <TableRow
+           android:gravity="center"
+           android:minHeight="36dp"
+           android:layout_marginBottom="8dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content">
+
+           <TextView
+               android:textColor="@color/primary_text"
+               android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+               android:text="@string/address1"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="2" />
+
+           <TextView
+               android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+               android:text=""
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="4" />
+
+       </TableRow>
+
+       <TableRow
+           android:gravity="center"
+           android:minHeight="36dp"
+           android:layout_marginBottom="8dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content">
+
+           <TextView
+               android:textColor="@color/primary_text"
+               android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+               android:text="@string/address2"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="2" />
+
+           <TextView
+               android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+               android:text=""
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="4" />
+
+       </TableRow>
+
+       <TableRow
+           android:gravity="center"
+           android:minHeight="36dp"
+           android:layout_marginBottom="8dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content">
+
+           <TextView
+               android:textColor="@color/primary_text"
+               android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+               android:text="@string/address3"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="2" />
+
+           <TextView
+               android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+               android:text=""
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="4" />
+
+       </TableRow>
+
+       <TableRow
+           android:gravity="center"
+           android:minHeight="36dp"
+           android:layout_marginBottom="8dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content">
+
+           <TextView
+               android:textColor="@color/primary_text"
+               android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+               android:text="@string/channel"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="2" />
+
+           <TextView
+               android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+               android:text="High Frequency Store"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="4" />
+
+       </TableRow>
+
+       <TableRow
+           android:minHeight="36dp"
+           android:gravity="center"
+           android:layout_marginBottom="8dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content">
+
+           <TextView
+               android:textColor="@color/primary_text"
+               android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+               android:text="@string/subchannel"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="2" />
+
+           <TextView
+               android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+               android:text="Kiosk"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="4" />
+
+       </TableRow>
+
+       <TableRow
+           android:minHeight="36dp"
+           android:gravity="center"
+           android:layout_marginBottom="8dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content">
+
+           <TextView
+               android:textColor="@color/primary_text"
+               android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+               android:text="@string/credit_limit"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="2" />
+
+           <TextView
+               android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+               android:text="0"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="4" />
+
+       </TableRow>
+
+       <TableRow
+           android:minHeight="36dp"
+           android:gravity="center"
+           android:layout_marginBottom="8dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content">
+
+           <TextView
+               android:textColor="@color/primary_text"
+               android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+               android:text="@string/credit_balance"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="2" />
+
+           <TextView
+               android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+               android:text="0"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="4" />
+
+       </TableRow>
+
+       <TableRow
+           android:minHeight="36dp"
+           android:gravity="center"
+           android:layout_marginBottom="8dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content">
+
+           <TextView
+               android:textColor="@color/primary_text"
+               android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+               android:text="@string/credit_days"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="2" />
+
+           <TextView
+               android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+               android:text="0"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="4" />
+
+       </TableRow>
+
+       <TableRow
+           android:minHeight="36dp"
+           android:gravity="center"
+           android:layout_marginBottom="8dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content">
+
+           <TextView
+               android:textColor="@color/primary_text"
+               android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+               android:text="@string/max_os_invoice"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="2" />
+
+           <TextView
+               android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+               android:text="0"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="4" />
+
+       </TableRow>
+
+
+   </TableLayout>
+    <Button
+        android:textColor="@color/white_grey"
+        android:text="@string/start_visit"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        ></Button>
+
+</LinearLayout>
