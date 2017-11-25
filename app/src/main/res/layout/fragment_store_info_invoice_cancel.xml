@@ -1,13 +1,154 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:background="@color/crispy_white"
+    android:orientation="vertical"
+    android:id="@+id/parent_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="mydist.mydist.fragments.StoreInfoInvoiceCancelFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    tools:context="mydist.mydist.fragments.DayReportFragment">
+    <LinearLayout
+        android:padding="1dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="36dp">
+        <TextView
+            android:textColor="@color/secondary_text"
+            android:paddingLeft="8dp"
+            android:gravity="center_vertical"
+            android:text="@string/total_value"
+            android:layout_weight="3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:paddingRight="8dp"
+            android:textColor="@color/colorPrimary"
+            android:text="234,234"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="7"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
 
-</FrameLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:padding="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="36dp">
+        <TextView
+            android:paddingLeft="8dp"
+            android:textColor="@color/white"
+            android:gravity="center_vertical"
+            android:text="@string/store_name"
+            android:background="@color/colorPrimary"
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:layout_marginLeft="1dp"
+            android:paddingLeft="8dp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:text="Invoice No"
+            android:background="@color/colorPrimary"
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:gravity="center_vertical"
+            android:paddingLeft="8dp"
+            android:text="Inv.Can"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:paddingLeft="8dp"
+            android:text="Edit"
+            android:textColor="@color/white" />
+        <TextView
+            android:textColor="@color/white"
+            android:text="Invoice Status"
+            android:gravity="center"
+            android:layout_marginLeft="1dp"
+            android:background="@color/colorPrimary"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:padding="1dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center_vertical"
+            android:paddingLeft="8dp"
+            android:text="Store Example"
+            android:textColor="@color/secondary_text" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:paddingLeft="8dp"
+            android:text="#235464"
+            android:textColor="@color/secondary_text" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingLeft="8dp"
+            android:text="X"
+            android:textColor="@color/colorPrimary" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingLeft="8dp"
+            android:text="Edit"
+            android:textColor="@color/colorPrimary" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Canc"
+            android:textColor="@color/secondary_text" />
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+</LinearLayout>

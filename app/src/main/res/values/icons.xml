@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fa_icon_road" translatable="false">&#xf018;</string>
+    <string name="fa_icon_check" translatable="false">&#xf00c;</string>
+    <string name="fa_icon_money" translatable="false">&#xf0d6;</string>
+    <string name="fa_icon_inr" translatable="false">&#xf156;</string>
+    <string name="fa_icon_bar_chart" translatable="false">&#xf080;</string>
+    <string name="fa_icon_shopping_basket" translatable="false">&#xf291;</string>
+    <string name="fa_icon_barcode" translatable="false">&#xf02a;</string>
+    <string name="fa_icon_tag" translatable="false">&#xf02b;</string>
+    <string name="fa_icon_file_pdf_o" translatable="false">&#xf1c1;</string>
+    <string name="fa_icon_refresh" translatable="false">&#xf021;</string>
+    <string name="fa_icon_phone" translatable="false">&#xf095;</string>
+    <string name="fa_icon_new_retailer" translatable="false">&#xf196;</string>
+</resources>

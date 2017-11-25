@@ -1,6 +1,7 @@
 package mydist.mydist.activities;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -9,6 +10,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import mydist.mydist.R;
+import mydist.mydist.utils.FontManager;
+
 import static mydist.mydist.activities.StoreInfoDetailsActivity.*;
 
 
@@ -30,8 +33,22 @@ public class StoreOverviewActivity extends AppCompatActivity implements View.OnC
         setupToolBar();
         getReferencesToWidget();
         setOnClickListeners();
+        setFonts();
 
 
+    }
+    private void setFonts() {
+        Typeface ralewayFont = FontManager.getTypeface(getApplicationContext(), FontManager.RALEWAY_REGULAR);
+        FontManager.setFontsForView(findViewById(R.id.parent_layout), ralewayFont);
+        setIcons();
+    }
+
+    private void setIcons() {
+        Typeface fontAwesome = FontManager.getTypeface(getApplicationContext(), FontManager.FONT_AWESOME);
+        FontManager.setFontsForView(findViewById(R.id.icon_review), fontAwesome );
+        FontManager.setFontsForView(findViewById(R.id.icon_collection), fontAwesome );
+        FontManager.setFontsForView(findViewById(R.id.icon_sbd_merchandising), fontAwesome );
+        FontManager.setFontsForView(findViewById(R.id.icon_call_analysis), fontAwesome );
     }
 
     private void setOnClickListeners()

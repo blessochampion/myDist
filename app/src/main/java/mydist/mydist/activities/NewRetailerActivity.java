@@ -1,5 +1,6 @@
 package mydist.mydist.activities;
 
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -7,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import mydist.mydist.R;
+import mydist.mydist.utils.FontManager;
 
 public class NewRetailerActivity extends AppCompatActivity {
 
@@ -29,6 +31,12 @@ public class NewRetailerActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        setFonts();
+    }
+
+    private void setFonts() {
+        Typeface ralewayFont = FontManager.getTypeface(getApplicationContext(), FontManager.RALEWAY_REGULAR);
+        FontManager.setFontsForView(findViewById(R.id.parent_layout), ralewayFont);
     }
 
     @Override

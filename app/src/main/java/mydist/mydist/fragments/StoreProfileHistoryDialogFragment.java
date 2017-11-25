@@ -2,6 +2,7 @@ package mydist.mydist.fragments;
 
 
 import android.app.Dialog;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import mydist.mydist.R;
 import mydist.mydist.adapters.StoreProfileAdapter;
+import mydist.mydist.utils.FontManager;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,8 +43,14 @@ public class StoreProfileHistoryDialogFragment extends DialogFragment
         tabLayout.setupWithViewPager(viewPager);
 
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        setFonts(view);
         return  view;
 
+    }
+
+    private void setFonts(View v) {
+        Typeface ralewayFont = FontManager.getTypeface(getActivity().getApplicationContext(), FontManager.RALEWAY_REGULAR);
+        FontManager.setFontsForView(v.findViewById(R.id.parent_layout), ralewayFont);
     }
 
     public List<Fragment> getFragments() {

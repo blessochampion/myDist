@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="16dp"
+    android:id="@+id/parent_layout"
+    android:layout_marginRight="16dp"
+    android:layout_marginTop="32dp"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <TableLayout
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow android:padding="1dp">
+
+            <Button
+                android:onClick="dismiss"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:text="@string/ariel"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+            <Button
+                android:onClick="dismiss"
+                android:id="@+id/button"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:ellipsize="end"
+                android:text="Sunlight"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+            <Button
+                android:onClick="dismiss"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:text="Cannoe"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+            <Button
+                android:onClick="dismiss"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:text="Klin"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+            <Button
+                android:onClick="dismiss"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:text="Eva"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+        </TableRow>
+
+        <TableRow android:padding="1dp">
+
+            <Button
+                android:onClick="dismiss"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:text="Leather"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+            <Button
+                android:onClick="dismiss"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:text="Lux"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+            <Button
+                android:onClick="dismiss"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:text="@string/ariel"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+            <Button
+                android:onClick="dismiss"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:text="@string/ariel"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+            <Button
+                android:onClick="dismiss"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:text="B29"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:onClick="dismiss"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:text="@string/ariel"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+            <Button
+                android:onClick="dismiss"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:text="@string/ariel"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+            <Button
+                android:onClick="dismiss"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:text="@string/ariel"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+            <Button
+                android:onClick="dismiss"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:text="@string/ariel"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+            <Button
+                android:onClick="dismiss"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:text="@string/ariel"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+        </TableRow>
+
+    </TableLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal">
+
+            <Button
+                android:onClick="dismiss"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:minHeight="36dp"
+                android:text="@string/cancel" />
+
+            <Button
+                android:onClick="dismiss"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:minHeight="36dp"
+                android:text="@string/all" />
+
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+</LinearLayout>

@@ -1,6 +1,7 @@
 package mydist.mydist.activities;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -9,13 +10,14 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import mydist.mydist.R;
+import mydist.mydist.utils.FontManager;
+
 import static mydist.mydist.activities.ReportDetailsActivity.*;
 
 public class ReportsActivity extends AppCompatActivity implements View.OnClickListener {
     LinearLayout dayReport;
     LinearLayout orderReport;
     LinearLayout skuReport;
-    LinearLayout stockReport;
     LinearLayout invoiceReport;
     LinearLayout close;
 
@@ -26,6 +28,7 @@ public class ReportsActivity extends AppCompatActivity implements View.OnClickLi
         getReferencesToViews();
         setOnClickListeners();
         setupToolBar();
+        setFonts();
     }
 
     private void setOnClickListeners()
@@ -33,17 +36,28 @@ public class ReportsActivity extends AppCompatActivity implements View.OnClickLi
         dayReport.setOnClickListener(this);
         orderReport.setOnClickListener(this);
         skuReport.setOnClickListener(this);
-        stockReport.setOnClickListener(this);
         invoiceReport.setOnClickListener(this);
         close.setOnClickListener(this);
 
+    }
+
+    private void setFonts() {
+        Typeface ralewayFont = FontManager.getTypeface(getApplicationContext(), FontManager.RALEWAY_REGULAR);
+        FontManager.setFontsForView(findViewById(R.id.parent_layout), ralewayFont);
+        setIcons();
+    }
+
+    private void setIcons() {
+        Typeface fontAwesome = FontManager.getTypeface(getApplicationContext(), FontManager.FONT_AWESOME);
+        FontManager.setFontsForView(findViewById(R.id.icon_order_p_order), fontAwesome );
+        FontManager.setFontsForView(findViewById(R.id.icon_sku_report), fontAwesome );
+        FontManager.setFontsForView(findViewById(R.id.icon_invoice_report), fontAwesome );
     }
 
     public void getReferencesToViews() {
         dayReport = (LinearLayout) findViewById(R.id.ll_day);
         orderReport = (LinearLayout) findViewById(R.id.ll_order);
         skuReport = (LinearLayout) findViewById(R.id.ll_sku);
-        stockReport = (LinearLayout) findViewById(R.id.ll_stock);
         invoiceReport = (LinearLayout) findViewById(R.id.ll_invoice);
         close = (LinearLayout) findViewById(R.id.ll_close);
     }
@@ -79,9 +93,7 @@ public class ReportsActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.ll_sku:
                 launchReportDetails(KEY_SKU_REPORT);
                 break;
-            case R.id.ll_stock:
-                launchReportDetails(KEY_STOCK_REPORT);
-                break;
+
             case R.id.ll_invoice:
                 launchReportDetails(KEY_INVOICE_REPORT);
                 break;

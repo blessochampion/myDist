@@ -1,5 +1,6 @@
 package mydist.mydist.activities;
 
+import android.graphics.Typeface;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,12 +11,15 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import mydist.mydist.R;
+import mydist.mydist.fragments.AllCoverageFragment;
 import mydist.mydist.fragments.CoverageFragment;
+import mydist.mydist.utils.FontManager;
 
 public class CoverageActivity extends AppCompatActivity {
 
@@ -28,6 +32,12 @@ public class CoverageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_coverage);
         setupToolBar();
         getReferencesToViews();
+        setFonts();
+    }
+
+    private void setFonts() {
+        Typeface ralewayFont = FontManager.getTypeface(getApplicationContext(), FontManager.RALEWAY_REGULAR);
+        FontManager.setFontsForView(findViewById(R.id.coverage_parent_layout), ralewayFont);
     }
 
     private void setupToolBar()
@@ -70,7 +80,7 @@ public class CoverageActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new CoverageFragment(), "WEDNESDAY");
-        adapter.addFragment(new CoverageFragment(), "ALL");
+        adapter.addFragment(new AllCoverageFragment(), "ALL");
         adapter.addFragment(new CoverageFragment(), "MONDAY");
         adapter.addFragment(new CoverageFragment(), "TUESDAY");
         adapter.addFragment(new CoverageFragment(), "THURSDAY");

@@ -1,5 +1,6 @@
 package mydist.mydist.activities;
 
+import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -15,6 +16,7 @@ import mydist.mydist.fragments.InvoiceReportFragment;
 import mydist.mydist.fragments.OrderReportFragment;
 import mydist.mydist.fragments.SKUReportFragment;
 import mydist.mydist.fragments.StockReportFragment;
+import mydist.mydist.utils.FontManager;
 
 public class ReportDetailsActivity extends AppCompatActivity
 {
@@ -40,7 +42,13 @@ public class ReportDetailsActivity extends AppCompatActivity
         }else {
             displayReport(reportKey);
             setupToolBar();
+            setFonts();
         }
+    }
+
+    private void setFonts() {
+        Typeface ralewayFont = FontManager.getTypeface(getApplicationContext(), FontManager.RALEWAY_REGULAR);
+        FontManager.setFontsForView(findViewById(R.id.activity_report_container), ralewayFont);
     }
 
 

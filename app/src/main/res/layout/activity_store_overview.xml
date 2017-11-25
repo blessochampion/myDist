@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:background="@color/crispy_white"
     android:layout_height="match_parent"
+    android:id="@+id/parent_layout"
     android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
@@ -55,13 +56,16 @@
                     android:layout_width="56dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/item_background_image">
-
-                    <ImageView
+                    <TextView
+                        android:textSize="32sp"
+                        android:text="@string/fa_icon_check"
+                        android:textColor="@color/primary_text"
+                        android:id="@+id/icon_review"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:src="@drawable/ic_menu_camera" />
+                        />
                 </FrameLayout>
 
                 <TextView
@@ -69,7 +73,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/item_background_button"
-                    android:gravity="center"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="40dp"
                     android:text="@string/review"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/white_grey" />
@@ -106,7 +111,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/item_background_button"
-                    android:gravity="center"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="40dp"
                     android:text="@string/invoice"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/white_grey" />
@@ -130,18 +136,24 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/item_background_image">
 
-                    <ImageView
+                    <TextView
+                        android:textSize="32sp"
+                        android:text="@string/fa_icon_money"
+                        android:textColor="@color/primary_text"
+                        android:id="@+id/icon_collection"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_menu_slideshow" />
+                        android:gravity="center"
+                        />
                 </FrameLayout>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/item_background_button"
-                    android:gravity="center"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="40dp"
                     android:text="@string/collection"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/white_grey" />
@@ -176,7 +188,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/item_background_button"
-                    android:gravity="center"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="40dp"
                     android:text="@string/invoice_cancel"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/white_grey" />
@@ -200,18 +213,24 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/item_background_image">
 
-                    <ImageView
+                    <TextView
+                        android:textSize="32sp"
+                        android:text="@string/fa_icon_inr"
+                        android:textColor="@color/primary_text"
+                        android:id="@+id/icon_sbd_merchandising"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_menu_slideshow" />
+                        android:gravity="center"
+                        />
                 </FrameLayout>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/item_background_button"
-                    android:gravity="center"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="40dp"
                     android:text="@string/sbd_merchandising"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/white_grey" />
@@ -233,11 +252,16 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/item_background_image">
 
-                    <ImageView
+                    <TextView
+                        android:textSize="32sp"
+                        android:text="@string/fa_icon_phone"
+                        android:textColor="@color/primary_text"
+                        android:id="@+id/icon_call_analysis"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_menu_share" />
+                        android:gravity="center"
+                        />
                 </FrameLayout>
 
                 <TextView
@@ -245,7 +269,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/item_background_button"
-                    android:gravity="center"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="40dp"
                     android:text="@string/call_analysis"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/white_grey" />

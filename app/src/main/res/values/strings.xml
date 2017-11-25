@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyDist</string>
+    <string name="app_name">Route</string>
     <string name="my_dist">myDist</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
@@ -95,4 +95,23 @@
     <string name="sbd_merchandising">SBD Merchandising</string>
     <string name="call_analysis">Call Analysis</string>
     <string name="store">Store</string>
+    <string name="collection_amount">Collection Amount</string>
+    <string name="initiative_rate">Initiative Rate</string>
+    <string name="monthly_obj">Monthly(Act/Obj)</string>
+    <string name="initiative_merch">Initiative Merch Rate (actual/target)</string>
+    <string name="saved_successfully">Saved Successfully</string>
+    <string name="store_target">Store Target</string>
+    <string name="psku_target">PSKU Target</string>
+    <string name="always">Always</string>
+    <string name="ariel">Ariel</string>
+    <string name="duracell">Duracell</string>
+    <string name="search_hint">Search</string>
+    <string name="star">star</string>
+    <string name="filter">filter</string>
+    <string name="forward">forward</string>
+    <string name="all">All</string>
+    <string name="choose_brand">Choose Brand</string>
+    <string name="home_welcome_message">Welcome %s</string>
+    <string name="login_user_closed_for_the_day">You already closed for the day</string>
+    <string name="network_error">Please check your Network connection</string>
 </resources>

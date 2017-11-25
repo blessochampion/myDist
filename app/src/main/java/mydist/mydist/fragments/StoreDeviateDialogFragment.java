@@ -2,6 +2,7 @@ package mydist.mydist.fragments;
 
 
 import android.app.Dialog;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -19,6 +20,7 @@ import java.util.List;
 
 import mydist.mydist.R;
 import mydist.mydist.adapters.StoreProfileAdapter;
+import mydist.mydist.utils.FontManager;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,11 +46,17 @@ public class StoreDeviateDialogFragment extends DialogFragment implements View.O
         Button okayButton = (Button) view.findViewById(R.id.bt_ok);
         cancelButton.setOnClickListener(this);
         okayButton.setOnClickListener(this);
+        setFonts(view);
 
         //getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         return  view;
 
     }
+    private void setFonts(View v) {
+        Typeface ralewayFont = FontManager.getTypeface(getActivity().getApplicationContext(), FontManager.RALEWAY_REGULAR);
+        FontManager.setFontsForView(v.findViewById(R.id.parent_layout), ralewayFont);
+    }
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

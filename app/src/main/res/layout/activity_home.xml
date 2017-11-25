@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/parent_layout"
     android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
@@ -32,12 +33,12 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_welcome_message"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="24dp"
                 android:layout_weight="2"
                 android:gravity="center_horizontal"
-                android:text="Welcome Damilola"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                 android:textColor="@color/home_username" />
 
@@ -68,20 +69,26 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/item_background_image">
 
-                        <ImageView
+                        <TextView
+                            android:textSize="32sp"
+                            android:text="@string/fa_icon_road"
+                            android:textColor="@color/primary_text"
+                            android:id="@+id/icon_coverage"
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:src="@drawable/ic_menu_camera" />
+                             />
                     </FrameLayout>
 
                     <TextView
+                        android:id="@+id/tv_coverage"
                         android:paddingRight="36dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/item_background_button"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="40dp"
                         android:text="@string/trade_coverage"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="@color/white_grey" />
@@ -105,20 +112,26 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/item_background_image">
 
-                        <ImageView
+                        <TextView
+                            android:textSize="32sp"
+                            android:text="@string/fa_icon_new_retailer"
+                            android:textColor="@color/primary_text"
+                            android:id="@+id/icon_new_retailer"
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_menu_gallery" />
-
+                            android:gravity="center"
+                            />
                     </FrameLayout>
 
                     <TextView
+                        android:id="@+id/tv_new_retailer"
                         android:paddingRight="12dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/item_background_button"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="40dp"
                         android:text="@string/new_retailer"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="@color/white_grey" />
@@ -141,19 +154,26 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/item_background_image">
 
-                        <ImageView
+                        <TextView
+                            android:textSize="32sp"
+                            android:text="@string/fa_icon_bar_chart"
+                            android:textColor="@color/primary_text"
+                            android:id="@+id/icon_reports"
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_menu_slideshow" />
+                            android:gravity="center"
+                            />
                     </FrameLayout>
 
                     <TextView
+                        android:id="@+id/tv_reports"
                         android:paddingRight="56dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/item_background_button"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="40dp"
                         android:text="@string/reports"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="@color/white_grey" />
@@ -176,18 +196,25 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/item_background_image">
 
-                        <ImageView
+                        <TextView
+                            android:textSize="32sp"
+                            android:text="@string/fa_icon_refresh"
+                            android:textColor="@color/primary_text"
+                            android:id="@+id/icon_synchronization"
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_menu_share" />
+                            android:gravity="center"
+                            />
                     </FrameLayout>
 
                     <TextView
+                        android:id="@+id/tv_synchronization"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/item_background_button"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="40dp"
                         android:text="@string/synchronization"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="@color/white_grey" />

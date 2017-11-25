@@ -1,13 +1,150 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
+    android:id="@+id/parent_layout"
+    android:background="@color/crispy_white"
+    android:fillViewport="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="mydist.mydist.fragments.StoreInfoReviewFragment">
+    >
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
+        android:padding="16dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <TextView
+            android:textColor="@color/primary_text"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:text="@string/store_target"
+            android:id="@+id/store_target_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginLeft="24dp"
+            android:layout_toRightOf="@id/store_target_label"
+            android:textColor="@color/secondary_text"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:text="33201"
+            android:id="@+id/store_target_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginTop="16dp"
+            android:layout_below="@id/store_target_value"
+            android:textColor="@color/primary_text"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:text="@string/psku_target"
+            android:id="@+id/psku_target_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginTop="16dp"
+            android:layout_below="@id/store_target_value"
+            android:layout_marginLeft="24dp"
+            android:layout_toRightOf="@id/psku_target_label"
+            android:textColor="@color/secondary_text"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:text="17"
+            android:id="@+id/psku_target_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginTop="24dp"
+            android:layout_below="@id/psku_target_label"
+            android:textColor="@color/primary_text"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:text="Initiative List"
+            android:id="@+id/initial_value_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:id="@+id/initiative_value_container"
+            android:orientation="vertical"
+            android:background="@drawable/initiative_or_mechandising_list"
+            android:layout_marginTop="16dp"
+            android:layout_alignLeft="@id/psku_target_value"
+            android:layout_toRightOf="@id/initial_value_label"
+            android:layout_below="@id/psku_target_value"
+            android:minHeight="160dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:paddingTop="4dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:gravity="center"
+                android:text="@string/address"
+                android:layout_marginBottom="4dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <View
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="1.2dp"/>
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_marginTop="24dp"
+            android:layout_below="@id/initiative_value_container"
+            android:textColor="@color/primary_text"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:text="Mechandising \n List"
+            android:id="@+id/mechandising_list_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:padding="4dp"
+            android:layout_toRightOf="@id/mechandising_list_label"
+            android:orientation="vertical"
+            android:background="@drawable/initiative_or_mechandising_list"
+            android:layout_marginTop="16dp"
+            android:layout_alignLeft="@id/psku_target_value"
+            android:layout_below="@id/initiative_value_container"
+            android:minHeight="160dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:padding="4dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:text="@string/always"
+                android:layout_marginBottom="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:text="@string/ariel"
+                android:layout_marginBottom="4dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:text="@string/duracell"
+                android:layout_marginBottom="4dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+
+
+
+
+</ScrollView>

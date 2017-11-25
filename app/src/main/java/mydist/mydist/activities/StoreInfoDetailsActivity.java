@@ -1,19 +1,27 @@
 package mydist.mydist.activities;
 
+import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import mydist.mydist.R;
+import mydist.mydist.fragments.StoreFilterDialogFragment;
 import mydist.mydist.fragments.StoreInfoCallAnalysisFragment;
 import mydist.mydist.fragments.StoreInfoCollectionFragment;
 import mydist.mydist.fragments.StoreInfoInvoiceCancelFragment;
 import mydist.mydist.fragments.StoreInfoInvoiceFragment;
 import mydist.mydist.fragments.StoreInfoMerchandisingFragment;
 import mydist.mydist.fragments.StoreInfoReviewFragment;
+import mydist.mydist.fragments.StoreProfileHistoryDialogFragment;
+import mydist.mydist.utils.FontManager;
 
 public class StoreInfoDetailsActivity extends AppCompatActivity {
     public static final int KEY_REVIEW =  0;
@@ -25,19 +33,27 @@ public class StoreInfoDetailsActivity extends AppCompatActivity {
     public static final String KEY_STORE_INFO = "storeinfo";
     private static int DEFAULT_REPORT_KEY_VALUE = -1;
     String title = "";
+    int storeKey;
+    StoreFilterDialogFragment storeFilterDialogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_info_details);
-        int storeKey = getIntent().getIntExtra(KEY_STORE_INFO, DEFAULT_REPORT_KEY_VALUE);
+         storeKey = getIntent().getIntExtra(KEY_STORE_INFO, DEFAULT_REPORT_KEY_VALUE);
         if (storeKey == DEFAULT_REPORT_KEY_VALUE || storeKey < DEFAULT_REPORT_KEY_VALUE
                 || storeKey > KEY_CALL_ANALYSIS) {
             finish();
         } else {
             displayStoreDetails(storeKey);
             setupToolBar();
+            setFonts();
         }
+    }
+
+    private void setFonts() {
+        Typeface ralewayFont = FontManager.getTypeface(getApplicationContext(), FontManager.RALEWAY_REGULAR);
+        FontManager.setFontsForView(findViewById(R.id.parent_layout), ralewayFont);
     }
 
     private void displayStoreDetails(int storeKey)
@@ -88,6 +104,42 @@ public class StoreInfoDetailsActivity extends AppCompatActivity {
             onBackPressed();
             return true;
         }
+        if(item.getItemId() == R.id.save){
+            AlertDialog dialog = new AlertDialog.Builder(this)
+                    .setMessage(getString(R.string.saved_successfully))
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            onBackPressed();
+                        }
+                    }).create();
+            dialog.show();
+            return true;
+        }
+
+        if(item.getItemId() ==  R.id.filter){
+            storeFilterDialogFragment = new  StoreFilterDialogFragment();
+            storeFilterDialogFragment.show(getSupportFragmentManager(), "");
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void dismiss(View v){
+        if(storeFilterDialogFragment !=  null){
+            storeFilterDialogFragment.dismiss();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if(storeKey == KEY_COLLECTION){
+            getMenuInflater().inflate(R.menu.menu_store_info_collection, menu);
+            return true;
+        }
+        if(storeKey == KEY_INVOICE){
+            getMenuInflater().inflate(R.menu.menu_fragment_store_info, menu);
+            return true;
+        }
+        return super.onCreateOptionsMenu(menu);
     }
 }

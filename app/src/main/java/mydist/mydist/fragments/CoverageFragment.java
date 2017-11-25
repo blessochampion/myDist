@@ -2,6 +2,7 @@ package mydist.mydist.fragments;
 
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.RelativeLayout;
 
 import mydist.mydist.R;
 import mydist.mydist.activities.StoreOverviewActivity;
+import mydist.mydist.utils.FontManager;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,7 +37,13 @@ public class CoverageFragment extends Fragment implements View.OnClickListener {
         itemContainer.setOnClickListener(this);
         info1.setOnClickListener(this);
         info2.setOnClickListener(this);
+        setFonts(view);
         return view;
+    }
+
+    private void setFonts(View v) {
+        Typeface ralewayFont = FontManager.getTypeface(getActivity().getApplicationContext(), FontManager.RALEWAY_REGULAR);
+        FontManager.setFontsForView(v.findViewById(R.id.parent_layout), ralewayFont);
     }
 
     @Override
