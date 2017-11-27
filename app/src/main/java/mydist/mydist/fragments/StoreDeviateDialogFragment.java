@@ -14,11 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import mydist.mydist.R;
+import mydist.mydist.adapters.DeviateSpinnerAdapter;
 import mydist.mydist.adapters.StoreProfileAdapter;
 import mydist.mydist.utils.FontManager;
 
@@ -44,6 +46,9 @@ public class StoreDeviateDialogFragment extends DialogFragment implements View.O
         View view = inflater.inflate(R.layout.fragment_store_deviate, container,false);
         Button cancelButton = (Button) view.findViewById(R.id.bt_cancel);
         Button okayButton = (Button) view.findViewById(R.id.bt_ok);
+        Spinner mDeviations = (Spinner) view.findViewById(R.id.sp_deviations);
+        String[] deviations = new String[]{"Store is closed", "Request for Express Delivery", "Other"};
+        mDeviations.setAdapter(new DeviateSpinnerAdapter(getActivity(), deviations));
         cancelButton.setOnClickListener(this);
         okayButton.setOnClickListener(this);
         setFonts(view);

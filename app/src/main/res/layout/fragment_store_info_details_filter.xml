@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parent_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="16dp"
-    android:id="@+id/parent_layout"
     android:layout_marginRight="16dp"
     android:layout_marginTop="32dp"
     android:background="@android:color/white"
@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
+
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -23,190 +24,18 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <TableLayout
-        android:layout_marginTop="16dp"
+    <GridView
+        android:paddingRight="4dp"
+        android:paddingLeft="4dp"
+        android:layout_marginTop="4dp"
+        android:verticalSpacing="4dp"
+        android:horizontalSpacing="4dp"
+        android:id="@+id/gl_filter"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:numColumns="auto_fit">
 
-        <TableRow android:padding="1dp">
-
-            <Button
-                android:onClick="dismiss"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary"
-                android:text="@string/ariel"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
-
-            <Button
-                android:onClick="dismiss"
-                android:id="@+id/button"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary"
-                android:ellipsize="end"
-                android:text="Sunlight"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
-
-            <Button
-                android:onClick="dismiss"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary"
-                android:text="Cannoe"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
-
-            <Button
-                android:onClick="dismiss"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary"
-                android:text="Klin"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
-
-            <Button
-                android:onClick="dismiss"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary"
-                android:text="Eva"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
-
-        </TableRow>
-
-        <TableRow android:padding="1dp">
-
-            <Button
-                android:onClick="dismiss"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary"
-                android:text="Leather"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
-
-            <Button
-                android:onClick="dismiss"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary"
-                android:text="Lux"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
-
-            <Button
-                android:onClick="dismiss"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary"
-                android:text="@string/ariel"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
-
-            <Button
-                android:onClick="dismiss"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary"
-                android:text="@string/ariel"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
-
-            <Button
-                android:onClick="dismiss"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary"
-                android:text="B29"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
-
-        </TableRow>
-
-        <TableRow>
-
-            <Button
-                android:onClick="dismiss"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary"
-                android:text="@string/ariel"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
-
-            <Button
-                android:onClick="dismiss"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary"
-                android:text="@string/ariel"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
-
-            <Button
-                android:onClick="dismiss"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary"
-                android:text="@string/ariel"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
-
-            <Button
-                android:onClick="dismiss"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary"
-                android:text="@string/ariel"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
-
-            <Button
-                android:onClick="dismiss"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary"
-                android:text="@string/ariel"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
-
-        </TableRow>
-
-    </TableLayout>
+    </GridView>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -219,19 +48,19 @@
             android:orientation="horizontal">
 
             <Button
-                android:onClick="dismiss"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:minHeight="36dp"
+                android:onClick="dismiss"
                 android:text="@string/cancel" />
 
             <Button
-                android:onClick="dismiss"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:minHeight="36dp"
+                android:onClick="dismiss"
                 android:text="@string/all" />
 
 

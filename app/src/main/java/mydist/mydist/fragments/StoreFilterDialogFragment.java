@@ -13,12 +13,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.GridLayout;
+import android.widget.GridView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import mydist.mydist.R;
+import mydist.mydist.adapters.FilterAdapter;
 import mydist.mydist.adapters.StoreProfileAdapter;
+import mydist.mydist.models.Brand;
+import mydist.mydist.utils.DataUtils;
 import mydist.mydist.utils.FontManager;
 
 /**
@@ -37,6 +42,9 @@ public class StoreFilterDialogFragment extends DialogFragment
         View view = inflater.inflate(R.layout.fragment_store_info_details_filter, container,false);
         Toolbar toolbar = (Toolbar)view.findViewById(R.id.toolbar);
         toolbar.setTitle(getString(R.string.choose_brand));
+        GridView filter = (GridView) view.findViewById(R.id.gl_filter);
+        List<Brand> brands = DataUtils.getAllBrands(getActivity());
+        filter.setAdapter(new FilterAdapter(getActivity(), brands));
         setFonts(view);
         return  view;
 

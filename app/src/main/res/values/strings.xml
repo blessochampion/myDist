@@ -114,4 +114,5 @@
     <string name="home_welcome_message">Welcome %s</string>
     <string name="login_user_closed_for_the_day">You already closed for the day</string>
     <string name="network_error">Please check your Network connection</string>
+    <string name="new_retailer_info">New Retailer Created</string>
 </resources>

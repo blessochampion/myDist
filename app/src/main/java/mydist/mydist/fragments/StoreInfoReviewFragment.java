@@ -7,8 +7,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+
+import java.util.List;
 
 import mydist.mydist.R;
+import mydist.mydist.adapters.MerchandizingAdapter;
+import mydist.mydist.models.Merchandize;
+import mydist.mydist.utils.DataUtils;
 import mydist.mydist.utils.FontManager;
 
 /**
@@ -16,6 +22,7 @@ import mydist.mydist.utils.FontManager;
  */
 public class StoreInfoReviewFragment extends Fragment {
 
+    ListView mMerchandisingList;
 
     public StoreInfoReviewFragment() {
         // Required empty public constructor
@@ -27,6 +34,9 @@ public class StoreInfoReviewFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_store_info_review, container, false);
+        mMerchandisingList = (ListView) view.findViewById(R.id.lv_merchandisingList);
+        List<Merchandize> merchandizes = DataUtils.getAllMerchandize(getActivity());
+        mMerchandisingList.setAdapter(new MerchandizingAdapter(getActivity(), merchandizes));
         setFonts(view);
         return view;
     }

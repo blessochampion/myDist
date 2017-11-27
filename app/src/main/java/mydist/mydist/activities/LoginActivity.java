@@ -73,10 +73,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
-        if(!NetworkUtils.isNetworkAvailable(this)){
+        if (!NetworkUtils.isNetworkAvailable(this)) {
             launchDialog(getString(R.string.network_error));
-        }
-        else if (v.getId() == R.id.login_activity_download) {
+        } else if (v.getId() == R.id.login_activity_download) {
             doDownload();
         } else if (v.getId() == R.id.login_activity_login) {
             doLogin();
@@ -102,7 +101,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             makeNetworkCallForDownload();
         }
     }
-
 
 
     private void makeNetworkCallForDownload() {
@@ -174,6 +172,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onSuccess(DownloadMastersResponse response) {
+        DataUtils.saveMasters(response, this);
         dismissDialog();
         launchHomeActivity();
     }

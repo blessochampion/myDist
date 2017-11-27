@@ -53,13 +53,15 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:gravity="center_vertical"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="4.3"
                             android:text="@string/retailer_name"
                             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
                         <EditText
+                            android:id="@+id/et_new_retailer_name"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="6"
@@ -82,13 +84,15 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:gravity="center_vertical"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="4.3"
                             android:text="@string/contact_person_name"
                             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
                         <EditText
+                            android:id="@+id/et_contact_person"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="6"
@@ -111,13 +115,15 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:gravity="center_vertical"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="4.3"
                             android:text="@string/address"
                             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
                         <EditText
+                            android:id="@+id/et_address"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="6"
@@ -140,18 +146,20 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:gravity="center_vertical"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="4.3"
                             android:text="@string/phone"
                             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
                         <EditText
+                            android:id="@+id/et_phone"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="6"
                             android:background="@drawable/login_activity_edit_text"
-                            android:inputType="text"
+                            android:inputType="phone"
                             android:maxLines="1"
                             android:minHeight="40dp"
                             android:paddingBottom="4dp"
@@ -170,7 +178,8 @@
 
                         <TextView
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:layout_height="match_parent"
                             android:layout_weight="4.3"
                             android:text="@string/channel"
                             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
@@ -207,8 +216,9 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:gravity="center_vertical"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="4.3"
                             android:text="@string/subchannel"
                             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
