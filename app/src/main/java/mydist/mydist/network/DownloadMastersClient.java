@@ -45,6 +45,7 @@ public class DownloadMastersClient implements Response.ErrorListener, Response.L
     public void onResponse(JSONObject response) {
         DownloadMastersResponse downloadResponse = parseResponse(response);
         if (downloadResponse.getStatus() != null && downloadResponse.getStatus().isSuccess()) {
+
             downloadMastersListener.onSuccess(downloadResponse);
         } else {
             downloadMastersListener.onFailure();

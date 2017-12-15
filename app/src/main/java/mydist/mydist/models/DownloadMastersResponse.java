@@ -18,7 +18,8 @@ public class DownloadMastersResponse {
     public Status status;
     @JsonProperty("master")
     public Master master;
-
+    @JsonProperty("salesrep")
+    public AuthenticationResponse.User user;
     public DownloadMastersResponse() {
     }
 
@@ -132,6 +133,14 @@ public class DownloadMastersResponse {
 
     }
 
+
+    public void setUser(AuthenticationResponse.User user) {
+        this.user = user;
+    }
+
+    public AuthenticationResponse.User getUser() {
+        return user;
+    }
 
     public Master getMaster() {
         return master;

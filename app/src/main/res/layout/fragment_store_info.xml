@@ -1,20 +1,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:id="@+id/parent_layout"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/crispy_white"
     android:orientation="vertical"
     tools:context="mydist.mydist.fragments.StoreInfoInvoiceFragment">
 
     <LinearLayout
-        android:focusableInTouchMode="true"
-        android:focusable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:orientation="horizontal">
 
         <TextView
@@ -47,139 +47,78 @@
         android:layout_height="match_parent"
         android:layout_marginTop="8dp">
 
-        <HorizontalScrollView
+        <ScrollView
+            android:layout_marginBottom="96dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="56dp"
-            android:scrollbars="none">
+            android:layout_height="match_parent">
 
-            <TableLayout
-                android:id="@+id/tl_products"
+
+            <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
 
-                <TableRow android:minHeight="36dp">
+                <TableLayout
+                    android:id="@+id/tl_products"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></TableLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="1dp"
-                        android:background="@color/colorPrimary"
-                        android:gravity="center"
-                        android:minWidth="120dp"
-                        android:text="Aried"
-                        android:textColor="@color/white" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="1dp"
-                        android:background="@color/colorPrimary"
-                        android:gravity="center"
-                        android:minWidth="56dp"
-                        android:text="Avail."
-                        android:textColor="@color/white" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="1dp"
-                        android:background="@color/colorPrimary"
-                        android:gravity="center"
-                        android:minWidth="56dp"
-                        android:text="SO"
-                        android:textColor="@color/white" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="1dp"
-                        android:background="@color/colorPrimary"
-                        android:gravity="center"
-                        android:minWidth="56dp"
-                        android:text="OC"
-                        android:textColor="@color/white" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="1dp"
-                        android:background="@color/colorPrimary"
-                        android:gravity="center"
-                        android:minWidth="56dp"
-                        android:text="OP"
-                        android:textColor="@color/white" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="1dp"
-                        android:background="@color/colorPrimary"
-                        android:gravity="center"
-                        android:minWidth="72dp"
-                        android:text="Total"
-                        android:textColor="@color/white" />
-                </TableRow>
-
-
-
-
-
-            </TableLayout>
-        </HorizontalScrollView>
+            </HorizontalScrollView>
+        </ScrollView>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@color/colorPrimary"
-            android:minHeight="48dp"
-            android:paddingBottom="8dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingTop="8dp">
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="Value"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/white" />
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1.5"
-                android:background="@color/white"
-                android:gravity="center_vertical|right"
-                android:paddingRight="4dp"
-                android:text="1,956.03"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/crispy_red" />
+                <TableLayout
+                    android:layout_marginBottom="4dp"
+                    android:id="@+id/pagination"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:minHeight="30dp">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="6dp"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="Dist%"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/white" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1.5"
-                android:background="@color/white"
-                android:gravity="center_vertical|right"
-                android:paddingRight="4dp"
-                android:text="6"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/crispy_red" />
+                </TableLayout>
+            </HorizontalScrollView>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:minHeight="48dp"
+                android:paddingBottom="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="8dp"
+                    android:gravity="center_vertical"
+                    android:text="Total"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/colorPrimary" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5"
+                    android:background="@color/white"
+                    android:gravity="center_vertical|right"
+                    android:paddingRight="8dp"
+                    android:text="0.00"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/crispy_red" />
+
+            </LinearLayout>
         </LinearLayout>
 
     </FrameLayout>

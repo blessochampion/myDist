@@ -37,7 +37,7 @@
                 android:padding="4dp">
 
                 <Spinner
-                    android:id="@+id/sp_testaments"
+                    android:id="@+id/sp_brand"
                     android:layout_width="192dp"
                     android:layout_height="32dp"
                     android:gravity="center"

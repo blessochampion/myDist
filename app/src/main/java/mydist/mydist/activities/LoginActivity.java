@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         getReferencesToViews();
@@ -172,6 +173,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onSuccess(DownloadMastersResponse response) {
+        DataUtils.saveUser(response.getUser(), UserPreference.getInstance(this));
         DataUtils.saveMasters(response, this);
         dismissDialog();
         launchHomeActivity();

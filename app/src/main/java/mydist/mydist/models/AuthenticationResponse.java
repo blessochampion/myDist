@@ -57,7 +57,7 @@ public class AuthenticationResponse {
         this.user = user;
     }
 
-    public class User {
+    public static  class User {
         String repId;
         String repCode;
         String userName;

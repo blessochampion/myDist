@@ -42,6 +42,11 @@ public class Brand implements Parcelable{
         }
     };
 
+    @Override
+    public String toString() {
+        return brandName;
+    }
+
     public String getBrandId() {
         return brandId;
     }
