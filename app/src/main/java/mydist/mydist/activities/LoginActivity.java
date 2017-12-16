@@ -123,7 +123,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void loginFailed() {
         mDialog = new AlertDialog.Builder(LoginActivity.this).
                 setMessage(LoginActivity.this.getString(R.string.login_error_message)).
-                setPositiveButton(LoginActivity.this.getText(R.string.ok), null).create();
+                setPositiveButton(LoginActivity.this.getString(R.string.ok), null).create();
         mDialog.show();
     }
 

@@ -120,8 +120,9 @@ public class StoreInfoDetailsActivity extends AppCompatActivity {
         if(item.getItemId() ==  R.id.filter){
             storeFilterDialogFragment = new  StoreFilterDialogFragment();
             storeFilterDialogFragment.show(getSupportFragmentManager(), "");
+            return true;
         }
-        return super.onOptionsItemSelected(item);
+        return false;
     }
 
     public void dismiss(View v){

@@ -8,21 +8,28 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.util.HashMap;
 import java.util.List;
 
 import mydist.mydist.R;
+import mydist.mydist.activities.LoginActivity;
+import mydist.mydist.data.ProductLogic;
 import mydist.mydist.models.Product;
 import mydist.mydist.utils.DataUtils;
 import mydist.mydist.utils.FontManager;
@@ -36,16 +43,53 @@ import static android.view.Gravity.LEFT;
  */
 public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickListener {
 
+    public static final int TOTAL_POSITION = 4;
     TableLayout mTableLayout;
     TableLayout mPagination;
     List<Product> products;
+    TextView mTotalAmount;
     int currentPage = 0;
     Context context;
+    double totalAmountToBePaid = 0;
+    HashMap<String, ProductLogic> selectedProducts = new HashMap<>();
+    private static final int OC_POSITION = 2;
+    private static final int OP_POSITION = 3;
+    private static final String DELIMETER = ":";
+    private String EMPTY_STRING = "";
+
 
     public StoreInfoInvoiceFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.forward){
+            if(selectedProducts.size() == 0){
+                new AlertDialog.Builder(context).
+                        setMessage(getString(R.string.no_product_error)).
+                        setPositiveButton(getString(R.string.ok), null).create().show();
+
+            }else {
+                ProductLogic productLogic;
+                for (String key : selectedProducts.keySet()) {
+                    productLogic = selectedProducts.get(key);
+                    if (productLogic.getTotal() == 0) {
+                        new AlertDialog.Builder(context).
+                                setMessage("Select OC/OP for " + productLogic.getProduct().getProductName()).
+                                setPositiveButton(getString(R.string.ok), null).create().show();
+                        return true;
+                    }
+                }
+
+                //go to next activity
+            }
+
+            return true;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,9 +98,10 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
         View view = inflater.inflate(R.layout.fragment_store_info, container, false);
         mTableLayout = (TableLayout) view.findViewById(R.id.tl_products);
         mPagination = (TableLayout) view.findViewById(R.id.pagination);
+        mTotalAmount = (TextView) view.findViewById(R.id.total_amount);
         products = DataUtils.getAllProducts(getActivity());
         context = getActivity();
-
+        setHasOptionsMenu(true);
         initProducts();
         initPagination();
         loadProducts();
@@ -90,19 +135,108 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
 
     }
 
+    private void updateTotalValue(String indicator, String value, EditText totalEditText) {
+        String[] keys = indicator.split(DELIMETER);
+        if (selectedProducts.containsKey(keys[0])) {
+            ProductLogic productLogic = selectedProducts.get(keys[0]);
+            //first remove the sum from total
+            totalAmountToBePaid -= productLogic.getTotal();
+            int viewPosition = Integer.valueOf(keys[1]);
+            if (viewPosition == OC_POSITION) {
+                productLogic.oc = Integer.valueOf(value);
+            }
+            if (viewPosition == OP_POSITION) {
+                productLogic.op = Integer.valueOf(value);
+            }
+
+            totalAmountToBePaid += productLogic.getTotal();
+            mTotalAmount.setText(String.format("%.2f",totalAmountToBePaid));
+            totalEditText.setText(productLogic.getTotal() == 0 ? EMPTY_STRING : String.format("%.2f",productLogic.getTotal()));
+        }
+    }
+
+    public void checkBoxClicked(CheckBox checkBox) {
+        String[] values = ((String) checkBox.getTag()).split(DELIMETER);
+        final String productId = values[0];
+        int position = Integer.valueOf(values[1]);
+        TableRow selectedRow = (TableRow) mTableLayout.getChildAt(position);
+        if (checkBox.isChecked()) {
+            selectedProducts.put(productId, new ProductLogic(products.get(currentPage * 10 + position - 1)));
+            final EditText totalValueEditText = (EditText) selectedRow.getChildAt(TOTAL_POSITION);
+            for (int i = 2; i < 4; i++) {
+                View view = selectedRow.getChildAt(i);
+                final int viewPosition = i;
+                if (view instanceof EditText) {
+                    view.setEnabled(true);
+                    final EditText editText = ((EditText) view);
+                    editText.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            int length = s.toString().length();
+                            if (length == 1 && s.toString().equalsIgnoreCase("0")) {
+                                editText.setText("");
+                            } else if (length >= 1) {
+                                char lastChar = s.toString().charAt(length - 1);
+                                if (!('0' <= lastChar && lastChar <= '9')) {
+                                    editText.setText(s.toString().substring(0, count - 1));
+                                } else {
+                                    updateTotalValue(productId + DELIMETER + viewPosition, s.toString(), totalValueEditText);
+                                }
+                            }else{
+                                updateTotalValue(productId + DELIMETER + viewPosition, "0", totalValueEditText);
+                            }
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+
+                        }
+                    });
+                }
+            }
+
+        } else {
+            for (int i = 2; i <= 4; i++) {
+                View view = selectedRow.getChildAt(i);
+                if (view instanceof EditText) {
+                    ((EditText) view).setText(EMPTY_STRING);
+                    view.setEnabled(false);
+                }
+            }
+            ProductLogic productLogic = selectedProducts.get(productId);
+
+            totalAmountToBePaid -= productLogic.getTotal();
+            mTotalAmount.setText(String.format("%.2f",totalAmountToBePaid));
+            selectedProducts.remove(productId);
+        }
+    }
+
     private void loadProductIntoRow(TableRow productRow, Product currentProduct, int position) {
         //product name
         TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
         layoutParams.setMargins(0, 0, 10, 0);
         TextView productName = new TextView(context);
         productName.setText(currentProduct.getProductName());
-        productName.setGravity(CENTER_VERTICAL|LEFT);
+        productName.setGravity(CENTER_VERTICAL | LEFT);
         productName.setLayoutParams(layoutParams);
         productRow.addView(productName);
 
         //select
         CheckBox selectCheckbox = generateCheckbox(context);
         selectCheckbox.setMinHeight(80);
+        selectCheckbox.setTag(currentProduct.getProductId() + ":" + (position + 1));
+        selectCheckbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkBoxClicked((CheckBox) v);
+            }
+        });
+
         productRow.addView(selectCheckbox);
 
 
@@ -114,8 +248,9 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
         }
         ocEditText.setLayoutParams(layoutParams);
         ocEditText.setMinHeight(80);
-        ocEditText.setPadding(4, 0,4, 0);
+        ocEditText.setPadding(4, 0, 4, 0);
         ocEditText.setGravity(CENTER);
+        ocEditText.setEnabled(false);
         productRow.addView(ocEditText);
 
         //op
@@ -126,8 +261,9 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
         }
         opEditText.setLayoutParams(layoutParams);
         opEditText.setMinHeight(80);
-        opEditText.setPadding(4, 0,4, 0);
+        opEditText.setPadding(4, 0, 4, 0);
         opEditText.setGravity(CENTER);
+        opEditText.setEnabled(false);
         productRow.addView(opEditText);
 
         //total
@@ -138,9 +274,19 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
         }
         totalEditText.setLayoutParams(layoutParams);
         totalEditText.setMinHeight(80);
-        totalEditText.setPadding(4, 0,4, 0);
+        totalEditText.setPadding(4, 0, 4, 0);
         totalEditText.setGravity(CENTER);
+        totalEditText.setEnabled(false);
         productRow.addView(totalEditText);
+        if (selectedProducts.containsKey(currentProduct.getProductId())){
+            ProductLogic logic = selectedProducts.get(currentProduct.getProductId());
+            selectCheckbox.setChecked(true);
+            ocEditText.setText(logic.oc == 0 ? "" : String.valueOf(logic.oc));
+            ocEditText.setEnabled(true);
+            opEditText.setText(logic.op == 0 ? "" : String.valueOf(logic.op));
+            opEditText.setEnabled(true);
+            totalEditText.setText(String.valueOf(logic.getTotal()));
+        }
 
 
     }
@@ -241,21 +387,6 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
         FontManager.setFontsForView(v.findViewById(R.id.parent_layout), ralewayFont);
     }
 
-    private TableRow getLine(Context context) {
-        TableRow tableRow = new TableRow(context);
-        TableLayout.LayoutParams layoutParams = new TableLayout.LayoutParams
-                (TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT);
-        tableRow.setLayoutParams(layoutParams);
-
-        View textView = new View(context);
-        textView.setLayoutParams(
-                new TableRow.LayoutParams(
-                        TableRow.LayoutParams.MATCH_PARENT,
-                        toDp(5)));
-        textView.setBackgroundColor(Color.parseColor("#ffffff"));
-        tableRow.addView(textView);
-        return tableRow;
-    }
 
     private TableRow getProductView(Context context, Product product) {
         TableRow tableRow = getTableRow(context);

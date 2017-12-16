@@ -13,9 +13,11 @@ import android.support.v4.app.FragmentActivity;
 import android.widget.TableLayout;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import mydist.mydist.data.DatabaseManager;
+import mydist.mydist.data.ProductLogic;
 import mydist.mydist.data.UserPreference;
 import mydist.mydist.models.AuthenticationResponse;
 import mydist.mydist.models.Brand;
@@ -28,6 +30,15 @@ import mydist.mydist.models.SubChannel;
 
 public class DataUtils {
 
+    private static HashMap<String, ProductLogic> selectedProducts = new HashMap<>();
+
+    public static HashMap<String, ProductLogic> getSelectedProducts() {
+        return selectedProducts;
+    }
+
+    public static void setSelectedProducts(HashMap<String, ProductLogic> selectedProducts) {
+        DataUtils.selectedProducts = selectedProducts;
+    }
 
     public static void saveUser(AuthenticationResponse.User user, UserPreference userPreference) {
         userPreference.setRepId(user.getRepId());
