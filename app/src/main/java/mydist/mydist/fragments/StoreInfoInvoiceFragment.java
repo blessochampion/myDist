@@ -6,13 +6,11 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import mydist.mydist.R;
-import mydist.mydist.activities.LoginActivity;
 import mydist.mydist.data.ProductLogic;
 import mydist.mydist.models.Product;
 import mydist.mydist.utils.DataUtils;
@@ -36,7 +33,6 @@ import mydist.mydist.utils.FontManager;
 
 import static android.view.Gravity.CENTER;
 import static android.view.Gravity.CENTER_VERTICAL;
-import static android.view.Gravity.LEFT;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -64,13 +60,13 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.forward){
-            if(selectedProducts.size() == 0){
+        if (item.getItemId() == R.id.forward) {
+            if (selectedProducts.size() == 0) {
                 new AlertDialog.Builder(context).
                         setMessage(getString(R.string.no_product_error)).
                         setPositiveButton(getString(R.string.ok), null).create().show();
 
-            }else {
+            } else {
                 ProductLogic productLogic;
                 for (String key : selectedProducts.keySet()) {
                     productLogic = selectedProducts.get(key);
@@ -135,96 +131,67 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
 
     }
 
-    private void updateTotalValue(String indicator, String value, EditText totalEditText) {
-        String[] keys = indicator.split(DELIMETER);
-        if (selectedProducts.containsKey(keys[0])) {
-            ProductLogic productLogic = selectedProducts.get(keys[0]);
-            //first remove the sum from total
-            totalAmountToBePaid -= productLogic.getTotal();
-            int viewPosition = Integer.valueOf(keys[1]);
-            if (viewPosition == OC_POSITION) {
-                productLogic.oc = Integer.valueOf(value);
-            }
-            if (viewPosition == OP_POSITION) {
-                productLogic.op = Integer.valueOf(value);
-            }
-
-            totalAmountToBePaid += productLogic.getTotal();
-            mTotalAmount.setText(String.format("%.2f",totalAmountToBePaid));
-            totalEditText.setText(productLogic.getTotal() == 0 ? EMPTY_STRING : String.format("%.2f",productLogic.getTotal()));
-        }
-    }
-
-    public void checkBoxClicked(CheckBox checkBox) {
-        String[] values = ((String) checkBox.getTag()).split(DELIMETER);
-        final String productId = values[0];
-        int position = Integer.valueOf(values[1]);
-        TableRow selectedRow = (TableRow) mTableLayout.getChildAt(position);
-        if (checkBox.isChecked()) {
-            selectedProducts.put(productId, new ProductLogic(products.get(currentPage * 10 + position - 1)));
-            final EditText totalValueEditText = (EditText) selectedRow.getChildAt(TOTAL_POSITION);
-            for (int i = 2; i < 4; i++) {
-                View view = selectedRow.getChildAt(i);
-                final int viewPosition = i;
-                if (view instanceof EditText) {
-                    view.setEnabled(true);
-                    final EditText editText = ((EditText) view);
-                    editText.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            int length = s.toString().length();
-                            if (length == 1 && s.toString().equalsIgnoreCase("0")) {
-                                editText.setText("");
-                            } else if (length >= 1) {
-                                char lastChar = s.toString().charAt(length - 1);
-                                if (!('0' <= lastChar && lastChar <= '9')) {
-                                    editText.setText(s.toString().substring(0, count - 1));
-                                } else {
-                                    updateTotalValue(productId + DELIMETER + viewPosition, s.toString(), totalValueEditText);
-                                }
-                            }else{
-                                updateTotalValue(productId + DELIMETER + viewPosition, "0", totalValueEditText);
-                            }
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-
-                        }
-                    });
-                }
-            }
-
-        } else {
-            for (int i = 2; i <= 4; i++) {
-                View view = selectedRow.getChildAt(i);
-                if (view instanceof EditText) {
-                    ((EditText) view).setText(EMPTY_STRING);
-                    view.setEnabled(false);
-                }
-            }
-            ProductLogic productLogic = selectedProducts.get(productId);
-
-            totalAmountToBePaid -= productLogic.getTotal();
-            mTotalAmount.setText(String.format("%.2f",totalAmountToBePaid));
-            selectedProducts.remove(productId);
-        }
-    }
-
     private void loadProductIntoRow(TableRow productRow, Product currentProduct, int position) {
         //product name
+        productRow.setMinimumHeight(144);
         TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
         layoutParams.setMargins(0, 0, 10, 0);
+
+        LinearLayout productDetails = new LinearLayout(context);
+        productDetails.setOrientation(LinearLayout.VERTICAL);
+        productDetails.setLayoutParams(layoutParams);
+
+        LinearLayout.LayoutParams productNameLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        productNameLayout.setMargins(0, 0, 0, 16);
         TextView productName = new TextView(context);
         productName.setText(currentProduct.getProductName());
-        productName.setGravity(CENTER_VERTICAL | LEFT);
-        productName.setLayoutParams(layoutParams);
-        productRow.addView(productName);
+        productName.setTextSize(17);
+        productName.setTextColor(Color.parseColor("#212121"));
+        productName.setLayoutParams(productNameLayout);
+
+        LinearLayout productPrices = new LinearLayout(context);
+        LinearLayout.LayoutParams productPricesLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        productPrices.setLayoutParams(productPricesLayoutParams);
+
+        LinearLayout.LayoutParams pricesLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        pricesLayoutParams.setMargins(0, 0, 10, 0);
+
+        TextView ppc = new TextView(context);
+        ppc.setText(getString(R.string.ppc) + DELIMETER);
+        ppc.setLayoutParams(pricesLayoutParams);
+        ppc.setTextSize(14);
+        ppc.setTypeface(FontManager.getTypeface(context, FontManager.RALEWAY_BOLD));
+        ppc.setTag(FontManager.IMMUTABLE_TYPFACE_USED);
+        productPrices.addView(ppc);
+
+
+        TextView ppcValue = new TextView(context);
+        ppcValue.setText(getString(R.string.naira)+ String.valueOf(currentProduct.getCasePrice()));
+        ppcValue.setLayoutParams(pricesLayoutParams);
+        ppcValue.setTextColor(Color.BLACK);
+        ppcValue.setTextSize(14);
+        productPrices.addView(ppcValue);
+
+        TextView ppq = new TextView(context);
+        ppq.setText(getString(R.string.ppq) + DELIMETER);
+        ppq.setLayoutParams(pricesLayoutParams);
+        ppq.setTextSize(14);
+        ppq.setTypeface(FontManager.getTypeface(context, FontManager.RALEWAY_BOLD));
+        ppq.setTag(FontManager.IMMUTABLE_TYPFACE_USED);
+        productPrices.addView(ppq);
+
+        TextView ppqValue = new TextView(context);
+        ppqValue.setText(getString(R.string.naira)+String.valueOf(currentProduct.getPiecePrice()));
+        ppqValue.setLayoutParams(pricesLayoutParams);
+        productPrices.addView(ppqValue);
+        ppqValue.setTextColor(Color.BLACK);
+        ppqValue.setTextSize(14);
+
+
+
+        productDetails.addView(productName);
+        productDetails.addView(productPrices);
+        productRow.addView(productDetails);
 
         //select
         CheckBox selectCheckbox = generateCheckbox(context);
@@ -239,6 +206,7 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
 
         productRow.addView(selectCheckbox);
 
+        layoutParams.gravity = CENTER_VERTICAL;
 
         //oc
         EditText ocEditText = new EditText(context);
@@ -278,7 +246,7 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
         totalEditText.setGravity(CENTER);
         totalEditText.setEnabled(false);
         productRow.addView(totalEditText);
-        if (selectedProducts.containsKey(currentProduct.getProductId())){
+        if (selectedProducts.containsKey(currentProduct.getProductId())) {
             ProductLogic logic = selectedProducts.get(currentProduct.getProductId());
             selectCheckbox.setChecked(true);
             ocEditText.setText(logic.oc == 0 ? "" : String.valueOf(logic.oc));
@@ -289,6 +257,87 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
         }
 
 
+    }
+
+    private void updateTotalValue(String indicator, String value, EditText totalEditText) {
+        String[] keys = indicator.split(DELIMETER);
+        if (selectedProducts.containsKey(keys[0])) {
+            ProductLogic productLogic = selectedProducts.get(keys[0]);
+            //first remove the sum from total
+            totalAmountToBePaid -= productLogic.getTotal();
+            int viewPosition = Integer.valueOf(keys[1]);
+            if (viewPosition == OC_POSITION) {
+                productLogic.oc = Integer.valueOf(value);
+            }
+            if (viewPosition == OP_POSITION) {
+                productLogic.op = Integer.valueOf(value);
+            }
+
+            totalAmountToBePaid += productLogic.getTotal();
+            mTotalAmount.setText(String.format("%.2f", totalAmountToBePaid));
+            totalEditText.setText(productLogic.getTotal() == 0 ? EMPTY_STRING : String.format("%.2f", productLogic.getTotal()));
+        }
+    }
+
+    public void checkBoxClicked(CheckBox checkBox) {
+        String[] values = ((String) checkBox.getTag()).split(DELIMETER);
+        final String productId = values[0];
+        int position = Integer.valueOf(values[1]);
+        TableRow selectedRow = (TableRow) mTableLayout.getChildAt(position);
+        if (checkBox.isChecked()) {
+            selectedProducts.put(productId, new ProductLogic(products.get(currentPage * 10 + position - 1)));
+            final EditText totalValueEditText = (EditText) selectedRow.getChildAt(TOTAL_POSITION);
+            for (int i = 2; i < 4; i++) {
+                View view = selectedRow.getChildAt(i);
+                final int viewPosition = i;
+                if (view instanceof EditText) {
+                    view.setEnabled(true);
+                    final EditText editText = ((EditText) view);
+                    editText.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            int length = s.toString().length();
+                            if (length == 1 && s.toString().equalsIgnoreCase("0")) {
+                                editText.setText("");
+                            } else if (length >= 1) {
+                                char lastChar = s.toString().charAt(length - 1);
+                                if (!('0' <= lastChar && lastChar <= '9')) {
+                                    editText.setText(s.toString().substring(0, count - 1));
+                                } else {
+                                    updateTotalValue(productId + DELIMETER + viewPosition, s.toString(), totalValueEditText);
+                                }
+                            } else {
+                                updateTotalValue(productId + DELIMETER + viewPosition, "0", totalValueEditText);
+                            }
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+
+                        }
+                    });
+                }
+            }
+
+        } else {
+            for (int i = 2; i <= 4; i++) {
+                View view = selectedRow.getChildAt(i);
+                if (view instanceof EditText) {
+                    ((EditText) view).setText(EMPTY_STRING);
+                    view.setEnabled(false);
+                }
+            }
+            ProductLogic productLogic = selectedProducts.get(productId);
+
+            totalAmountToBePaid -= productLogic.getTotal();
+            mTotalAmount.setText(String.format("%.2f", totalAmountToBePaid));
+            selectedProducts.remove(productId);
+        }
     }
 
     private void initProducts() {
@@ -387,21 +436,6 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
         FontManager.setFontsForView(v.findViewById(R.id.parent_layout), ralewayFont);
     }
 
-
-    private TableRow getProductView(Context context, Product product) {
-        TableRow tableRow = getTableRow(context);
-        tableRow.addView(generatePriceSection(context, product));
-        boolean enabled = true;
-        int size = 56;
-        int totalSize = 64;
-        tableRow.addView(generateCheckbox(context));
-        tableRow.addView(generateEditText(context, size, enabled));
-        tableRow.addView(generateEditText(context, size, enabled));
-        tableRow.addView(generateEditText(context, size, enabled));
-        tableRow.addView(generateEditText(context, totalSize, !enabled));
-        return tableRow;
-    }
-
     private CheckBox generateCheckbox(Context context) {
 
 
@@ -416,114 +450,11 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
         return checkbox;
     }
 
-    private EditText generateEditText(Context context, int size, boolean enable) {
-        EditText editText = new EditText(context);
-        TableRow.LayoutParams lpEditText = new TableRow.LayoutParams(
-                toDp(size), TableRow.LayoutParams.MATCH_PARENT);
-        lpEditText.setMargins(toDp(10), toDp(4), 8, 0);
-        editText.setGravity(CENTER);
-        // editText.setLayoutParams(lpEditText);
-        editText.setTextColor(Color.parseColor("#212121"));
-        if (!enable) {
-            editText.setFocusable(false);
-            editText.setFocusableInTouchMode(false);
-            editText.setClickable(false);
-        }
-        editText.setBackgroundResource(R.drawable.product_item);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
-            editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-        }
-
-        return editText;
-    }
-
-    @NonNull
-    private TableRow getTableRow(Context context) {
-        TableRow tableRow = new TableRow(context);
-        TableLayout.LayoutParams layoutParams = new TableLayout.LayoutParams
-                (TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
-        //tableRow.setPadding(toDp(16), toDp(8), toDp(16), 8);
-        tableRow.setMinimumHeight(toDp(90));
-        tableRow.setLayoutParams(layoutParams);
-        return tableRow;
-    }
-
-    private LinearLayout generatePriceSection(Context context, Product product) {
-        LinearLayout ll = new LinearLayout(context);
-        ll.setOrientation(LinearLayout.VERTICAL);
-        TableRow.LayoutParams layoutParams = new TableRow.LayoutParams
-                (TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
-        ll.setLayoutParams(layoutParams);
-        ll.setPadding(toDp(4), toDp(4), 0, 0);
-        ll.addView(getProductNameTV(getActivity(), product.getProductName()));
-        ll.addView(getPPCAndPPQView(context, product));
-
-        return ll;
-    }
-
-    private TextView getProductNameTV(Context context, String name) {
-        TextView tv = new TextView(context);
-        tv.setText(name);
-        tv.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        ));
-        tv.setMinWidth(toDp(136));
-        setTextAppearance(context, tv, R.style.textAppearanceMedium);
-        tv.setTextColor(Color.parseColor("#212121"));
-        return tv;
-    }
-
-    @SuppressWarnings("deprecation")
-    public void setTextAppearance(Context context, TextView tv, int resId) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            tv.setTextAppearance(context, resId);
-        } else {
-            tv.setTextAppearance(resId);
-        }
-    }
-
     private int toDp(int pixel) {
         float scale = getResources().getDisplayMetrics().density;
         int pixelsAsDp = (int) (pixel * scale + 0.5f);
 
         return pixel;
-    }
-
-    public LinearLayout getPPCAndPPQView(Context context, Product product) {
-        LinearLayout ll = new LinearLayout(context);
-        ll.setOrientation(LinearLayout.HORIZONTAL);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
-                (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        ll.setPadding(0, toDp(8), 0, 8);
-        ll.addView(getPPViewText(context, getString(R.string.ppc)));
-        ll.addView(getPPCViewValue(context, product.getCasePrice()));
-        ll.addView(getPPViewText(context, getString(R.string.ppq)));
-        ll.addView(getPPCViewValue(context, product.getPiecePrice()));
-
-        return ll;
-    }
-
-    public TextView getPPViewText(Context context, String title) {
-        TextView ppcTv = new TextView(context);
-        ppcTv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
-        ppcTv.setText(title);
-        ppcTv.setGravity(CENTER);
-        ppcTv.setTextColor(Color.parseColor("#212121"));
-        ppcTv.setTextSize(toDp(18));
-
-        return ppcTv;
-    }
-
-    public TextView getPPCViewValue(Context context, String price) {
-        TextView ppcTv = new TextView(context);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        params.setMargins(toDp(4), 0, 0, 0);
-        ppcTv.setText(price);
-        ppcTv.setGravity(CENTER);
-        ppcTv.setTextColor(Color.parseColor("#757575"));
-        ppcTv.setTextSize(toDp(16));
-        return ppcTv;
     }
 
     @Override
