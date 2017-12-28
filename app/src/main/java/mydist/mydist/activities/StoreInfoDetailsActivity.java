@@ -104,25 +104,13 @@ public class StoreInfoDetailsActivity extends AppCompatActivity {
             onBackPressed();
             return true;
         }
-        if(item.getItemId() == R.id.save){
-            AlertDialog dialog = new AlertDialog.Builder(this)
-                    .setMessage(getString(R.string.saved_successfully))
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            onBackPressed();
-                        }
-                    }).create();
-            dialog.show();
-            return true;
-        }
 
         if(item.getItemId() ==  R.id.filter){
             storeFilterDialogFragment = new  StoreFilterDialogFragment();
             storeFilterDialogFragment.show(getSupportFragmentManager(), "");
             return true;
         }
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 
     public void dismiss(View v){

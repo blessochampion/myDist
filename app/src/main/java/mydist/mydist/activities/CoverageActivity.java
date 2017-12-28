@@ -79,8 +79,8 @@ public class CoverageActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new AllCoverageFragment(), "ALL");
         adapter.addFragment(new CoverageFragment(), "MONDAY");
+        adapter.addFragment(new AllCoverageFragment(), "ALL");
         adapter.addFragment(new CoverageFragment(), "TUESDAY");
         adapter.addFragment(new CoverageFragment(), "WEDNESDAY");
         adapter.addFragment(new CoverageFragment(), "THURSDAY");

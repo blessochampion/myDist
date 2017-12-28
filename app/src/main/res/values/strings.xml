@@ -63,7 +63,7 @@
     <string name="average_line">Average lines</string>
     <string name="sbd_distribution_rate">SBD Distribution Rate</string>
     <string name="sbd_merchandising_rate">SBD Merchandising Rate</string>
-    <string name="total_value">Total Value</string>
+    <string name="total_value">Total</string>
     <string name="store_name">Store Name</string>
     <string name="lines">Lines</string>
     <string name="order_no">Order No</string>
@@ -124,4 +124,21 @@
     <string name="total">Total</string>
     <string name="no_product_error">Please select at least one Product</string>
     <string name="naira">\u20A6</string>
+    <string name="invoice_review">Invoice</string>
+    <string name="edit">Edit</string>
+    <string name="save_and_print"><![CDATA[Save & Print Inv]]></string>
+
+    <string name="new_printer">Link printer</string>
+    <string name="print">Print</string>
+    <string name="switch_on_printer">Make sure that the printer is on. If a connection cannot be established, please switch the printer off and turn it on again.</string>
+    <string name="connecting">Connecting to the printer through Bluetooth</string>
+    <string name="non_paired_printers1">There are no paired printers</string>
+    <string name="non_paired_printers2">Please turn on the printer and link it to your phone by tapping the button. The PIN of the Bixolon printers is 0000.</string>
+    <string name="printer_ready1">Printer ready</string>
+    <string name="printer_ready2">Tap the "Print" button to start printing</string>
+
+    <string name="get_source1">This is an Open Source project</string>
+    <string name="get_source2">Tap here and get the code at GitHub</string>
+    <string name="cheque_number">Cheque Number</string>
+    <string name="draft_number">Draft Number</string>
 </resources>

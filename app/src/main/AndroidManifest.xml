@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="mydist.mydist">
 
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -16,7 +18,8 @@
         <activity
             android:name=".activities.SplashActivity"
             android:noHistory="true">
-            <!--<intent-filter>
+
+          <!--  <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -35,6 +38,7 @@
         <activity android:name=".activities.ReportsActivity" />
         <activity android:name=".activities.ReportDetailsActivity" />
         <activity android:name=".activities.CoverageActivity" />
+        <activity android:name=".printing.PrintingActivity" />
         <activity
             android:name=".activities.SettingsActivity"
             android:exported="false"
@@ -43,8 +47,8 @@
             android:name=".activities.StoreOverviewActivity"
             android:label="@string/title_activity_store_details"
             android:theme="@style/AppTheme" />
-        <activity android:name=".activities.StoreInfoDetailsActivity"></activity>
+        <activity android:name=".activities.StoreInfoDetailsActivity" />
+        <activity android:name=".activities.InvoiceActivity"></activity>
     </application>
-
 
 </manifest>

@@ -11,6 +11,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import mydist.mydist.R;
 
 /**
@@ -67,5 +70,10 @@ public class UIUtils
     public static void setBoldFont(EditText e, Activity activity){
         Typeface typeface = Typeface.createFromAsset(activity.getAssets(), "fonts/raleway_bold.ttf");
         e.setTypeface(typeface);
+    }
+
+    public static  String formatValue(String value){
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
+        return numberFormat.format(value);
     }
 }

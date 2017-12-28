@@ -26,10 +26,13 @@ import mydist.mydist.models.DownloadMastersResponse;
 import mydist.mydist.models.Merchandize;
 import mydist.mydist.models.Product;
 import mydist.mydist.models.SubChannel;
+import mydist.mydist.printing.PrintingModel;
 
 
 public class DataUtils {
 
+    private static double totalAmountToBePaid;
+    public static PrintingModel printingModel;
     private static HashMap<String, ProductLogic> selectedProducts = new HashMap<>();
 
     public static HashMap<String, ProductLogic> getSelectedProducts() {
@@ -38,6 +41,14 @@ public class DataUtils {
 
     public static void setSelectedProducts(HashMap<String, ProductLogic> selectedProducts) {
         DataUtils.selectedProducts = selectedProducts;
+    }
+
+    public static PrintingModel getPrintingModel() {
+        return printingModel;
+    }
+
+    public static void setPrintingModel(PrintingModel printingModel) {
+        DataUtils.printingModel = printingModel;
     }
 
     public static void saveUser(AuthenticationResponse.User user, UserPreference userPreference) {
@@ -140,5 +151,13 @@ public class DataUtils {
         }
 
         return products;
+    }
+
+    public static void setTotalAmountToBePaid(double totalAmountToBePaid) {
+        DataUtils.totalAmountToBePaid = totalAmountToBePaid;
+    }
+
+    public static double getTotalAmountToBePaid() {
+        return totalAmountToBePaid;
     }
 }

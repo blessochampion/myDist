@@ -18,7 +18,7 @@
             android:layout_height="36dp"
             android:padding="1dp">
 
-            <TextView
+          <!--  <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
@@ -27,15 +27,15 @@
                 android:gravity="center_vertical"
                 android:paddingLeft="8dp"
                 android:text=""
-                android:textColor="@color/white" />
+                android:textColor="@color/white" />-->
 
             <TextView
+                android:gravity="center_vertical"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:layout_weight="1"
+                android:layout_weight="1.5"
                 android:background="@color/colorPrimary"
-                android:gravity="center"
                 android:paddingLeft="8dp"
                 android:text="Invoice No"
                 android:textColor="@color/white" />
@@ -45,8 +45,9 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
                 android:layout_weight="1"
+                android:paddingLeft="8dp"
                 android:background="@color/colorPrimary"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 android:text="Invoice Date"
                 android:textColor="@color/white" />
 
@@ -58,31 +59,34 @@
             android:padding="1dp">
 
 
-            <CheckBox
+         <!--   <CheckBox
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
                 android:layout_weight="0.2"
                 android:gravity="center"
                 android:paddingLeft="8dp"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/colorPrimary" />-->
 
             <TextView
+                android:id="@+id/invoiceNo"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:layout_weight="1"
-                android:gravity="center"
+                android:layout_weight="1.5"
+                android:gravity="center_vertical"
                 android:paddingLeft="8dp"
-                android:text="90884746463728"
-                android:textColor="@color/colorPrimary" />
+                android:text="INV/AA001/101217/001"
+                 />
 
             <TextView
+                android:id="@+id/invoiceDate"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:paddingLeft="8dp"
+                android:gravity="center_vertical"
                 android:text="17/10/2017"
                 android:textColor="@color/secondary_text" />
 
@@ -97,25 +101,29 @@
         android:orientation="horizontal">
 
         <RadioButton
+            android:id="@+id/cash"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Cash" />
 
         <RadioButton
+            android:id="@+id/cheque"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Cheque" />
 
         <RadioButton
+            android:id="@+id/draft"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Mobile Payment" />
+            android:text="Draft" />
     </RadioGroup>
 
     <LinearLayout
+        android:id="@+id/more_details"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -123,23 +131,28 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0.6"
             android:gravity="center_vertical"
             android:paddingLeft="8dp"
             android:text="@string/total_value"
             android:textColor="@color/secondary_text" />
 
         <TextView
+            android:id="@+id/total"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"
-            android:layout_weight="1"
+            android:layout_weight="0.9"
             android:gravity="center_vertical"
             android:paddingRight="8dp"
             android:text="234,234"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/colorPrimary" />
         <EditText
+            android:paddingLeft="4dp"
+            android:visibility="invisible"
+            android:id="@+id/number"
+            android:hint="Cheque No"
             android:layout_marginBottom="16dp"
             android:layout_weight="2"
             android:layout_width="0dp"

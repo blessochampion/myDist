@@ -2,6 +2,7 @@ package mydist.mydist.fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -26,10 +27,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import mydist.mydist.R;
+import mydist.mydist.activities.InvoiceActivity;
 import mydist.mydist.data.ProductLogic;
 import mydist.mydist.models.Product;
 import mydist.mydist.utils.DataUtils;
 import mydist.mydist.utils.FontManager;
+import mydist.mydist.utils.UIUtils;
 
 import static android.view.Gravity.CENTER;
 import static android.view.Gravity.CENTER_VERTICAL;
@@ -52,6 +55,7 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
     private static final int OP_POSITION = 3;
     private static final String DELIMETER = ":";
     private String EMPTY_STRING = "";
+
 
 
     public StoreInfoInvoiceFragment() {
@@ -78,7 +82,10 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
                     }
                 }
 
-                //go to next activity
+                DataUtils.setSelectedProducts(selectedProducts);
+                DataUtils.setTotalAmountToBePaid(totalAmountToBePaid);
+                launchInvoiceActivity();
+
             }
 
             return true;
@@ -108,6 +115,8 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
     private void loadProducts() {
         TableRow productRow;
         int start = currentPage * 10;
+        /*fix*/
+        //int end = start + (products.size()-start) > 10? 10 :(products.size()-start);
         int end = start + 10;
         Product currentProduct;
         TableLayout.LayoutParams layoutParams = new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -133,7 +142,7 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
 
     private void loadProductIntoRow(TableRow productRow, Product currentProduct, int position) {
         //product name
-        productRow.setMinimumHeight(144);
+        productRow.setMinimumHeight(104);
         TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
         layoutParams.setMargins(0, 0, 10, 0);
 
@@ -142,7 +151,7 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
         productDetails.setLayoutParams(layoutParams);
 
         LinearLayout.LayoutParams productNameLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        productNameLayout.setMargins(0, 0, 0, 16);
+        productNameLayout.setMargins(0, 0, 0, 24);
         TextView productName = new TextView(context);
         productName.setText(currentProduct.getProductName());
         productName.setTextSize(17);
@@ -166,9 +175,8 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
 
 
         TextView ppcValue = new TextView(context);
-        ppcValue.setText(getString(R.string.naira)+ String.valueOf(currentProduct.getCasePrice()));
+        ppcValue.setText(getString(R.string.naira)+ String.format("%,.2f",Double.valueOf(currentProduct.getCasePrice())));
         ppcValue.setLayoutParams(pricesLayoutParams);
-        ppcValue.setTextColor(Color.BLACK);
         ppcValue.setTextSize(14);
         productPrices.addView(ppcValue);
 
@@ -181,10 +189,10 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
         productPrices.addView(ppq);
 
         TextView ppqValue = new TextView(context);
-        ppqValue.setText(getString(R.string.naira)+String.valueOf(currentProduct.getPiecePrice()));
+        ppqValue.setText(getString(R.string.naira)+
+                String.format("%,.2f", Double.valueOf(currentProduct.getPiecePrice())));
         ppqValue.setLayoutParams(pricesLayoutParams);
         productPrices.addView(ppqValue);
-        ppqValue.setTextColor(Color.BLACK);
         ppqValue.setTextSize(14);
 
 
@@ -245,7 +253,10 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
         totalEditText.setPadding(4, 0, 4, 0);
         totalEditText.setGravity(CENTER);
         totalEditText.setEnabled(false);
+        totalEditText.setBackground(getResources().getDrawable(R.drawable.product_total));
         productRow.addView(totalEditText);
+
+
         if (selectedProducts.containsKey(currentProduct.getProductId())) {
             ProductLogic logic = selectedProducts.get(currentProduct.getProductId());
             selectCheckbox.setChecked(true);
@@ -274,8 +285,8 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
             }
 
             totalAmountToBePaid += productLogic.getTotal();
-            mTotalAmount.setText(String.format("%.2f", totalAmountToBePaid));
-            totalEditText.setText(productLogic.getTotal() == 0 ? EMPTY_STRING : String.format("%.2f", productLogic.getTotal()));
+            mTotalAmount.setText(String.format("%,.2f", totalAmountToBePaid));
+            totalEditText.setText(productLogic.getTotal() == 0 ? EMPTY_STRING : String.format("%,.2f", productLogic.getTotal()));
         }
     }
 
@@ -335,7 +346,7 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
             ProductLogic productLogic = selectedProducts.get(productId);
 
             totalAmountToBePaid -= productLogic.getTotal();
-            mTotalAmount.setText(String.format("%.2f", totalAmountToBePaid));
+            mTotalAmount.setText(String.format("%,.2f", totalAmountToBePaid));
             selectedProducts.remove(productId);
         }
     }
@@ -386,12 +397,12 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
     private void loadPageToRow(TableRow pager, int pageCount) {
         for (int i = 0; i < pageCount; i++) {
             TextView page = new TextView(context);
-            page.setTextSize(14);
-            TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, 80, 1);
+            page.setTextSize(12);
+            TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, 45, 1);
             layoutParams.setMargins(0, 0, 15, 0);
             page.setLayoutParams(layoutParams);
             page.setGravity(CENTER);
-            page.setMinWidth(100);
+            page.setMinWidth(70);
             page.setTextColor(Color.WHITE);
             if (i > 0) {
                 unFill(page);
@@ -418,12 +429,12 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
     private TextView getHeader(String name) {
         TextView productHeader = new TextView(context);
         productHeader.setTextSize(14);
-        TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, 90, 1);
+        TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, 70, 1);
         layoutParams.setMargins(0, 0, 6, 0);
         productHeader.setLayoutParams(layoutParams);
         //productHeader.setHeight(90);
         productHeader.setGravity(CENTER);
-        productHeader.setMinWidth(200);
+        productHeader.setMinWidth(150);
         productHeader.setPadding(16, 16, 16, 16);
         productHeader.setText(name);
         productHeader.setTextColor(Color.WHITE);
@@ -467,5 +478,10 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
         currentPage = index;
         loadProducts();
 
+    }
+
+    public void launchInvoiceActivity(){
+        Intent intent = new Intent(context, InvoiceActivity.class);
+        startActivity(intent);
     }
 }
