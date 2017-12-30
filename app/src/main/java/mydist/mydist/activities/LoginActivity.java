@@ -97,8 +97,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private boolean userHasClosedSalesToday() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String todayDate = dateFormat.format(new Date());
+        String todayDate = getTodayDate();
         return todayDate.equalsIgnoreCase(userPreference.getLastUserClosedForTheDayDate());
     }
 
@@ -106,15 +105,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (!userHasClosedSalesToday()
                 || userPreference.getLastUserClosedForTheDayDate().isEmpty()) {
-            if (userInputIsValid()) {
-                mLoadingIndicator.setMessage(getString(R.string.login_activity_download));
-                mLoadingIndicator.setTitle(getString(R.string.login_dialog_title, mUsername.getText().toString().trim()));
-                mLoadingIndicator.show();
-                makeNetworkCallForDownload();
+            if (!mastersDownloadedToday()) {
+                if (userInputIsValid()) {
+                    mLoadingIndicator.setMessage(getString(R.string.login_activity_download));
+                    mLoadingIndicator.setTitle(getString(R.string.login_dialog_title, mUsername.getText().toString().trim()));
+                    mLoadingIndicator.show();
+                    makeNetworkCallForDownload();
+                }
+            } else {
+                launchDialog(getString(R.string.masters_info));
             }
         } else {
             launchDialog(getString(R.string.signed_out_for_the_day));
         }
+    }
+
+    private boolean mastersDownloadedToday() {
+        return userPreference.getLastMastersDownloadDate().equalsIgnoreCase(getTodayDate());
     }
 
 
@@ -124,8 +131,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void doLogin() {
-        if (userInputIsValid()) {
-            makeNetworkCallForLogin();
+        if(mastersDownloadedToday()) {
+            if (userInputIsValid()) {
+                makeNetworkCallForLogin();
+            }
+        }else {
+            launchDialog(getString(R.string.login_masters_info));
         }
     }
 
@@ -188,6 +199,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onSuccess(DownloadMastersResponse response) {
         userPreference.setUserCloseForTheDayDate(EMPTY_STRING);
+        userPreference.setLasMastersDownloadDate(getTodayDate());
         DataUtils.saveUser(response.getUser(), UserPreference.getInstance(this));
         DataUtils.saveMasters(response, this);
         dismissDialog();
@@ -204,5 +216,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (mLoadingIndicator != null) {
             mLoadingIndicator.dismiss();
         }
+    }
+
+    public String getTodayDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String todayDate = dateFormat.format(new Date());
+        return todayDate;
     }
 }

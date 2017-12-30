@@ -25,7 +25,6 @@ import mydist.mydist.utils.UIUtils;
 public class SynchronizationActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button mStartSyncButton;
-    Button mDownloadButton;
     EditText mUsername;
     EditText mPassword;
     CheckBox mCloseForTheDay;
@@ -59,7 +58,6 @@ public class SynchronizationActivity extends AppCompatActivity implements View.O
         mCloseForTheDay = (CheckBox) findViewById(R.id.cb_close_for_the_day);
         mUsername = (EditText) findViewById(R.id.et_username);
         mUsername.setText(getUsername());
-        mDownloadButton = (Button) findViewById(R.id.synchronization_activity_download);
         mPassword = (EditText) findViewById(R.id.password);
         mUsernameLabel = (TextView) findViewById(R.id.username_label);
         mPasswordLabel = (TextView) findViewById(R.id.password_label);

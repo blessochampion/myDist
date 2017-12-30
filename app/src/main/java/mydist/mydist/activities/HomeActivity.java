@@ -114,9 +114,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_home_settings:
+          /*  case R.id.menu_home_settings:
                 launchSettingsActivity();
-                return true;
+                return true;*/
             case R.id.menu_home_logout:
                 showLogoutDialog();
                 return true;

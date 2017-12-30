@@ -173,6 +173,12 @@ public class PrintingActivity extends AppCompatActivity {
     }
 
     private void printInvoice(PrintingModel printingModel) {
+        String divider = PrintingFormatter.getLineDivider();
+        printText("\n");
+        printText(PrintingFormatter.INVOICE,  BixolonPrinter.ALIGNMENT_CENTER, BixolonPrinter.TEXT_ATTRIBUTE_FONT_A);
+        printText("\n");
+        printText(divider);
+        printText("\n");
         printModelItem(PrintingFormatter.formatNameValuePair(PrintingFormatter.RETAILER, printingModel.getRetailer()));
         printText("\n");
         printModelItem(PrintingFormatter.formatNameValuePair(PrintingFormatter.SALES_REP, printingModel.getSalesRep()));
@@ -181,7 +187,6 @@ public class PrintingActivity extends AppCompatActivity {
         printText("\n");
         printModelItem(PrintingFormatter.formatNameValuePair(PrintingFormatter.TRANSACTION_DATE, printingModel.getTransactionDate()));
         printText("\n");
-        String divider = PrintingFormatter.getLineDivider();
         printText("\n");
         printText(PrintingFormatter.format("Product", "OC", "OP", "Price"));
         //printText(divider);

@@ -16,6 +16,7 @@ public class PrintingFormatter {
     public static final String INVOICE_NUMBER = "Invoice Number:";
     public static final String TRANSACTION_DATE = "Transaction Date:";
     public static final String RECEIPT = "Receipt";
+    public static final String INVOICE = "Invoice";
 
 
     public static String format(String productName, String oc, String op, String total) {

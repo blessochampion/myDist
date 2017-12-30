@@ -46,7 +46,9 @@ public class StoreOverviewActivity extends AppCompatActivity implements View.OnC
     private void setIcons() {
         Typeface fontAwesome = FontManager.getTypeface(getApplicationContext(), FontManager.FONT_AWESOME);
         FontManager.setFontsForView(findViewById(R.id.icon_review), fontAwesome );
+        FontManager.setFontsForView(findViewById(R.id.icon_invoice), fontAwesome );
         FontManager.setFontsForView(findViewById(R.id.icon_collection), fontAwesome );
+        FontManager.setFontsForView(findViewById(R.id.icon_invoice_edit), fontAwesome );
         FontManager.setFontsForView(findViewById(R.id.icon_sbd_merchandising), fontAwesome );
         FontManager.setFontsForView(findViewById(R.id.icon_call_analysis), fontAwesome );
     }

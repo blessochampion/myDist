@@ -12,4 +12,8 @@
     <string name="fa_icon_refresh" translatable="false">&#xf021;</string>
     <string name="fa_icon_phone" translatable="false">&#xf095;</string>
     <string name="fa_icon_new_retailer" translatable="false">&#xf196;</string>
+    <string name="fa_icon_day" translatable="false">&#xf073;</string>
+    <string name="fa_icon_close" translatable="false">&#xf00d;</string>
+    <string name="fa_icon_invoice" translatable="false">&#xf0c5;</string>
+    <string name="fa_icon_invoice_edit" translatable="false">&#xf040;</string>
 </resources>

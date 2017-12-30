@@ -15,6 +15,7 @@ public class UserPreference {
     private static final String KEY_FULLNAME = "fullName";
     private static final String KEY_USER_LOGGED_IN = "logged_in";
     private static final String KEY_CLOSED_FOR_THE_DAY = "closed_for_the_day";
+    private static final String KEY_LAST_MASTER_DOWNLOAD_DATE = "last_master_download";
     SharedPreferences sharedPreferences;
     static UserPreference INSTANCE;
 
@@ -46,6 +47,16 @@ public class UserPreference {
     public void setUserCloseForTheDayDate(String  closedForTheDay) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_CLOSED_FOR_THE_DAY, closedForTheDay);
+        editor.commit();
+    }
+
+    public String getLastMastersDownloadDate(){
+        return sharedPreferences.getString(KEY_LAST_MASTER_DOWNLOAD_DATE, "");
+    }
+
+    public void setLasMastersDownloadDate(String date){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_LAST_MASTER_DOWNLOAD_DATE, date);
         editor.commit();
     }
 

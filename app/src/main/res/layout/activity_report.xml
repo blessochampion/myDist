@@ -55,13 +55,16 @@
                     android:layout_width="56dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/item_background_image">
-
-                    <ImageView
+                    <TextView
+                        android:textSize="32sp"
+                        android:text="@string/fa_icon_day"
+                        android:textColor="@color/primary_text"
+                        android:id="@+id/icon_day"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:src="@drawable/ic_menu_camera" />
+                        />
                 </FrameLayout>
 
                 <TextView
@@ -218,11 +221,16 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/item_background_image">
 
-                    <ImageView
+                    <TextView
+                        android:textSize="32sp"
+                        android:text="@string/fa_icon_close"
+                        android:textColor="@color/primary_text"
+                        android:id="@+id/icon_invoice_close"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_menu_share" />
+                        android:gravity="center"
+                        />
                 </FrameLayout>
 
                 <TextView
@@ -237,6 +245,43 @@
                     android:textColor="@color/white_grey" />
 
             </LinearLayout>
+            <FrameLayout
+                android:paddingBottom="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1.5"
+                        android:background="@color/primary_text" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:gravity="center"
+                        android:textColor="@color/primary_text"
+                        android:text="@string/app_name"
+                        android:textSize="14sp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1.5"
+                        android:background="@color/primary_text" />
+                </LinearLayout>
+
+            </FrameLayout>
 
         </LinearLayout>
 

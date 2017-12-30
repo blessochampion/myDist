@@ -91,7 +91,7 @@
     <string name="review">Review</string>
     <string name="invoice">Invoice</string>
     <string name="collection">Collection</string>
-    <string name="invoice_cancel">Invoice Cancel</string>
+    <string name="invoice_edit">Edit Invoice</string>
     <string name="sbd_merchandising">SBD Merchandising</string>
     <string name="call_analysis">Call Analysis</string>
     <string name="store">Store</string>
@@ -142,4 +142,6 @@
     <string name="cheque_number">Cheque Number</string>
     <string name="draft_number">Draft Number</string>
     <string name="signed_out_for_the_day">You already closed for today</string>
+    <string name="masters_info">You have downloaded Masters for today. Please Login</string>
+    <string name="login_masters_info">Please download Masters today.</string>
 </resources>

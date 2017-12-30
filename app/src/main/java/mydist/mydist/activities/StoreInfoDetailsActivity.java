@@ -1,10 +1,8 @@
 package mydist.mydist.activities;
 
-import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -20,7 +18,6 @@ import mydist.mydist.fragments.StoreInfoInvoiceCancelFragment;
 import mydist.mydist.fragments.StoreInfoInvoiceFragment;
 import mydist.mydist.fragments.StoreInfoMerchandisingFragment;
 import mydist.mydist.fragments.StoreInfoReviewFragment;
-import mydist.mydist.fragments.StoreProfileHistoryDialogFragment;
 import mydist.mydist.utils.FontManager;
 
 public class StoreInfoDetailsActivity extends AppCompatActivity {
@@ -78,7 +75,7 @@ public class StoreInfoDetailsActivity extends AppCompatActivity {
                 title  = getString(R.string.collection);
                 return new StoreInfoCollectionFragment();
             case KEY_INVOICE_CANCEL:
-                title = getString(R.string.invoice_cancel);
+                title = getString(R.string.invoice_edit);
                 return new StoreInfoInvoiceCancelFragment();
             case KEY_SBD_MERCHANDISING:
                 title = getString(R.string.sbd_merchandising);

@@ -49,9 +49,11 @@ public class ReportsActivity extends AppCompatActivity implements View.OnClickLi
 
     private void setIcons() {
         Typeface fontAwesome = FontManager.getTypeface(getApplicationContext(), FontManager.FONT_AWESOME);
+        FontManager.setFontsForView(findViewById(R.id.icon_day), fontAwesome );
         FontManager.setFontsForView(findViewById(R.id.icon_order_p_order), fontAwesome );
         FontManager.setFontsForView(findViewById(R.id.icon_sku_report), fontAwesome );
         FontManager.setFontsForView(findViewById(R.id.icon_invoice_report), fontAwesome );
+        FontManager.setFontsForView(findViewById(R.id.icon_invoice_close), fontAwesome );
     }
 
     public void getReferencesToViews() {

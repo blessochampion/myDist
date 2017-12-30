@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group>
-    <item
+    <!--<item
         android:id="@+id/menu_home_settings"
-        android:title="@string/settings"></item>
+        android:title="@string/settings"></item>-->
     <item
         android:id="@+id/menu_home_logout"
         android:title="@string/logout">
