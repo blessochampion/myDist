@@ -43,7 +43,7 @@
     <string name="synchronization_with_images">With Images</string>
     <string name="synchronization_close_for_the_day">Close for the day</string>
     <string name="start_sync">Start Sync</string>
-    <string name="closing_message">You are closing Sunday (08/10/2017)</string>
+    <string name="closing_message">You are closing Sunday (%s)</string>
     <string name="day">Day</string>
     <string name="order_p_order">Order/P.Order</string>
     <string name="sku_report">SKU Report</string>
@@ -141,4 +141,5 @@
     <string name="get_source2">Tap here and get the code at GitHub</string>
     <string name="cheque_number">Cheque Number</string>
     <string name="draft_number">Draft Number</string>
+    <string name="signed_out_for_the_day">You already closed for today</string>
 </resources>

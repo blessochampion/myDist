@@ -115,9 +115,10 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
     private void loadProducts() {
         TableRow productRow;
         int start = currentPage * 10;
-        /*fix*/
-        //int end = start + (products.size()-start) > 10? 10 :(products.size()-start);
         int end = start + 10;
+        if(end > products.size()){
+            end = products.size();
+        }
         Product currentProduct;
         TableLayout.LayoutParams layoutParams = new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.bottomMargin = 10;

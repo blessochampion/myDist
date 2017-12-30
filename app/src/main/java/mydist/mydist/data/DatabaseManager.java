@@ -43,7 +43,7 @@ public class DatabaseManager {
             values = new ContentValues();
             values.put(BrandContract.COLUMN_BRAND_ID, brand.getBrandId());
             values.put(BrandContract.COLUMN_NAME, brand.getBrandName());
-            mDataBase.insert(BrandContract.TABLE_NAME, null, values);
+            mDataBase.insertWithOnConflict(BrandContract.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
         }
         mDataBase.close();
 
@@ -56,7 +56,7 @@ public class DatabaseManager {
             values = new ContentValues();
             values.put(ChannelContract.COLUMN_CHANNEL_ID, channel.getChannelId());
             values.put(ChannelContract.COLUMN_NAME, channel.getChannelName());
-            mDataBase.insert(ChannelContract.TABLE_NAME, null, values);
+            mDataBase.insertWithOnConflict(ChannelContract.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
         }
 
         mDataBase.close();
@@ -69,7 +69,7 @@ public class DatabaseManager {
             values = new ContentValues();
             values.put(MerchandizeContract.BRAND_NAME, merchandize.getBrandName());
             values.put(MerchandizeContract.COLUMN_MERCHANDIZE_ITEM, merchandize.getMerchandizeItem());
-            mDataBase.insert(MerchandizeContract.TABLE_NAME, null, values);
+            mDataBase.insertWithOnConflict(MerchandizeContract.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
         }
         mDataBase.close();
     }
@@ -84,7 +84,7 @@ public class DatabaseManager {
             values.put(ProductContract.COLUMN_NAME, product.getProductName());
             values.put(ProductContract.COLUMN_PIECE_PRICE, Double.valueOf(product.getPiecePrice()));
             values.put(ProductContract.COLUMN_PRODUCT_ID, product.getProductId());
-            mDataBase.insert(ProductContract.TABLE_NAME, null, values);
+            mDataBase.insertWithOnConflict(ProductContract.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
         }
         mDataBase.close();
     }
@@ -96,7 +96,7 @@ public class DatabaseManager {
             values = new ContentValues();
             values.put(SubChannelContract.COLUMN_SUB_CHANNEL_ID, subChannel.getSubChannelId());
             values.put(SubChannelContract.COLUMN_NAME, subChannel.getSubChannelName());
-            mDataBase.insert(SubChannelContract.TABLE_NAME, null, values);
+            mDataBase.insertWithOnConflict(SubChannelContract.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
         }
 
         mDataBase.close();
@@ -112,7 +112,7 @@ public class DatabaseManager {
 
         String selection = null;
         String selectionArgs[] = null;
-        String sortOrder = null;
+        String sortOrder = BrandContract.COLUMN_NAME + " ASC";
 
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor allBrand = db.query(
@@ -137,7 +137,7 @@ public class DatabaseManager {
 
         String selection = null;
         String selectionArgs[] = null;
-        String sortOrder = null;
+        String sortOrder = ChannelContract.COLUMN_NAME + " ASC";
 
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor allChannel = db.query(
@@ -162,7 +162,7 @@ public class DatabaseManager {
 
         String selection = null;
         String selectionArgs[] = null;
-        String sortOrder = null;
+        String sortOrder =  MerchandizeContract.BRAND_NAME + " ASC";
 
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor allMerchandize = db.query(
@@ -190,7 +190,7 @@ public class DatabaseManager {
 
         String selection = null;
         String selectionArgs[] = null;
-        String sortOrder = null;
+        String sortOrder = ProductContract.COLUMN_NAME + " ASC";
 
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor allProduct = db.query(
@@ -215,7 +215,7 @@ public class DatabaseManager {
 
         String selection = null;
         String selectionArgs[] = null;
-        String sortOrder = null;
+        String sortOrder = SubChannelContract.COLUMN_NAME + " ASC";
 
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor allSubChannel = db.query(
@@ -230,38 +230,4 @@ public class DatabaseManager {
         return allSubChannel;
     }
 
-    /**
-     * Return a {@link Cursor} that contains a single insect for the given unique id.
-     *
-     * @param id Unique identifier for the insect record.
-     * @return {@link Cursor} containing the insect result.
-     */
-    /*public Cursor queryInsectsById(int id) {
-        //TODO: Implement the query
-        String[] projection = {
-                InsectEntry._ID,
-                InsectEntry.COLUMN_NAME,
-                InsectEntry.COLUMN_SCIENTIFIC_NAME,
-                InsectEntry.COLUMN_CLASSIFICATION,
-                InsectEntry.COLUMN_IMAGE_ASSET,
-                InsectEntry.COLUMN_DANGER_LEVEL
-        };
-
-        String sortOrder = null;
-        String selection = InsectEntry._ID  + " = ?";
-        String selectionArgs[] = {String.valueOf(id)};
-
-        SQLiteDatabase db = mBugsDbHelper.getReadableDatabase();
-        Cursor insectCursor =  db.query(
-                InsectEntry.TABLE_NAME,
-                projection,
-                selection,
-                selectionArgs,
-                null,
-                null,
-                sortOrder
-        );
-
-        return insectCursor;
-    }*/
 }

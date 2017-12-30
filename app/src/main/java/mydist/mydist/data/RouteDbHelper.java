@@ -21,13 +21,13 @@ public class RouteDbHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + BrandContract.TABLE_NAME + " (" +
                     BrandContract._ID + " INTEGER PRIMARY KEY," +
                     BrandContract.COLUMN_NAME + " TEXT," +
-                    BrandContract.COLUMN_BRAND_ID + " TEXT)";
+                    BrandContract.COLUMN_BRAND_ID + " TEXT UNIQUE)";
 
     private static final String SQL_CREATE_CHANNEL_ENTRIES =
             "CREATE TABLE " + ChannelContract.TABLE_NAME + " (" +
                     ChannelContract._ID + " INTEGER PRIMARY KEY," +
                     ChannelContract.COLUMN_NAME + " TEXT," +
-                    ChannelContract.COLUMN_CHANNEL_ID + " TEXT)";
+                    ChannelContract.COLUMN_CHANNEL_ID + " TEXT UNIQUE)";
 
     private static final String SQL_CREATE_MERCHANDIZE_ENTRIES =
             "CREATE TABLE " + MerchandizeContract.TABLE_NAME + " (" +
@@ -39,7 +39,7 @@ public class RouteDbHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + ProductContract.TABLE_NAME + " (" +
                     ProductContract._ID + " INTEGER PRIMARY KEY," +
                     ProductContract.COLUMN_NAME + " TEXT," +
-                    ProductContract.COLUMN_PRODUCT_ID + " TEXT," +
+                    ProductContract.COLUMN_PRODUCT_ID + " TEXT UNIQUE," +
                     ProductContract.COLUMN_CASE_PRICE + " REAL," +
                     ProductContract.COLUMN_PIECE_PRICE + " REAL," +
                     ProductContract.COLUMN_BRAND_ID + " TEXT)";
@@ -48,7 +48,7 @@ public class RouteDbHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + SubChannelContract.TABLE_NAME + " (" +
                     SubChannelContract._ID + " INTEGER PRIMARY KEY," +
                     SubChannelContract.COLUMN_NAME + " TEXT," +
-                    SubChannelContract.COLUMN_SUB_CHANNEL_ID + " TEXT)";
+                    SubChannelContract.COLUMN_SUB_CHANNEL_ID + " TEXT UNIQUE)";
 
     private static final String SQL_DELETE_BRAND_ENTRIES =
             "DROP TABLE IF EXISTS " + BrandContract.TABLE_NAME;

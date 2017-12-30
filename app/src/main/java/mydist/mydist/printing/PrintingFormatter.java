@@ -9,12 +9,13 @@ public class PrintingFormatter {
     private static final String NEW_LINE = "\n";
     private static final int LINE_CHARS_LENGTH = 42;
     private static final String LINE_DIVIDER_ITEM = ".";
-    public static final String COMPANY_NAME = "Scenario Developers";
+    public static final String COMPANY_NAME = "Route";
     public static final String COMPANY_ADDRESS = "No 4, Folarin street, Magodo, Lagos";
     public static final String RETAILER = "Retailer:";
     public static final String SALES_REP = "Sales Rep:";
     public static final String INVOICE_NUMBER = "Invoice Number:";
     public static final String TRANSACTION_DATE = "Transaction Date:";
+    public static final String RECEIPT = "Receipt";
 
 
     public static String format(String productName, String oc, String op, String total) {

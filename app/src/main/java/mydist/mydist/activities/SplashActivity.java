@@ -23,15 +23,9 @@ public class SplashActivity extends AppCompatActivity {
         requestFullScreen();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        TextView view = (TextView) findViewById(R.id.appname);
-        setfont();
         startTimer();
     }
 
-    private void setfont() {
-        Typeface ralewayFont = FontManager.getTypeface(getApplicationContext(), FontManager.RALEWAY_REGULAR);
-        FontManager.setFontsForView(findViewById(R.id.parent_layout), ralewayFont );
-    }
 
     private void startTimer()
     {

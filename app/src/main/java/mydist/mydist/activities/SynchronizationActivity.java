@@ -14,6 +14,9 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import mydist.mydist.R;
 import mydist.mydist.data.UserPreference;
 import mydist.mydist.utils.FontManager;
@@ -92,9 +95,11 @@ public class SynchronizationActivity extends AppCompatActivity implements View.O
         UIUtils.hideKeyboard(this);
         if (v.getId() == R.id.bt_start_sync) {
             if (mCloseForTheDay.isChecked()) {
-                UserPreference.getInstance(this).setUserCloseForTheDay(true);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                String todayDate = dateFormat.format(new Date());
+                UserPreference.getInstance(this).setUserCloseForTheDayDate(todayDate);
                 AlertDialog dialog = new AlertDialog.Builder(SynchronizationActivity.this).
-                        setMessage(this.getString(R.string.closing_message)).
+                        setMessage(this.getString(R.string.closing_message, todayDate)).
                         setPositiveButton(this.getString(R.string.ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

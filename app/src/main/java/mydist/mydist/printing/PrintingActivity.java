@@ -2,6 +2,8 @@ package mydist.mydist.printing;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -102,9 +104,16 @@ public class PrintingActivity extends AppCompatActivity {
                             bixolonPrinterApi.setSingleByteFont(BixolonPrinter.CODE_PAGE_858_EURO); //It fixes an issue printing special values like €, áéíóú...
 
                             bixolonPrinterApi.lineFeed(2, false); //It's like printing \n\n
+                            Bitmap fewlapsBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.route_48);
 
+                            //BEWARE THE DOG: The 260 and 50 values are really MAGIC. They aren't as simple as width and height. It can break the Bitmap print.
+                            bixolonPrinterApi.printBitmap(fewlapsBitmap, BixolonPrinter.ALIGNMENT_CENTER, 160, 50, false);
+
+                            Thread.sleep(PRINTING_SLEEP_TIME); // Don't stress the printer while printing the Bitmap... it don't like it.
+
+                            //bixolonPrinterApi.lineFeed(2, false);
                             PrintingModel printingModel = DataUtils.getPrintingModel();
-                            printText(PrintingFormatter.COMPANY_NAME, BixolonPrinter.ALIGNMENT_CENTER, BixolonPrinter.TEXT_ATTRIBUTE_FONT_C);
+                            printText(PrintingFormatter.COMPANY_NAME, BixolonPrinter.ALIGNMENT_CENTER, BixolonPrinter.TEXT_ATTRIBUTE_FONT_A);
                             printText("\n");
                             printText(PrintingFormatter.COMPANY_ADDRESS, BixolonPrinter.ALIGNMENT_CENTER, BixolonPrinter.TEXT_ATTRIBUTE_FONT_B);
                             printText("\n");
@@ -143,6 +152,12 @@ public class PrintingActivity extends AppCompatActivity {
     }
 
     private void printCollection(CollectionModel model) {
+        String divider = PrintingFormatter.getLineDivider();
+        printText("\n");
+        printText(PrintingFormatter.RECEIPT,  BixolonPrinter.ALIGNMENT_CENTER, BixolonPrinter.TEXT_ATTRIBUTE_FONT_A);
+        printText("\n");
+        printText(divider);
+        printText("\n");
         printModelItem(PrintingFormatter.formatNameValuePair(PrintingFormatter.RETAILER, model.getRetailer()));
         printText("\n");
         printModelItem(PrintingFormatter.formatNameValuePair(PrintingFormatter.SALES_REP, model.getSalesRep()));
@@ -152,13 +167,8 @@ public class PrintingActivity extends AppCompatActivity {
         printModelItem(PrintingFormatter.formatNameValuePair(PrintingFormatter.TRANSACTION_DATE, model.getInvoiceDate()));
         printModelItem(model.getExtras());
         printText("\n");
-        String divider = PrintingFormatter.getLineDivider();
         printText("\n");
-        printText("Collection",  BixolonPrinter.ALIGNMENT_CENTER, BixolonPrinter.TEXT_ATTRIBUTE_FONT_A);
-        printText("\n");
-        printText(divider);
-        printText("\n");
-        printText(PrintingFormatter.formatNameValuePair("Total",  model.getTotal()));
+        printText(PrintingFormatter.formatNameValuePair("Total(NGN)",  model.getTotal()));
         printText("\n");
     }
 
@@ -192,7 +202,7 @@ public class PrintingActivity extends AppCompatActivity {
 
         printText(divider);
 
-        printText(PrintingFormatter.formatNameValuePair("Total", String.format("%,.2f", DataUtils.getTotalAmountToBePaid())));
+        printText(PrintingFormatter.formatNameValuePair("Total(NGN)", String.format("%,.2f", DataUtils.getTotalAmountToBePaid())));
     }
 
     private void printModelItem(String item) {

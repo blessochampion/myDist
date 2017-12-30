@@ -10,6 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import mydist.mydist.R;
 import mydist.mydist.data.UserPreference;
 import mydist.mydist.listeners.AuthenticationListener;
@@ -25,6 +28,8 @@ import mydist.mydist.utils.UIUtils;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, AuthenticationListener, DownloadMastersListener {
 
+    public static final String EMPTY_STRING = "";
+    UserPreference userPreference;
     EditText mUsername;
     EditText mPassword;
     Button mDownload;
@@ -39,6 +44,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        userPreference = UserPreference.getInstance(this);
         getReferencesToViews();
     }
 
@@ -91,15 +97,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private boolean userHasClosedSalesToday() {
-        return UserPreference.getInstance(this).isUserClosedForTheDay();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String todayDate = dateFormat.format(new Date());
+        return todayDate.equalsIgnoreCase(userPreference.getLastUserClosedForTheDayDate());
     }
 
     private void doDownload() {
-        if (userInputIsValid()) {
-            mLoadingIndicator.setMessage(getString(R.string.login_activity_download));
-            mLoadingIndicator.setTitle(getString(R.string.login_dialog_title, mUsername.getText().toString().trim()));
-            mLoadingIndicator.show();
-            makeNetworkCallForDownload();
+
+        if (!userHasClosedSalesToday()
+                || userPreference.getLastUserClosedForTheDayDate().isEmpty()) {
+            if (userInputIsValid()) {
+                mLoadingIndicator.setMessage(getString(R.string.login_activity_download));
+                mLoadingIndicator.setTitle(getString(R.string.login_dialog_title, mUsername.getText().toString().trim()));
+                mLoadingIndicator.show();
+                makeNetworkCallForDownload();
+            }
+        } else {
+            launchDialog(getString(R.string.signed_out_for_the_day));
         }
     }
 
@@ -173,6 +187,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onSuccess(DownloadMastersResponse response) {
+        userPreference.setUserCloseForTheDayDate(EMPTY_STRING);
         DataUtils.saveUser(response.getUser(), UserPreference.getInstance(this));
         DataUtils.saveMasters(response, this);
         dismissDialog();

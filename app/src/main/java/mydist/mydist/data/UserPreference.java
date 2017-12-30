@@ -39,13 +39,13 @@ public class UserPreference {
     }
 
 
-    public boolean isUserClosedForTheDay() {
-        return sharedPreferences.getBoolean(KEY_CLOSED_FOR_THE_DAY, false);
+    public String getLastUserClosedForTheDayDate() {
+        return sharedPreferences.getString(KEY_CLOSED_FOR_THE_DAY, "");
     }
 
-    public void setUserCloseForTheDay(boolean closedForTheDay) {
+    public void setUserCloseForTheDayDate(String  closedForTheDay) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(KEY_CLOSED_FOR_THE_DAY, closedForTheDay);
+        editor.putString(KEY_CLOSED_FOR_THE_DAY, closedForTheDay);
         editor.commit();
     }
 
