@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import mydist.mydist.models.Brand;
+import mydist.mydist.models.NewRetailer;
 import mydist.mydist.models.SubChannel;
 
 import static mydist.mydist.data.MasterContract.*;
@@ -50,6 +51,26 @@ public class RouteDbHelper extends SQLiteOpenHelper {
                     SubChannelContract.COLUMN_NAME + " TEXT," +
                     SubChannelContract.COLUMN_SUB_CHANNEL_ID + " TEXT UNIQUE)";
 
+    private static final String SQL_CREATE_NEW_RETAILER =
+            "CREATE TABLE " + RetailerContract.TABLE_NAME + " (" +
+                    RetailerContract._ID + " INTEGER PRIMARY KEY," +
+                    RetailerContract.DATE_ADDED + " TEXT," +
+                    RetailerContract.RETAILER_NAME + " TEXT," +
+                    RetailerContract.CONTACT_PERSON_NAME + " TEXT," +
+                    RetailerContract.ADDRESS + " TEXT," +
+                    RetailerContract.PHONE + " TEXT," +
+                    RetailerContract.CHANNEL_ID + " TEXT," +
+                    RetailerContract.SUB_CHANNEL_ID + " TEXT," +
+                    RetailerContract.RETAILER_ID + " TEXT UNIQUE)";
+
+    private static final String SQL_CREATE_VISITING_INFO =
+            "CREATE TABLE " + VisitingInfoContract.TABLE_NAME + " (" +
+                    VisitingInfoContract._ID + " INTEGER PRIMARY KEY," +
+                    VisitingInfoContract.DATE_ADDED + " TEXT," +
+                    VisitingInfoContract.RETAILER_ID + " TEXT," +
+                    VisitingInfoContract.WEEK + " TEXT," +
+                    VisitingInfoContract.DAY + " TEXT)";
+
     private static final String SQL_DELETE_BRAND_ENTRIES =
             "DROP TABLE IF EXISTS " + BrandContract.TABLE_NAME;
 
@@ -65,6 +86,12 @@ public class RouteDbHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_SUB_CHANNEL_ENTRIES =
             "DROP TABLE IF EXISTS " + SubChannelContract.TABLE_NAME;
 
+    private static final String SQL_DELETE_NEW_RETAILER_ENTRIES =
+            "DROP TABLE IF EXISTS " + RetailerContract.TABLE_NAME;
+
+    private static final String SQL_DELETE_VISITING_INFO_ENTRIES =
+            "DROP TABLE IF EXISTS " + VisitingInfoContract.TABLE_NAME;
+
 
     public RouteDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -77,6 +104,8 @@ public class RouteDbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_MERCHANDIZE_ENTRIES);
         db.execSQL(SQL_CREATE_PRODUCT_ENTRIES);
         db.execSQL(SQL_CREATE_SUB_CHANNEL_ENTRIES);
+        db.execSQL(SQL_CREATE_NEW_RETAILER);
+        db.execSQL(SQL_CREATE_VISITING_INFO);
 
     }
 
@@ -87,6 +116,8 @@ public class RouteDbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_MERCHANDIZE_ENTRIES);
         db.execSQL(SQL_DELETE_PRODUCT_ENTRIES);
         db.execSQL(SQL_DELETE_SUB_CHANNEL_ENTRIES);
+        db.execSQL(SQL_DELETE_NEW_RETAILER_ENTRIES);
+        db.execSQL(SQL_DELETE_VISITING_INFO_ENTRIES);
         onCreate(db);
     }
 

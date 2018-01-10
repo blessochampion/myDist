@@ -14,6 +14,7 @@ public class UserPreference {
     private static final String KEY_USERNAME = "userName";
     private static final String KEY_FULLNAME = "fullName";
     private static final String KEY_USER_LOGGED_IN = "logged_in";
+    private static final String KEY_LAST_RETAILER_INDEX = "last_retailer_index";
     private static final String KEY_CLOSED_FOR_THE_DAY = "closed_for_the_day";
     private static final String KEY_LAST_MASTER_DOWNLOAD_DATE = "last_master_download";
     SharedPreferences sharedPreferences;
@@ -36,6 +37,16 @@ public class UserPreference {
     public void setUserLoggedIn(boolean isLoggedIn) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_USER_LOGGED_IN, isLoggedIn);
+        editor.commit();
+    }
+
+    public int lastIndex() {
+        return sharedPreferences.getInt(KEY_LAST_RETAILER_INDEX, 0);
+    }
+
+    public void setLastIndex(int lastIndex) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(KEY_LAST_RETAILER_INDEX, lastIndex);
         editor.commit();
     }
 
@@ -103,4 +114,6 @@ public class UserPreference {
 
         return INSTANCE;
     }
+
+
 }

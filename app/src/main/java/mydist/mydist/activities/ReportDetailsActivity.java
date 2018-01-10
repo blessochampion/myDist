@@ -18,7 +18,7 @@ import mydist.mydist.fragments.SKUReportFragment;
 import mydist.mydist.fragments.StockReportFragment;
 import mydist.mydist.utils.FontManager;
 
-public class ReportDetailsActivity extends AppCompatActivity
+public class ReportDetailsActivity extends AuthenticatedActivity
 {
     public static final int KEY_DAY_REPORT =  0;
     public static final int KEY_ORDER_REPORT = 1;

@@ -41,4 +41,25 @@ public class MasterContract
         public static final String BRAND_NAME = "brand_name";
         public static final String COLUMN_MERCHANDIZE_ITEM = "merchandize_item";
     }
+
+    public static class RetailerContract implements BaseColumns{
+        public static final String TABLE_NAME = "retailer";
+        public static final String DATE_ADDED = "date_added";
+        public static final String RETAILER_NAME = "retailer_name";
+        public static final String CONTACT_PERSON_NAME = "contact_person_name";
+        public static final String ADDRESS = "address";
+        public static final String PHONE = "phone";
+        public static final String CHANNEL_ID = "channel_id";
+        public static final String SUB_CHANNEL_ID = "sub_channel_id";
+        public static final String RETAILER_ID = "retailer_id";
+    }
+
+    public static class VisitingInfoContract implements BaseColumns{
+        public static final String TABLE_NAME = "visiting_info";
+        public static final String DATE_ADDED = "date_added";
+        public static final String RETAILER_ID = "retailer_id";
+        public static final String WEEK = "week";
+        public static final String DAY = "day";
+
+    }
 }

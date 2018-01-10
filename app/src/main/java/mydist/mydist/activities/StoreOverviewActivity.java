@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -17,14 +18,15 @@ import static mydist.mydist.activities.StoreInfoDetailsActivity.*;
 
 import static mydist.mydist.activities.StoreInfoDetailsActivity.KEY_STORE_INFO;
 
-public class StoreOverviewActivity extends AppCompatActivity implements View.OnClickListener {
-
+public class StoreOverviewActivity extends AuthenticatedActivity implements View.OnClickListener {
+    public static final String KEY_RETAILER_ID = "retailerId";
     LinearLayout mReview;
     LinearLayout mInvoice;
     LinearLayout mCollection;
     LinearLayout mInvoiceCancel;
     LinearLayout mSBDMerchandising;
     LinearLayout mCallAnalysis;
+    public static  String retailerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +36,16 @@ public class StoreOverviewActivity extends AppCompatActivity implements View.OnC
         getReferencesToWidget();
         setOnClickListeners();
         setFonts();
+        if (getIntent().hasExtra(KEY_RETAILER_ID)) {
+            retailerId = getIntent().getStringExtra(KEY_RETAILER_ID);
+            Log.e("ddddddd", retailerId);
+        } else {
+            finish();
+        }
 
 
     }
+
     private void setFonts() {
         Typeface ralewayFont = FontManager.getTypeface(getApplicationContext(), FontManager.RALEWAY_REGULAR);
         FontManager.setFontsForView(findViewById(R.id.parent_layout), ralewayFont);
@@ -45,16 +54,15 @@ public class StoreOverviewActivity extends AppCompatActivity implements View.OnC
 
     private void setIcons() {
         Typeface fontAwesome = FontManager.getTypeface(getApplicationContext(), FontManager.FONT_AWESOME);
-        FontManager.setFontsForView(findViewById(R.id.icon_review), fontAwesome );
-        FontManager.setFontsForView(findViewById(R.id.icon_invoice), fontAwesome );
-        FontManager.setFontsForView(findViewById(R.id.icon_collection), fontAwesome );
-        FontManager.setFontsForView(findViewById(R.id.icon_invoice_edit), fontAwesome );
-        FontManager.setFontsForView(findViewById(R.id.icon_sbd_merchandising), fontAwesome );
-        FontManager.setFontsForView(findViewById(R.id.icon_call_analysis), fontAwesome );
+        FontManager.setFontsForView(findViewById(R.id.icon_review), fontAwesome);
+        FontManager.setFontsForView(findViewById(R.id.icon_invoice), fontAwesome);
+        FontManager.setFontsForView(findViewById(R.id.icon_collection), fontAwesome);
+        FontManager.setFontsForView(findViewById(R.id.icon_invoice_edit), fontAwesome);
+        FontManager.setFontsForView(findViewById(R.id.icon_sbd_merchandising), fontAwesome);
+        FontManager.setFontsForView(findViewById(R.id.icon_call_analysis), fontAwesome);
     }
 
-    private void setOnClickListeners()
-    {
+    private void setOnClickListeners() {
         mReview.setOnClickListener(this);
         mInvoice.setOnClickListener(this);
         mCollection.setOnClickListener(this);
@@ -92,14 +100,14 @@ public class StoreOverviewActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.ll_review:
                 launchStoreInfoDetails(KEY_REVIEW);
                 break;
             case R.id.ll_invoice:
                 launchStoreInfoDetails(KEY_INVOICE);
                 break;
-            case  R.id.ll_collection:
+            case R.id.ll_collection:
                 launchStoreInfoDetails(KEY_COLLECTION);
                 break;
             case R.id.ll_invoice_cancel:
@@ -118,5 +126,6 @@ public class StoreOverviewActivity extends AppCompatActivity implements View.OnC
         Intent intent = new Intent(StoreOverviewActivity.this, StoreInfoDetailsActivity.class);
         intent.putExtra(KEY_STORE_INFO, storeKey);
         startActivity(intent);
+        overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
     }
 }

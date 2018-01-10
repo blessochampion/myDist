@@ -22,7 +22,7 @@ import mydist.mydist.data.UserPreference;
 import mydist.mydist.utils.FontManager;
 import mydist.mydist.utils.UIUtils;
 
-public class SynchronizationActivity extends AppCompatActivity implements View.OnClickListener {
+public class SynchronizationActivity extends AuthenticatedActivity implements View.OnClickListener {
 
     Button mStartSyncButton;
     EditText mUsername;

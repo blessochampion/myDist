@@ -2,11 +2,13 @@ package mydist.mydist.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +23,10 @@ import java.util.Date;
 import java.util.HashMap;
 
 import mydist.mydist.R;
+import mydist.mydist.data.DatabaseManager;
+import mydist.mydist.data.MasterContract;
 import mydist.mydist.data.ProductLogic;
+import mydist.mydist.data.UserPreference;
 import mydist.mydist.printing.PrintingActivity;
 import mydist.mydist.printing.PrintingModel;
 import mydist.mydist.utils.DataUtils;
@@ -30,7 +35,7 @@ import mydist.mydist.utils.FontManager;
 import static android.view.Gravity.CENTER;
 import static android.view.Gravity.CENTER_HORIZONTAL;
 
-public class InvoiceActivity extends AppCompatActivity implements View.OnClickListener {
+public class InvoiceActivity extends AuthenticatedActivity implements View.OnClickListener {
     TableLayout mInvoiceTableLayout;
     HashMap<String, ProductLogic> selectedProducts;
     double totalAmountTobePaid;
@@ -192,28 +197,31 @@ public class InvoiceActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-       switch (v.getId()){
-           case R.id.edit:
-               onBackPressed();
-               break;
-           case R.id.save:
-               break;
-           case R.id.save_and_print:
-               launchPrintActivity();
-               break;
-           default:
-               break;
-       }
+        switch (v.getId()) {
+            case R.id.edit:
+                onBackPressed();
+                break;
+            case R.id.save:
+                break;
+            case R.id.save_and_print:
+                launchPrintActivity();
+                break;
+            default:
+                break;
+        }
     }
 
-    private void launchPrintActivity()
-    {
+    private void launchPrintActivity() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-
-        PrintingModel printingModel = new PrintingModel("Blessing", "Biola",
-                "INV/AA001/101217/001", dateFormat.format(new Date()));
+        String salesRep = UserPreference.getInstance(this).getFullName().split(" ")[0];
+        Cursor cursor = DatabaseManager.getInstance(this).getRetailerById(StoreOverviewActivity.retailerId);
+        cursor.moveToFirst();
+        String name = cursor.getString(cursor.getColumnIndex(MasterContract.RetailerContract.RETAILER_NAME));
+        PrintingModel printingModel = new PrintingModel(name, salesRep,
+                "INV/SS001/100118/001", dateFormat.format(new Date()));
         DataUtils.setPrintingModel(printingModel);
         Intent intent = new Intent(context, PrintingActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
     }
 }

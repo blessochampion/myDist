@@ -144,4 +144,6 @@
     <string name="signed_out_for_the_day">You already closed for today</string>
     <string name="masters_info">You have downloaded Masters for today. Please Login</string>
     <string name="login_masters_info">Please download Masters today.</string>
+    <string name="days_error">Select at least one Visiting day</string>
+    <string name="weeks_error">Select at least one week</string>
 </resources>

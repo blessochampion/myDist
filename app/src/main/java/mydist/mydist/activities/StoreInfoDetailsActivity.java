@@ -20,7 +20,7 @@ import mydist.mydist.fragments.StoreInfoMerchandisingFragment;
 import mydist.mydist.fragments.StoreInfoReviewFragment;
 import mydist.mydist.utils.FontManager;
 
-public class StoreInfoDetailsActivity extends AppCompatActivity {
+public class StoreInfoDetailsActivity extends AuthenticatedActivity {
     public static final int KEY_REVIEW =  0;
     public static final int KEY_INVOICE = 1;
     public static final int KEY_COLLECTION   =  2;
@@ -29,6 +29,7 @@ public class StoreInfoDetailsActivity extends AppCompatActivity {
     public static final int KEY_CALL_ANALYSIS = 5;
     public static final String KEY_STORE_INFO = "storeinfo";
     private static int DEFAULT_REPORT_KEY_VALUE = -1;
+    private String retailerId;
     String title = "";
     int storeKey;
     StoreFilterDialogFragment storeFilterDialogFragment;
@@ -102,11 +103,6 @@ public class StoreInfoDetailsActivity extends AppCompatActivity {
             return true;
         }
 
-        if(item.getItemId() ==  R.id.filter){
-            storeFilterDialogFragment = new  StoreFilterDialogFragment();
-            storeFilterDialogFragment.show(getSupportFragmentManager(), "");
-            return true;
-        }
         return super.onOptionsItemSelected(item);
     }
 

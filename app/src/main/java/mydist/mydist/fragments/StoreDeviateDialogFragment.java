@@ -29,9 +29,20 @@ import mydist.mydist.utils.FontManager;
  */
 public class StoreDeviateDialogFragment extends DialogFragment implements View.OnClickListener {
 
+    public static  String KEY_RETAILER ="retailer";
+    private static String retailerId;
+    RetailerDateChangeListener listener;
+
+    public interface RetailerDateChangeListener {
+        public void onDateChangeRequested(String id);
+    }
 
     public StoreDeviateDialogFragment() {
         // Required empty public constructor
+    }
+
+    public void setListener(RetailerDateChangeListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -40,10 +51,18 @@ public class StoreDeviateDialogFragment extends DialogFragment implements View.O
         setStyle(DialogFragment.STYLE_NORMAL, R.style.deviationDialogFragmentStyle);
     }
 
+    public static StoreDeviateDialogFragment getInstance(String id){
+        StoreDeviateDialogFragment fragment = new StoreDeviateDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY_RETAILER,id);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_store_deviate, container,false);
+        retailerId = getArguments().getString(KEY_RETAILER);
+        View view = inflater.inflate(R.layout.fragment_store_deviate, container, false);
         Button cancelButton = (Button) view.findViewById(R.id.bt_cancel);
         Button okayButton = (Button) view.findViewById(R.id.bt_ok);
         Spinner mDeviations = (Spinner) view.findViewById(R.id.sp_deviations);
@@ -54,9 +73,10 @@ public class StoreDeviateDialogFragment extends DialogFragment implements View.O
         setFonts(view);
 
         //getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        return  view;
+        return view;
 
     }
+
     private void setFonts(View v) {
         Typeface ralewayFont = FontManager.getTypeface(getActivity().getApplicationContext(), FontManager.RALEWAY_REGULAR);
         FontManager.setFontsForView(v.findViewById(R.id.parent_layout), ralewayFont);
@@ -74,8 +94,7 @@ public class StoreDeviateDialogFragment extends DialogFragment implements View.O
     public void onStart() {
         super.onStart();
         Dialog dialog = getDialog();
-        if (dialog != null)
-        {
+        if (dialog != null) {
             int width = ViewGroup.LayoutParams.MATCH_PARENT;
             int height = ViewGroup.LayoutParams.WRAP_CONTENT;
             dialog.getWindow().setLayout(width, height);
@@ -86,5 +105,8 @@ public class StoreDeviateDialogFragment extends DialogFragment implements View.O
     @Override
     public void onClick(View v) {
         getDialog().cancel();
+        if (v.getId() == R.id.bt_ok) {
+            listener.onDateChangeRequested(retailerId);
+        }
     }
 }

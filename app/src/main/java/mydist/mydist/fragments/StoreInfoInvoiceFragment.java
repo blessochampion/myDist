@@ -12,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,22 +41,23 @@ import static android.view.Gravity.CENTER_VERTICAL;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickListener {
+public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickListener, StoreFilterDialogFragment.FilterItemListener {
 
     public static final int TOTAL_POSITION = 4;
     TableLayout mTableLayout;
     TableLayout mPagination;
     List<Product> products;
+    List<Product> filteredProducts;
     TextView mTotalAmount;
     int currentPage = 0;
     Context context;
     double totalAmountToBePaid = 0;
+    private boolean isInFilterMode = false;
     HashMap<String, ProductLogic> selectedProducts = new HashMap<>();
     private static final int OC_POSITION = 2;
     private static final int OP_POSITION = 3;
     private static final String DELIMETER = ":";
     private String EMPTY_STRING = "";
-
 
 
     public StoreInfoInvoiceFragment() {
@@ -90,6 +92,11 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
 
             return true;
 
+        } else if (item.getItemId() == R.id.filter) {
+            StoreFilterDialogFragment storeFilterDialogFragment = new StoreFilterDialogFragment();
+            storeFilterDialogFragment.setListener(this);
+            storeFilterDialogFragment.show(getActivity().getSupportFragmentManager(), "");
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -112,12 +119,16 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
         return view;
     }
 
+    private List<Product> getProducts() {
+        return isInFilterMode ? filteredProducts : products;
+    }
+
     private void loadProducts() {
         TableRow productRow;
         int start = currentPage * 10;
         int end = start + 10;
-        if(end > products.size()){
-            end = products.size();
+        if (end > getProducts().size()) {
+            end = getProducts().size();
         }
         Product currentProduct;
         TableLayout.LayoutParams layoutParams = new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -130,7 +141,7 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
         }
         for (; start < end; start++, index++) {
             productRow = new TableRow(context);
-            currentProduct = products.get(start);
+            currentProduct = getProducts().get(start);
             loadProductIntoRow(productRow, currentProduct, index);
             productRow.setLayoutParams(layoutParams);
             mTableLayout.addView(productRow);
@@ -176,7 +187,7 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
 
 
         TextView ppcValue = new TextView(context);
-        ppcValue.setText(getString(R.string.naira)+ String.format("%,.2f",Double.valueOf(currentProduct.getCasePrice())));
+        ppcValue.setText(getString(R.string.naira) + String.format("%,.2f", Double.valueOf(currentProduct.getCasePrice())));
         ppcValue.setLayoutParams(pricesLayoutParams);
         ppcValue.setTextSize(14);
         productPrices.addView(ppcValue);
@@ -190,12 +201,11 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
         productPrices.addView(ppq);
 
         TextView ppqValue = new TextView(context);
-        ppqValue.setText(getString(R.string.naira)+
+        ppqValue.setText(getString(R.string.naira) +
                 String.format("%,.2f", Double.valueOf(currentProduct.getPiecePrice())));
         ppqValue.setLayoutParams(pricesLayoutParams);
         productPrices.addView(ppqValue);
         ppqValue.setTextSize(14);
-
 
 
         productDetails.addView(productName);
@@ -297,7 +307,7 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
         int position = Integer.valueOf(values[1]);
         TableRow selectedRow = (TableRow) mTableLayout.getChildAt(position);
         if (checkBox.isChecked()) {
-            selectedProducts.put(productId, new ProductLogic(products.get(currentPage * 10 + position - 1)));
+            selectedProducts.put(productId, new ProductLogic(getProducts().get(currentPage * 10 + position - 1)));
             final EditText totalValueEditText = (EditText) selectedRow.getChildAt(TOTAL_POSITION);
             for (int i = 2; i < 4; i++) {
                 View view = selectedRow.getChildAt(i);
@@ -388,9 +398,10 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
     }
 
     private void initPagination() {
+        mPagination.removeAllViews();
         TableRow pager = new TableRow(context);
         mPagination.setPadding(32, 0, 32, 0);
-        int pageCount = (int) Math.ceil(products.size() / 10.0);
+        int pageCount = (int) Math.ceil(getProducts().size() / 10.0);
         loadPageToRow(pager, pageCount);
         mPagination.addView(pager);
     }
@@ -481,8 +492,27 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
 
     }
 
-    public void launchInvoiceActivity(){
+    public void launchInvoiceActivity() {
         Intent intent = new Intent(context, InvoiceActivity.class);
         startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
     }
+
+    @Override
+    public void onFilterItemListener(String brandId) {
+        if (brandId.equalsIgnoreCase("ALL")) {
+            isInFilterMode = false;
+            currentPage = 0;
+            loadProducts();
+            initPagination();
+        } else {
+            filteredProducts = DataUtils.getAllProductsByBrandId(getActivity(), String.valueOf((int) Double.parseDouble(brandId)));
+            isInFilterMode = true;
+            currentPage = 0;
+            loadProducts();
+            initPagination();
+        }
+    }
+
+
 }

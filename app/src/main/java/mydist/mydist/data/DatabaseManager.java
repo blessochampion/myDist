@@ -4,13 +4,16 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.List;
 
 import mydist.mydist.models.Brand;
 import mydist.mydist.models.Channel;
 import mydist.mydist.models.Merchandize;
+import mydist.mydist.models.NewRetailer;
 import mydist.mydist.models.Product;
+import mydist.mydist.models.Retailer;
 import mydist.mydist.models.SubChannel;
 
 import static mydist.mydist.data.MasterContract.*;
@@ -31,6 +34,10 @@ public class DatabaseManager {
     }
 
     private RouteDbHelper mRouteDbHelper;
+
+    public RouteDbHelper getRouteDbHelper() {
+        return mRouteDbHelper;
+    }
 
     private DatabaseManager(Context context) {
         mRouteDbHelper = new RouteDbHelper(context);
@@ -74,7 +81,7 @@ public class DatabaseManager {
         mDataBase.close();
     }
 
-    public void persistAllProduct(List<Product> products){
+    public void persistAllProduct(List<Product> products) {
         ContentValues values;
         SQLiteDatabase mDataBase = mRouteDbHelper.getWritableDatabase();
         for (Product product : products) {
@@ -100,6 +107,41 @@ public class DatabaseManager {
         }
 
         mDataBase.close();
+    }
+
+    public boolean persistNewRetailer(NewRetailer newRetailer) {
+        ContentValues values = new ContentValues();
+        SQLiteDatabase mDataBase = mRouteDbHelper.getWritableDatabase();
+        values.put(RetailerContract.DATE_ADDED, newRetailer.getDateAdded());
+        values.put(RetailerContract.RETAILER_NAME, newRetailer.getName());
+        values.put(RetailerContract.CONTACT_PERSON_NAME, newRetailer.getContactPersonName());
+        values.put(RetailerContract.ADDRESS, newRetailer.getAddress());
+        values.put(RetailerContract.PHONE, newRetailer.getPhone());
+        values.put(RetailerContract.CHANNEL_ID, newRetailer.getChannel());
+        values.put(RetailerContract.SUB_CHANNEL_ID, newRetailer.getSubChannel());
+        values.put(RetailerContract.RETAILER_ID, newRetailer.getRetailerId());
+        long id = mDataBase.insert(RetailerContract.TABLE_NAME, null, values);
+        if (id > -1) {
+            ContentValues visitingInfo;
+            for (String week :
+                    newRetailer.getWeekNos()) {
+                for (String day : newRetailer.getVisitDays()
+                        ) {
+                    visitingInfo = new ContentValues();
+                    visitingInfo.put(VisitingInfoContract.DATE_ADDED, newRetailer.getDateAdded());
+                    visitingInfo.put(VisitingInfoContract.RETAILER_ID, newRetailer.getRetailerId());
+                    visitingInfo.put(VisitingInfoContract.WEEK, week);
+                    visitingInfo.put(VisitingInfoContract.DAY, day);
+                    mDataBase.insertWithOnConflict(VisitingInfoContract.TABLE_NAME, null, visitingInfo, SQLiteDatabase.CONFLICT_IGNORE);
+                }
+
+            }
+        } else {
+            return false;
+        }
+
+
+        return true;
     }
 
     public Cursor queryAllBrand() {
@@ -162,7 +204,7 @@ public class DatabaseManager {
 
         String selection = null;
         String selectionArgs[] = null;
-        String sortOrder =  MerchandizeContract.BRAND_NAME + " ASC";
+        String sortOrder = MerchandizeContract.BRAND_NAME + " ASC";
 
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor allMerchandize = db.query(
@@ -205,6 +247,34 @@ public class DatabaseManager {
         return allProduct;
     }
 
+    public Cursor queryAllProduct(String brandID) {
+        //TODO: Implement the query
+        String[] projection = {
+                ProductContract._ID,
+                ProductContract.COLUMN_NAME,
+                ProductContract.COLUMN_PRODUCT_ID,
+                ProductContract.COLUMN_BRAND_ID,
+                ProductContract.COLUMN_CASE_PRICE,
+                ProductContract.COLUMN_PIECE_PRICE
+        };
+
+        String selection = ProductContract.COLUMN_BRAND_ID + " = ?";
+        String selectionArgs[] = {brandID};
+        String sortOrder = ProductContract.COLUMN_NAME + " ASC";
+
+        SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
+        Cursor allProduct = db.query(
+                ProductContract.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+        return allProduct;
+    }
+
     public Cursor queryAllSubChannel() {
         //TODO: Implement the query
         String[] projection = {
@@ -230,4 +300,94 @@ public class DatabaseManager {
         return allSubChannel;
     }
 
+    public void getAllVisitingInfo() {
+        final String Query = "SELECT * FROM " + VisitingInfoContract.TABLE_NAME;
+        SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(Query, new String[]{});
+        if (cursor != null) {
+            int count = cursor.getCount();
+            cursor.moveToFirst();
+            for (int i = 0; i < count; i++) {
+                Log.e("u: ",
+                        cursor.getString(cursor.getColumnIndex(VisitingInfoContract.RETAILER_ID)) +
+                                " " + cursor.getString(cursor.getColumnIndex(VisitingInfoContract.WEEK))
+                                + " " + cursor.getString(cursor.getColumnIndex(VisitingInfoContract.DAY)));
+                cursor.moveToNext();
+            }
+        }
+    }
+
+    public Cursor getAllRetailer() {
+        final String QUERY = "SELECT " +
+                RetailerContract.TABLE_NAME + "." + RetailerContract._ID + "," +
+                RetailerContract.TABLE_NAME + "." + RetailerContract.DATE_ADDED + "," +
+                RetailerContract.TABLE_NAME + "." + RetailerContract.RETAILER_ID + "," +
+                RetailerContract.RETAILER_NAME + "," +
+                RetailerContract.CONTACT_PERSON_NAME + "," +
+                RetailerContract.ADDRESS + "," +
+                RetailerContract.PHONE + "," +
+                RetailerContract.CHANNEL_ID + "," +
+                RetailerContract.SUB_CHANNEL_ID +
+                " FROM " + RetailerContract.TABLE_NAME;
+        SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(QUERY, new String[]{});
+        return cursor;
+    }
+
+    public Cursor getRetailerById(String id) {
+        String[] projection = {
+                RetailerContract._ID,
+                RetailerContract.DATE_ADDED,
+                RetailerContract.RETAILER_ID,
+                RetailerContract.RETAILER_NAME,
+                RetailerContract.CONTACT_PERSON_NAME,
+                RetailerContract.ADDRESS,
+                RetailerContract.PHONE,
+                RetailerContract.CHANNEL_ID,
+                RetailerContract.SUB_CHANNEL_ID
+        };
+
+        String selection = RetailerContract.RETAILER_ID + " = ?";
+        String selectionArgs[] = {id};
+        String sortOrder = RetailerContract.RETAILER_NAME + " ASC";
+
+        SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
+        Cursor retailer = db.query(
+                RetailerContract.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+        return retailer;
+    }
+
+    public Cursor getRetailerByVisitingInfo(String week, String day) {
+        final String QUERY = "SELECT " +
+                RetailerContract.TABLE_NAME + "." + RetailerContract._ID + "," +
+                RetailerContract.TABLE_NAME + "." + RetailerContract.DATE_ADDED + "," +
+                RetailerContract.TABLE_NAME + "." + RetailerContract.RETAILER_ID + "," +
+                RetailerContract.RETAILER_NAME + "," +
+                RetailerContract.CONTACT_PERSON_NAME + "," +
+                RetailerContract.ADDRESS + "," +
+                RetailerContract.PHONE + "," +
+                RetailerContract.CHANNEL_ID + "," +
+                RetailerContract.SUB_CHANNEL_ID +
+                " FROM " + RetailerContract.TABLE_NAME +
+                " INNER JOIN " + VisitingInfoContract.TABLE_NAME + " ON " +
+                VisitingInfoContract.TABLE_NAME + "." +
+                VisitingInfoContract.RETAILER_ID + " = " +
+                RetailerContract.TABLE_NAME + "." +
+                RetailerContract.RETAILER_ID +
+                " WHERE " +
+                VisitingInfoContract.TABLE_NAME + "." + VisitingInfoContract.WEEK + " =? AND " +
+                VisitingInfoContract.TABLE_NAME + "." + VisitingInfoContract.DAY + " =? ";
+
+        SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(QUERY, new String[]{week, day});
+        return cursor;
+
+    }
 }

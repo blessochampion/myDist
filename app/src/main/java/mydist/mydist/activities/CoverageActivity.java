@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -23,18 +24,18 @@ import mydist.mydist.fragments.CoverageFragment;
 import mydist.mydist.utils.Days;
 import mydist.mydist.utils.FontManager;
 
-public class CoverageActivity extends AppCompatActivity {
+public class CoverageActivity extends AuthenticatedActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private AllCoverageFragment ALL_COVERAGE = new AllCoverageFragment();
-    private CoverageFragment SUNDAY_COVERAGE = new CoverageFragment();
-    private CoverageFragment MONDAY_COVERAGE = new CoverageFragment();
-    private CoverageFragment TUESDAY_COVERAGE = new CoverageFragment();
-    private CoverageFragment WEDNESDAY_COVERAGE = new CoverageFragment();
-    private CoverageFragment THURSDAY_COVERAGE = new CoverageFragment();
-    private CoverageFragment FRIDAY_COVERAGE = new CoverageFragment();
-    private CoverageFragment SATURDAY_COVERAGE = new CoverageFragment();
+    private CoverageFragment SUNDAY_COVERAGE;
+    private CoverageFragment MONDAY_COVERAGE;
+    private CoverageFragment TUESDAY_COVERAGE;
+    private CoverageFragment WEDNESDAY_COVERAGE;
+    private CoverageFragment THURSDAY_COVERAGE;
+    private CoverageFragment FRIDAY_COVERAGE;
+    private CoverageFragment SATURDAY_COVERAGE;
 
 
     @Override
@@ -44,6 +45,27 @@ public class CoverageActivity extends AppCompatActivity {
         setupToolBar();
         getReferencesToViews();
         setFonts();
+
+    }
+
+    private void loadDailyRetailers() {
+        Calendar now = Calendar.getInstance();
+        int weekNo = now.get(Calendar.WEEK_OF_MONTH);
+        Log.e("weeeeee", weekNo + "");
+        if (weekNo < 1) {
+            weekNo = 1;
+        } else if (weekNo > 4) {
+            weekNo = 4;
+        }
+        String week = "wk" + weekNo;
+        SUNDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.SUN.toString());
+        MONDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.MON.toString());
+        TUESDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.TUE.toString());
+        WEDNESDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.WED.toString());
+        THURSDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.THUR.toString());
+        FRIDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.FRI.toString());
+        SATURDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.SAT.toString());
+
     }
 
     private void setFonts() {
@@ -76,13 +98,15 @@ public class CoverageActivity extends AppCompatActivity {
         // SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
         // searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));*/
+
+
         return super.onCreateOptionsMenu(menu);
     }
 
     public void getReferencesToViews() {
         viewPager = (ViewPager) findViewById(R.id.viewpager);
+        loadDailyRetailers();
         setupViewPager(viewPager);
-
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
     }
@@ -224,5 +248,11 @@ public class CoverageActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.transition_right_to_left, R.anim.transition_left_to_right);
     }
 }

@@ -145,6 +145,7 @@ public class PrintingActivity extends AppCompatActivity {
 
                 Intent settingsIntent = new Intent(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS);
                 startActivity(settingsIntent);
+                overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
             }
         });
 

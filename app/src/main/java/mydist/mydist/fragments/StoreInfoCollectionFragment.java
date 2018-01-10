@@ -101,6 +101,7 @@ public class StoreInfoCollectionFragment extends Fragment implements View.OnClic
         Intent intent = new Intent(getActivity(), PrintingActivity.class);
         intent.putExtra(PrintingActivity.KEY_COLLECTION, model);
         startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
 
     }
 

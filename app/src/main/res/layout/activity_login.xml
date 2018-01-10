@@ -21,7 +21,17 @@
             android:layout_height="match_parent"
             android:background="@color/white_grey"
             android:orientation="vertical"
-            android:paddingTop="64dp">
+            android:paddingTop="34dp">
+            <FrameLayout
+                android:layout_marginBottom="15dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="65dp"
+                android:layout_height="55dp">
+                <ImageView
+                    android:src="@drawable/route_192"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </FrameLayout>
 
 
             <EditText

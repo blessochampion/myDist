@@ -14,7 +14,7 @@ import mydist.mydist.utils.FontManager;
 
 import static mydist.mydist.activities.ReportDetailsActivity.*;
 
-public class ReportsActivity extends AppCompatActivity implements View.OnClickListener {
+public class ReportsActivity extends AuthenticatedActivity implements View.OnClickListener {
     LinearLayout dayReport;
     LinearLayout orderReport;
     LinearLayout skuReport;
@@ -111,5 +111,6 @@ public class ReportsActivity extends AppCompatActivity implements View.OnClickLi
         Intent intent = new Intent(ReportsActivity.this, ReportDetailsActivity.class);
         intent.putExtra(REPORT_KEY, reportKey);
         startActivity(intent);
+        overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
     }
 }

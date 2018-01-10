@@ -263,6 +263,7 @@
                             android:textColor="@color/primary_text" />
 
                         <LinearLayout
+                            android:id="@+id/cb_sun_wed"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
@@ -276,6 +277,7 @@
                                 android:textColor="@color/secondary_text" />
 
                             <CheckBox
+
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -300,6 +302,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/cb_thur_sat"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
@@ -350,6 +353,7 @@
                             android:textColor="@color/primary_text" />
 
                         <LinearLayout
+                            android:id="@+id/cb_wk1_wk4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
