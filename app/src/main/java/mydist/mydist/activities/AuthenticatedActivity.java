@@ -13,7 +13,7 @@ import mydist.mydist.R;
 
 public class AuthenticatedActivity extends AppCompatActivity
 {
-    CountDownTimer timer = new CountDownTimer(20 * 60 * 1000, 1000) {
+     CountDownTimer timer = new CountDownTimer(20 * 60 * 1000, 1000) {
 
         public void onTick(long millisUntilFinished) {
             //Some code
@@ -54,5 +54,9 @@ public class AuthenticatedActivity extends AppCompatActivity
         timer.start();
     }
 
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        timer.cancel();
+    }
 }

@@ -86,9 +86,18 @@ public class DownloadMastersResponse {
         @JsonProperty("products")
         public List<Product> products;
         /*coverage*/
+        @JsonProperty("coverage")
+        public List<NewRetailer> retailers;
         @JsonProperty("merchandizingList")
         public List<Merchandize> merchandizingList;
 
+        public List<NewRetailer> getRetailers() {
+            return retailers;
+        }
+
+        public void setRetailers(List<NewRetailer> retailers) {
+            this.retailers = retailers;
+        }
 
         public List<Channel> getChannels() {
             return channels;

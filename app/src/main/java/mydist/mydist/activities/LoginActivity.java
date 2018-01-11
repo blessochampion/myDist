@@ -201,6 +201,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         userPreference.setUserCloseForTheDayDate(EMPTY_STRING);
         userPreference.setLasMastersDownloadDate(getTodayDate());
         DataUtils.saveUser(response.getUser(), UserPreference.getInstance(this));
+        DataUtils.saveNewRetailers(response.getMaster().getRetailers(), this);
         DataUtils.saveMasters(response, this);
         dismissDialog();
         launchHomeActivity();

@@ -66,10 +66,21 @@ public class DataUtils {
         return manager.persistNewRetailer(newRetailer);
     }
 
-    public static  List<Retailer> getRetailerByVisitingInfo(String week, String day, Context context) {
+    public static boolean saveNewRetailers(List<NewRetailer> newRetailers, Context context) {
+        DatabaseManager manager = DatabaseManager.getInstance(context);
+        boolean isSuccess =  true;
+       for (NewRetailer retailer : newRetailers){
+           isSuccess = isSuccess && manager.persistNewRetailer(retailer);
+       }
+        return isSuccess;
+    }
+
+
+
+    public static List<Retailer> getRetailerByVisitingInfo(String week, String day, Context context) {
         List<Retailer> retailers = new ArrayList<>();
         DatabaseManager manager = DatabaseManager.getInstance(context);
-       Cursor cursor =  manager.getRetailerByVisitingInfo(week, day);
+        Cursor cursor = manager.getRetailerByVisitingInfo(week, day);
         int count = cursor.getCount();
         cursor.moveToFirst();
         Retailer retailer;
@@ -90,6 +101,7 @@ public class DataUtils {
         manager.persistAllMerchandize(master.getMerchandizingList());
         manager.persistAllProduct(master.getProducts());
         manager.persistAllSubChannel(master.getSubChannels());
+
     }
 
 
