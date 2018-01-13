@@ -42,7 +42,7 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
         View view = inflater.inflate(R.layout.fragment_coverage, container, false);
         Cursor cursor = DatabaseManager.getInstance(getActivity()).
                 getAllRetailer();
-        adapter = new DailyRetailersAdapter(getActivity(), cursor);
+        adapter = new DailyRetailersAdapter(getActivity(), cursor, this);
         ListView listView = (ListView) view.findViewById(R.id.list_view);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
@@ -57,11 +57,12 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-       /* if(v.getId() == R.id.item){
-            new StoreDeviateDialogFragment().show(getActivity().getSupportFragmentManager(), "");
-        }else {
-            new StoreProfileHistoryDialogFragment().show(getActivity().getSupportFragmentManager(), "");
-        }*/
+
+        StoreProfileHistoryDialogFragment.getNewInstance(v.getTag().toString())
+                .show(getActivity().
+                        getSupportFragmentManager(),
+                        "");
+
     }
 
     private void launchStoreDetailsActivity() {
@@ -72,9 +73,9 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Cursor cursor = ((Cursor)adapter.getItem(position));
+        Cursor cursor = ((Cursor) adapter.getItem(position));
         String retailerId = cursor.getString(cursor.getColumnIndex(MasterContract.RetailerContract.RETAILER_ID));
-                StoreDeviateDialogFragment dialogFragment = StoreDeviateDialogFragment.getInstance(retailerId);
+        StoreDeviateDialogFragment dialogFragment = StoreDeviateDialogFragment.getInstance(retailerId);
         dialogFragment.setListener(this);
         dialogFragment.show(getActivity().getSupportFragmentManager(), "");
     }

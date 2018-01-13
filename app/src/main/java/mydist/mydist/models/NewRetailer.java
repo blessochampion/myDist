@@ -137,10 +137,12 @@ public class NewRetailer {
     }
 
     public List<String> getWeekNos() {
-        weekNos = new ArrayList<>();
-        String[] weeks = getVisitingWeeks().split(",");
-        for (int i = 0; i < weeks.length; i++) {
-            weekNos.add(weeks[i]);
+        if(weekNos == null) {
+            weekNos = new ArrayList<>();
+            String[] weeks = getVisitingWeeks().split(",");
+            for (int i = 0; i < weeks.length; i++) {
+                weekNos.add("wk"+weeks[i]);
+            }
         }
         return weekNos;
     }

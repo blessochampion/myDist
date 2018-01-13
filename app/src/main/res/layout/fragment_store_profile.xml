@@ -21,7 +21,8 @@
             android:divider="@drawable/profile_divider"
             android:dividerPadding="3dp"
             android:padding="8dp"
-            android:showDividers="middle">
+            android:showDividers="middle"
+            >
 
             <TableRow
                 android:layout_width="wrap_content"
@@ -39,7 +40,7 @@
                     android:textColor="@color/primary_text" />
 
                 <TextView
-                    android:id="@+id/textClock"
+                    android:id="@+id/et_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
@@ -59,11 +60,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="@string/address1"
+                    android:text="@string/contact_person"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/primary_text" />
 
                 <TextView
+                    android:id="@+id/et_contact_person"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
@@ -83,11 +85,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="@string/address2"
+                    android:text="@string/address"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/primary_text" />
 
                 <TextView
+                    android:id="@+id/et_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
@@ -107,11 +110,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="@string/address3"
+                    android:text="@string/phone"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/primary_text" />
 
                 <TextView
+                    android:id="@+id/et_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
@@ -136,6 +140,7 @@
                     android:textColor="@color/primary_text" />
 
                 <TextView
+                    android:id="@+id/et_channel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
@@ -160,6 +165,7 @@
                     android:textColor="@color/primary_text" />
 
                 <TextView
+                    android:id="@+id/et_sub_channel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
@@ -167,6 +173,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             </TableRow>
+<!--
 
             <TableRow
                 android:layout_width="wrap_content"
@@ -263,6 +270,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             </TableRow>
+-->
 
 
         </TableLayout>

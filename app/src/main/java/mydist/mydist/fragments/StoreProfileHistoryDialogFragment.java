@@ -20,6 +20,8 @@ import mydist.mydist.R;
 import mydist.mydist.adapters.StoreProfileAdapter;
 import mydist.mydist.utils.FontManager;
 
+import static mydist.mydist.fragments.StoreProfileFragment.KEY_ID;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -37,7 +39,9 @@ public class StoreProfileHistoryDialogFragment extends DialogFragment
 
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.vp_container);
 
-        StoreProfileAdapter adapter = new StoreProfileAdapter(getChildFragmentManager(), getFragments(), getTitles());
+        Bundle bundle = getArguments();
+        String id = bundle.getString(KEY_ID);
+        StoreProfileAdapter adapter = new StoreProfileAdapter(getChildFragmentManager(), getFragments(id), getTitles());
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
@@ -48,14 +52,22 @@ public class StoreProfileHistoryDialogFragment extends DialogFragment
 
     }
 
+    public static StoreProfileHistoryDialogFragment getNewInstance(String id) {
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY_ID, id);
+        StoreProfileHistoryDialogFragment fragment = new StoreProfileHistoryDialogFragment();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     private void setFonts(View v) {
         Typeface ralewayFont = FontManager.getTypeface(getActivity().getApplicationContext(), FontManager.RALEWAY_REGULAR);
         FontManager.setFontsForView(v.findViewById(R.id.parent_layout), ralewayFont);
     }
 
-    public List<Fragment> getFragments() {
+    public List<Fragment> getFragments(String id) {
         List<Fragment> fragments = new ArrayList<>();
-        fragments.add(new StoreProfileFragment());
+        fragments.add(StoreProfileFragment.getNewInstance(id));
         fragments.add(new HistoryFragment());
         return fragments;
     }

@@ -334,6 +334,36 @@ public class DatabaseManager {
         return cursor;
     }
 
+    public Cursor getRetailerProfileById(String id){
+        final String QUERY = "SELECT " +
+                RetailerContract.TABLE_NAME + "." + RetailerContract._ID + "," +
+                RetailerContract.TABLE_NAME + "." + RetailerContract.DATE_ADDED + "," +
+                RetailerContract.TABLE_NAME + "." + RetailerContract.RETAILER_ID + "," +
+                RetailerContract.RETAILER_NAME + "," +
+                RetailerContract.CONTACT_PERSON_NAME + "," +
+                RetailerContract.ADDRESS + "," +
+                RetailerContract.PHONE + "," +
+                ChannelContract.TABLE_NAME + "."+ChannelContract.COLUMN_NAME+ "," +
+                SubChannelContract.TABLE_NAME + "." + SubChannelContract.COLUMN_NAME +
+                " FROM " + RetailerContract.TABLE_NAME +
+                " INNER JOIN " + ChannelContract.TABLE_NAME + " ON " +
+                ChannelContract.TABLE_NAME + "." +
+                ChannelContract.COLUMN_CHANNEL_ID + " = " +
+                RetailerContract.TABLE_NAME + "." +
+                RetailerContract.CHANNEL_ID +
+                " INNER JOIN "+
+                SubChannelContract.TABLE_NAME + " ON "+
+                SubChannelContract.TABLE_NAME + "." +
+                SubChannelContract.COLUMN_SUB_CHANNEL_ID + " = " +
+                RetailerContract.TABLE_NAME + "." +
+                RetailerContract.SUB_CHANNEL_ID +
+                " WHERE " + RetailerContract.RETAILER_ID + " = ?";
+
+
+        SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(QUERY, new String[]{id});
+        return cursor;
+    }
     public Cursor getRetailerById(String id) {
         String[] projection = {
                 RetailerContract._ID,

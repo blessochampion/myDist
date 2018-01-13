@@ -146,4 +146,6 @@
     <string name="login_masters_info">Please download Masters today.</string>
     <string name="days_error">Select at least one Visiting day</string>
     <string name="weeks_error">Select at least one week</string>
+    <string name="contact_person">Contact Person</string>
+    <string name="no_history_retailer">This is a new Retailer, no history found</string>
 </resources>

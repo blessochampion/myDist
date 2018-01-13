@@ -120,7 +120,7 @@
         android:textColor="@color/secondary_text" />
 
     <ImageView
-        android:id="@+id/iv_info1"
+        android:id="@+id/iv_info"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_alignBottom="@id/stgt_value"

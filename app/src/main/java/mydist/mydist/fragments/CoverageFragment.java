@@ -67,7 +67,7 @@ public class CoverageFragment extends Fragment implements View.OnClickListener, 
             day = bundle.getString(KEY_DAY);
             Cursor cursor = DatabaseManager.getInstance(getActivity()).
                     getRetailerByVisitingInfo(week, day);
-            adapter = new DailyRetailersAdapter(getActivity(), cursor);
+            adapter = new DailyRetailersAdapter(getActivity(), cursor, this);
         }
 
         // Inflate the layout for this fragment
@@ -86,12 +86,10 @@ public class CoverageFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onClick(View v) {
-       /* if (v.getId() == R.id.item) {
-            // new StoreDeviateDialogFragment().show(getActivity().getSupportFragmentManager(), "");
-            launchStoreDetailsActivity();
-        } else {
-            new StoreProfileHistoryDialogFragment().show(getActivity().getSupportFragmentManager(), "");
-        }*/
+        StoreProfileHistoryDialogFragment.getNewInstance(v.getTag().toString())
+                .show(getActivity().
+                                getSupportFragmentManager(),
+                        "");
     }
 
     private void launchStoreDetailsActivity(String retailerId) {

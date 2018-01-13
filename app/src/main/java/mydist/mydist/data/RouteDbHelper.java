@@ -16,7 +16,7 @@ import static mydist.mydist.data.MasterContract.*;
 public class RouteDbHelper extends SQLiteOpenHelper {
     private static final String TAG = RouteDbHelper.class.getSimpleName();
 
-    private static final String DATABASE_NAME = "insects.db";
+    private static final String DATABASE_NAME = "routes.db";
     private static final int DATABASE_VERSION = 1;
     private static final String SQL_CREATE_BRAND_ENTRIES =
             "CREATE TABLE " + BrandContract.TABLE_NAME + " (" +
