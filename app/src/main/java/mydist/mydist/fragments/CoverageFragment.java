@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -61,20 +62,33 @@ public class CoverageFragment extends Fragment implements View.OnClickListener, 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_coverage, container, false);
+        ListView listView = (ListView) view.findViewById(R.id.list_view);
+        TextView message = (TextView) view.findViewById(R.id.tv_message);
         Bundle bundle = getArguments();
+
         if (bundle != null) {
             week = bundle.getString(KEY_WEEK);
             day = bundle.getString(KEY_DAY);
             Cursor cursor = DatabaseManager.getInstance(getActivity()).
                     getRetailerByVisitingInfo(week, day);
-            adapter = new DailyRetailersAdapter(getActivity(), cursor, this);
+            if (cursor.getCount() < 1) {
+                message.setVisibility(View.VISIBLE);
+                listView.setVisibility(View.GONE);
+            } else {
+                adapter = new DailyRetailersAdapter(getActivity(), cursor, this);
+                message.setVisibility(View.GONE);
+                listView.setVisibility(View.VISIBLE);
+                listView.setAdapter(adapter);
+                listView.setOnItemClickListener(this);
+            }
+        } else {
+            throw new RuntimeException("Unable to Create Fragment, pass DAY and Week");
         }
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_coverage, container, false);
-        ListView listView = (ListView) view.findViewById(R.id.list_view);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(this);
+
+
         setFonts(view);
         return view;
     }
@@ -96,13 +110,13 @@ public class CoverageFragment extends Fragment implements View.OnClickListener, 
         Intent intent = new Intent(getActivity(), StoreOverviewActivity.class);
         intent.putExtra(StoreOverviewActivity.KEY_RETAILER_ID, retailerId);
         startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
+        //getActivity().overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Cursor cursor = (Cursor) adapter.getItem(position);
-        String retailerId =  cursor.getString(cursor.getColumnIndex(MasterContract.RetailerContract.RETAILER_ID));
+        String retailerId = cursor.getString(cursor.getColumnIndex(MasterContract.RetailerContract.RETAILER_ID));
         launchStoreDetailsActivity(retailerId);
     }
 }

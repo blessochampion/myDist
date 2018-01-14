@@ -19,7 +19,7 @@
 
         <ScrollView
             android:fillViewport="true"
-            android:layout_marginBottom="96dp"
+            android:layout_marginBottom="76dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -54,7 +54,7 @@
                     android:layout_marginBottom="4dp"
                     android:id="@+id/pagination"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     >
 
 

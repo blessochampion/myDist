@@ -159,4 +159,5 @@
     <string name="merchandizing_saving_error">Unable To save</string>
     <string name="merchant_id">merchant_id</string>
     <string name="brand_id">brand_id</string>
+    <string name="no_retailer_info">No Retailer for Today</string>
 </resources>

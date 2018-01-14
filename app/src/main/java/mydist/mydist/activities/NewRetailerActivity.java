@@ -15,7 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import mydist.mydist.R;
@@ -102,7 +104,7 @@ public class NewRetailerActivity extends AuthenticatedActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(0, R.anim.transition_right_to_left);
+        //overridePendingTransition(0, R.anim.transition_right_to_left);
     }
 
     @Override
@@ -123,9 +125,7 @@ public class NewRetailerActivity extends AuthenticatedActivity {
             NewRetailer newRetailer = getNewRetailer();
             if (DataUtils.saveNewRetailer(newRetailer, this)) {
                 Toast.makeText(this, getString(R.string.new_retailer_info), Toast.LENGTH_SHORT).show();
-                UserPreference userPreference = UserPreference.getInstance(this);
-                int lastIndex = userPreference.lastIndex();
-                userPreference.setLastIndex((++lastIndex));
+
             }
             onBackPressed();
 
@@ -206,6 +206,7 @@ public class NewRetailerActivity extends AuthenticatedActivity {
         String names[] = salesRepFullName.split(" ");
         String initials = names[0].charAt(0) + String.valueOf(names[1].charAt(0));
         String retailerId = initials + getRetailerIndex();
+        Log.e("sass", retailerId);
 
         NewRetailer newRetailer = new NewRetailer(dateAdded,
                 name, contactPerson, address, phone, channel, subChannel,
@@ -236,16 +237,9 @@ public class NewRetailerActivity extends AuthenticatedActivity {
     }
 
     public String getRetailerIndex() {
-        int retailerIndex = UserPreference.getInstance(this).lastIndex();
-        retailerIndex++;
-        String result = String.valueOf(retailerIndex);
-        int length = result.length();
-        if (length == 1)
-            result = "00" + retailerIndex;
-        if (length == 2)
-            result = "0" + retailerIndex;
+        SimpleDateFormat f = new SimpleDateFormat("yyyyMMddHHmmss");
 
-        return result;
+        return f.format(new Date());
     }
 
 

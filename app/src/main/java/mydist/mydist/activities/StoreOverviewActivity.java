@@ -112,12 +112,7 @@ public class StoreOverviewActivity extends AuthenticatedActivity implements View
                 launchStoreInfoDetails(KEY_COLLECTION);
                 break;
             case R.id.ll_invoice_edit:
-                Cursor cursor = DataUtils.getAllInvoice(StoreOverviewActivity.retailerId, this);
-                if (cursor.getCount() > 0) {
-                    cursor.moveToFirst();
-                    Log.e("merchantId", cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.INVOICE_ID)));
-                    launchStoreInfoDetails(KEY_INVOICE_EDIT);
-                }
+                launchStoreInfoDetails(KEY_INVOICE_EDIT);
                 break;
             case R.id.ll_sbd_merchandising:
                 launchStoreInfoDetails(KEY_SBD_MERCHANDISING);

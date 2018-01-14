@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import mydist.mydist.R;
 import mydist.mydist.activities.StoreOverviewActivity;
@@ -40,12 +41,20 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_coverage, container, false);
+        ListView listView = (ListView) view.findViewById(R.id.list_view);
+        TextView message = (TextView) view.findViewById(R.id.tv_message);
         Cursor cursor = DatabaseManager.getInstance(getActivity()).
                 getAllRetailer();
-        adapter = new DailyRetailersAdapter(getActivity(), cursor, this);
-        ListView listView = (ListView) view.findViewById(R.id.list_view);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(this);
+        if(cursor.getCount() < 1){
+            message.setVisibility(View.VISIBLE);
+            listView.setVisibility(View.GONE);
+        }else {
+            adapter = new DailyRetailersAdapter(getActivity(), cursor, this);
+            listView.setAdapter(adapter);
+            listView.setOnItemClickListener(this);
+            message.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
+        }
         setFonts(view);
         return view;
     }
@@ -68,7 +77,7 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
     private void launchStoreDetailsActivity() {
         Intent intent = new Intent(getActivity(), StoreOverviewActivity.class);
         startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
+        //getActivity().overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
     }
 
     @Override

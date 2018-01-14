@@ -1,17 +1,14 @@
 package mydist.mydist.fragments;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -19,9 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import mydist.mydist.R;
-import mydist.mydist.activities.LoginActivity;
 import mydist.mydist.adapters.InvoiceAdapter;
-import mydist.mydist.data.DatabaseManager;
 import mydist.mydist.utils.DataUtils;
 import mydist.mydist.utils.FontManager;
 
@@ -45,7 +40,6 @@ public class StoreInfoInvoiceEditFragment extends Fragment implements View.OnCli
 
         invoiceMessage = (TextView) view.findViewById(R.id.invoice_message);
         contentContainer = (LinearLayout) view.findViewById(R.id.parent_layout);
-        String retailerId = getArguments().getString(KEY_RETAILER_ID);
         listView = (ListView) view.findViewById(R.id.list_view);
         page = view;
         bindView();

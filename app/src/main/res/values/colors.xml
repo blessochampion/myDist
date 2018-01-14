@@ -15,4 +15,6 @@
     <color name="home_username">#6d6e71</color>
     <color name="crispy_green">#16A765</color>
     <color name="crispy_red">#EA4335</color>
+    <color name="invoice_title">#808080</color>
+    <color name="jade_green">#009588</color>
 </resources>

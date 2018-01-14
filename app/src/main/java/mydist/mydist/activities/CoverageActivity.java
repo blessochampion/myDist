@@ -252,6 +252,6 @@ public class CoverageActivity extends AuthenticatedActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.transition_right_to_left, R.anim.transition_left_to_right);
+       // overridePendingTransition(R.anim.transition_right_to_left, R.anim.transition_left_to_right);
     }
 }

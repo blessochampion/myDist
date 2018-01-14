@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import mydist.mydist.models.ProductOrder;
+
 import static mydist.mydist.data.MasterContract.*;
 
 /**
@@ -86,6 +88,7 @@ public class RouteDbHelper extends SQLiteOpenHelper {
                     ProductOrderContract.TOTAL + " TEXT," +
                     ProductOrderContract.PRODUCT_NAME + " TEXT," +
                     ProductOrderContract.PRODUCT_ID + " TEXT," +
+                    ProductOrderContract.BRAND_ID + " TEXT," +
                     ProductOrderContract.OC + " INTEGER," +
                     ProductOrderContract.OP + " INTEGER)";
 

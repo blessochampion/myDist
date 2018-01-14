@@ -40,7 +40,7 @@ public class SplashActivity extends AppCompatActivity {
     private void launchLoginActivity(){
         Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
         startActivity(intent);
-        overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
+        //overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
     }
 
     private void requestFullScreen() {

@@ -79,8 +79,10 @@ public class MasterContract {
         public static final String TOTAL = "total";
         public static final String PRODUCT_NAME = "product_name";
         public static final String PRODUCT_ID = "product_id";
+        public static final String BRAND_ID = "brand_id";
         public static final String OC = "oc";
         public static final String OP = "OP";
+        public static final String PRODUCT_COUNT = "count";
     }
 
     public static class MerchandizingListVerificationContract implements BaseColumns {

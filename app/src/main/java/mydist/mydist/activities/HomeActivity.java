@@ -91,25 +91,25 @@ public class HomeActivity extends AuthenticatedActivity implements View.OnClickL
         if (v.getId() == R.id.ll_new_retailer) {
             Intent intent = new Intent(HomeActivity.this, NewRetailerActivity.class);
             startActivity(intent);
-            overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
+            //overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
             return;
         }
         if (v.getId() == R.id.ll_synchronization) {
             Intent intent = new Intent(HomeActivity.this, SynchronizationActivity.class);
             startActivity(intent);
-            overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
+            //overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
             return;
         }
         if (v.getId() == R.id.ll_reports) {
             Intent intent = new Intent(HomeActivity.this, ReportsActivity.class);
             startActivity(intent);
-            overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
+           // overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
             return;
         }
         if (v.getId() == R.id.ll_coverage) {
             Intent intent = new Intent(HomeActivity.this, CoverageActivity.class);
             startActivity(intent);
-            overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
+            //(R.anim.transition_enter, R.anim.transition_exit);
             return;
         }
 
@@ -155,7 +155,7 @@ public class HomeActivity extends AuthenticatedActivity implements View.OnClickL
             Intent newIntent = new Intent(HomeActivity.this,LoginActivity.class);
             newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(newIntent);
-            overridePendingTransition(R.anim.transition_right_to_left, R.anim.transition_left_to_right);
+            //overridePendingTransition(R.anim.transition_right_to_left, R.anim.transition_left_to_right);
             finish();
         } else {
             this.moveTaskToBack(true);

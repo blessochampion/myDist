@@ -75,6 +75,8 @@ public class DatabaseManager {
                 contentValues.put(ProductOrderContract.INVOICE_ID, productOrder.getInvoiceId());
                 contentValues.put(ProductOrderContract.TOTAL, productOrder.getProductName());
                 contentValues.put(ProductOrderContract.PRODUCT_NAME, productOrder.getProductName());
+                contentValues.put(ProductOrderContract.PRODUCT_ID, productOrder.getProductId());
+                contentValues.put(ProductOrderContract.BRAND_ID, productOrder.getBrandId());
                 contentValues.put(ProductOrderContract.OC, productOrder.getOc());
                 contentValues.put(ProductOrderContract.OP, productOrder.getOp());
                 response = mDatabase.insertWithOnConflict(ProductOrderContract.TABLE_NAME, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
@@ -484,6 +486,22 @@ public class DatabaseManager {
 
     }
 
+    public Cursor getProductInvoiceByBrandId(String brandId, String dateAdded) {
+        final String QUERY = "SELECT " +
+                ProductOrderContract.PRODUCT_NAME + "," +
+                "COUNT(" + ProductOrderContract.PRODUCT_NAME + ") AS " +
+                ProductOrderContract.PRODUCT_COUNT +
+                " FROM " + ProductOrderContract.TABLE_NAME + " WHERE "+
+                ProductOrderContract.BRAND_ID + " = ? " + " AND " +
+                ProductOrderContract.DATE_ADDED + " = ?" +
+                " GROUP BY " + ProductOrderContract.PRODUCT_NAME;
+
+        SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(QUERY, new String[]{brandId, dateAdded});
+        return cursor;
+
+    }
+
 
     public Cursor queryAllInvoiceByRetailerId(String retailerId, String dateAdded) {
         String[] projection = new String[]{
@@ -494,8 +512,9 @@ public class DatabaseManager {
                 InvoiceContract.TOTAL
         };
 
-        String selection = InvoiceContract.RETAILER_ID + " = ? " + " AND " + InvoiceContract.DATE_ADDED + " = ?";
-        String selectionArgs[] = {retailerId, dateAdded};
+        String firstClause = retailerId != null ? InvoiceContract.RETAILER_ID + " = ? " + " AND " : "";
+        String selection = firstClause + InvoiceContract.DATE_ADDED + " = ?";
+        String selectionArgs[] = retailerId != null ? new String[]{retailerId, dateAdded} : new String[]{dateAdded};
         String sortOrder = InvoiceContract.INVOICE_ID + " ASC";
 
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();

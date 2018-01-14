@@ -65,7 +65,7 @@ public class Brand implements Parcelable{
 
 
     public Brand(Cursor cursor) {
-        this.brandId = String.valueOf(cursor.getDouble(cursor.getColumnIndex(BrandContract.COLUMN_BRAND_ID)));
+        this.brandId = String.valueOf(cursor.getInt(cursor.getColumnIndex(BrandContract.COLUMN_BRAND_ID)));
         this.brandName = cursor.getString(cursor.getColumnIndex(BrandContract.COLUMN_NAME));
     }
 

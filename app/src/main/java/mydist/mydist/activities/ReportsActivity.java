@@ -111,6 +111,6 @@ public class ReportsActivity extends AuthenticatedActivity implements View.OnCli
         Intent intent = new Intent(ReportsActivity.this, ReportDetailsActivity.class);
         intent.putExtra(REPORT_KEY, reportKey);
         startActivity(intent);
-        overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
+        //overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
     }
 }

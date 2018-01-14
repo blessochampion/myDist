@@ -10,18 +10,36 @@ public class ProductOrder {
     String total;
     String productName;
     String productId;
+    String brandId;
     int oc;
     int op;
 
-    public ProductOrder(String dateAdded, String invoiceId, String total, String productName, String productId,
+    public ProductOrder(String dateAdded, String invoiceId, String total, String productName, String productId, String brandId,
                         int oc, int op) {
         this.dateAdded = dateAdded;
         this.invoiceId = invoiceId;
         this.total = total;
         this.productName = productName;
         this.productId = productId;
+        this.brandId = brandId;
         this.oc = oc;
         this.op = op;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public String getBrandId() {
+        return brandId;
+    }
+
+    public void setBrandId(String brandId) {
+        this.brandId = brandId;
     }
 
     public String getDateAdded() {

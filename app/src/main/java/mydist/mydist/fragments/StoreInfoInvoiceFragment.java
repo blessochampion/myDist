@@ -495,7 +495,7 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
     public void launchInvoiceActivity() {
         Intent intent = new Intent(context, InvoiceActivity.class);
         startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
+        //getActivity().overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
     }
 
     @Override

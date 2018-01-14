@@ -131,11 +131,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void doLogin() {
-        if(mastersDownloadedToday()) {
+        if (mastersDownloadedToday()) {
             if (userInputIsValid()) {
                 makeNetworkCallForLogin();
             }
-        }else {
+        } else {
             launchDialog(getString(R.string.login_masters_info));
         }
     }
