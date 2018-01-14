@@ -66,7 +66,7 @@ public class StoreInfoMerchandisingFragment extends Fragment implements Compound
 
                 }
                 TextView brandName = (TextView) convertView.findViewById(R.id.brand_name);
-               final CheckBox item = (CheckBox) convertView.findViewById(R.id.product_name);
+                final CheckBox item = (CheckBox) convertView.findViewById(R.id.product_name);
                 Merchandize merchandize = getItem(position);
                 brandName.setText(merchandize.getBrandName());
                 item.setText(merchandize.getMerchandizeItem());
@@ -82,13 +82,15 @@ public class StoreInfoMerchandisingFragment extends Fragment implements Compound
                         }
                     }, 100);
 
-                }else{
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            item.setChecked(false);
-                        }
-                    }, 100);
+                } else {
+                    if (item.isChecked()) {
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                item.setChecked(false);
+                            }
+                        }, 100);
+                    }
                 }
                 item.setOnCheckedChangeListener(StoreInfoMerchandisingFragment.this);
                 item.setTag(merchandize.getMerchantId() + "_" + merchandize.getBrandId());
