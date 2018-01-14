@@ -4,11 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import mydist.mydist.models.Brand;
-import mydist.mydist.models.NewRetailer;
-import mydist.mydist.models.SubChannel;
-
 import static mydist.mydist.data.MasterContract.*;
+
 /**
  * Database helper class to facilitate creating and updating
  * the database from the chosen schema.
@@ -34,6 +31,8 @@ public class RouteDbHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + MerchandizeContract.TABLE_NAME + " (" +
                     MerchandizeContract._ID + " INTEGER PRIMARY KEY," +
                     MerchandizeContract.BRAND_NAME + " TEXT," +
+                    MerchandizeContract.MERCHANDIZE_ID + " TEXT," +
+                    MerchandizeContract.BRAND_ID + " TEXT," +
                     MerchandizeContract.COLUMN_MERCHANDIZE_ITEM + " TEXT)";
 
     private static final String SQL_CREATE_PRODUCT_ENTRIES =
@@ -71,6 +70,34 @@ public class RouteDbHelper extends SQLiteOpenHelper {
                     VisitingInfoContract.WEEK + " TEXT," +
                     VisitingInfoContract.DAY + " TEXT)";
 
+    private static final String SQL_CREATE_INVOICE =
+            "CREATE TABLE " + InvoiceContract.TABLE_NAME + " (" +
+                    InvoiceContract._ID + " INTEGER PRIMARY KEY," +
+                    InvoiceContract.DATE_ADDED + " TEXT," +
+                    InvoiceContract.RETAILER_ID + " TEXT," +
+                    InvoiceContract.TOTAL + " TEXT," +
+                    InvoiceContract.INVOICE_ID + " TEXT UNIQUE)";
+
+    private static final String SQL_CREATE_PRODUCT_ORDER =
+            "CREATE TABLE " + ProductOrderContract.TABLE_NAME + " (" +
+                    ProductOrderContract._ID + " INTEGER PRIMARY KEY," +
+                    ProductOrderContract.DATE_ADDED + " TEXT," +
+                    ProductOrderContract.INVOICE_ID + " TEXT," +
+                    ProductOrderContract.TOTAL + " TEXT," +
+                    ProductOrderContract.PRODUCT_NAME + " TEXT," +
+                    ProductOrderContract.PRODUCT_ID + " TEXT," +
+                    ProductOrderContract.OC + " INTEGER," +
+                    ProductOrderContract.OP + " INTEGER)";
+
+    private static final String SQL_CREATE_MERCHANDIZING_VERIFICATION =
+            "CREATE TABLE " + MerchandizingListVerificationContract.TABLE_NAME + " (" +
+                    MerchandizingListVerificationContract._ID + " INTEGER PRIMARY KEY," +
+                    MerchandizingListVerificationContract.DATE_ADDED + " TEXT," +
+                    MerchandizingListVerificationContract.MERCHANDIZING_ID + " TEXT," +
+                    MerchandizingListVerificationContract.BRAND_ID + " TEXT," +
+                    MerchandizingListVerificationContract.RETAILER_ID + " TEXT," +
+                    MerchandizingListVerificationContract.AVAILABLE + " INTEGER)";
+
     private static final String SQL_DELETE_BRAND_ENTRIES =
             "DROP TABLE IF EXISTS " + BrandContract.TABLE_NAME;
 
@@ -92,6 +119,15 @@ public class RouteDbHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_VISITING_INFO_ENTRIES =
             "DROP TABLE IF EXISTS " + VisitingInfoContract.TABLE_NAME;
 
+    private static final String SQL_DELETE_INVOICE =
+            "DROP TABLE IF EXISTS " + InvoiceContract.TABLE_NAME;
+
+    private static final String SQL_DELETE_PRODUCT_ORDER =
+            "DROP TABLE IF EXISTS " + ProductOrderContract.TABLE_NAME;
+
+    private static final String SQL_DELETE_MERCHANDIZING_VERIFICATION =
+            "DROP TABLE IF EXISTS " + MerchandizingListVerificationContract.TABLE_NAME;
+
 
     public RouteDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -106,6 +142,9 @@ public class RouteDbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_SUB_CHANNEL_ENTRIES);
         db.execSQL(SQL_CREATE_NEW_RETAILER);
         db.execSQL(SQL_CREATE_VISITING_INFO);
+        db.execSQL(SQL_CREATE_INVOICE);
+        db.execSQL(SQL_CREATE_PRODUCT_ORDER);
+        db.execSQL(SQL_CREATE_MERCHANDIZING_VERIFICATION);
 
     }
 
@@ -118,6 +157,10 @@ public class RouteDbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_SUB_CHANNEL_ENTRIES);
         db.execSQL(SQL_DELETE_NEW_RETAILER_ENTRIES);
         db.execSQL(SQL_DELETE_VISITING_INFO_ENTRIES);
+        db.execSQL(SQL_DELETE_INVOICE);
+        db.execSQL(SQL_DELETE_PRODUCT_ORDER);
+        db.execSQL(SQL_CREATE_MERCHANDIZING_VERIFICATION);
+
         onCreate(db);
     }
 

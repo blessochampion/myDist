@@ -6,8 +6,7 @@ import android.provider.BaseColumns;
  * Created by Blessing.Ekundayo on 11/25/2017.
  */
 
-public class MasterContract
-{
+public class MasterContract {
 
     public static class ChannelContract implements BaseColumns {
         public static final String TABLE_NAME = "channel";
@@ -40,9 +39,11 @@ public class MasterContract
         public static final String TABLE_NAME = "merchandize";
         public static final String BRAND_NAME = "brand_name";
         public static final String COLUMN_MERCHANDIZE_ITEM = "merchandize_item";
+        public static final String MERCHANDIZE_ID = "merchId";
+        public static final String BRAND_ID = "brandId";
     }
 
-    public static class RetailerContract implements BaseColumns{
+    public static class RetailerContract implements BaseColumns {
         public static final String TABLE_NAME = "retailer";
         public static final String DATE_ADDED = "date_added";
         public static final String RETAILER_NAME = "retailer_name";
@@ -54,12 +55,40 @@ public class MasterContract
         public static final String RETAILER_ID = "retailer_id";
     }
 
-    public static class VisitingInfoContract implements BaseColumns{
+    public static class VisitingInfoContract implements BaseColumns {
         public static final String TABLE_NAME = "visiting_info";
         public static final String DATE_ADDED = "date_added";
         public static final String RETAILER_ID = "retailer_id";
         public static final String WEEK = "week";
         public static final String DAY = "day";
 
+    }
+
+    public static class InvoiceContract implements BaseColumns {
+        public static final String TABLE_NAME = "invoice";
+        public static final String DATE_ADDED = "date_added";
+        public static final String RETAILER_ID = "retailer_id";
+        public static final String TOTAL = "total";
+        public static final String INVOICE_ID = "invoice_id";
+    }
+
+    public static class ProductOrderContract implements BaseColumns {
+        public static final String TABLE_NAME = "product_order";
+        public static final String DATE_ADDED = "date_added";
+        public static final String INVOICE_ID = "invoice_id";
+        public static final String TOTAL = "total";
+        public static final String PRODUCT_NAME = "product_name";
+        public static final String PRODUCT_ID = "product_id";
+        public static final String OC = "oc";
+        public static final String OP = "OP";
+    }
+
+    public static class MerchandizingListVerificationContract implements BaseColumns {
+        public static final String TABLE_NAME = "merchandizing_list_verification";
+        public static final String DATE_ADDED = "date_added";
+        public static final String MERCHANDIZING_ID = "merchandizing_id";
+        public static final String RETAILER_ID = "retailer_id";
+        public static final String BRAND_ID = "brand_id";
+        public static final String AVAILABLE = "available";
     }
 }

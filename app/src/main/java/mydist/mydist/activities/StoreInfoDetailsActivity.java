@@ -3,7 +3,6 @@ package mydist.mydist.activities;
 import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -14,7 +13,7 @@ import mydist.mydist.R;
 import mydist.mydist.fragments.StoreFilterDialogFragment;
 import mydist.mydist.fragments.StoreInfoCallAnalysisFragment;
 import mydist.mydist.fragments.StoreInfoCollectionFragment;
-import mydist.mydist.fragments.StoreInfoInvoiceCancelFragment;
+import mydist.mydist.fragments.StoreInfoInvoiceEditFragment;
 import mydist.mydist.fragments.StoreInfoInvoiceFragment;
 import mydist.mydist.fragments.StoreInfoMerchandisingFragment;
 import mydist.mydist.fragments.StoreInfoReviewFragment;
@@ -24,7 +23,7 @@ public class StoreInfoDetailsActivity extends AuthenticatedActivity {
     public static final int KEY_REVIEW =  0;
     public static final int KEY_INVOICE = 1;
     public static final int KEY_COLLECTION   =  2;
-    public static final int KEY_INVOICE_CANCEL = 3;
+    public static final int KEY_INVOICE_EDIT = 3;
     public static final int KEY_SBD_MERCHANDISING = 4;
     public static final int KEY_CALL_ANALYSIS = 5;
     public static final String KEY_STORE_INFO = "storeinfo";
@@ -75,9 +74,9 @@ public class StoreInfoDetailsActivity extends AuthenticatedActivity {
             case KEY_COLLECTION:
                 title  = getString(R.string.collection);
                 return new StoreInfoCollectionFragment();
-            case KEY_INVOICE_CANCEL:
+            case KEY_INVOICE_EDIT:
                 title = getString(R.string.invoice_edit);
-                return new StoreInfoInvoiceCancelFragment();
+                return  StoreInfoInvoiceEditFragment.getNewInstance(StoreOverviewActivity.retailerId);
             case KEY_SBD_MERCHANDISING:
                 title = getString(R.string.sbd_merchandising);
                 return new StoreInfoMerchandisingFragment();

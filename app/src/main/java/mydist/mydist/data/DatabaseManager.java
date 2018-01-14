@@ -10,10 +10,12 @@ import java.util.List;
 
 import mydist.mydist.models.Brand;
 import mydist.mydist.models.Channel;
+import mydist.mydist.models.Invoice;
 import mydist.mydist.models.Merchandize;
+import mydist.mydist.models.MerchandizingVerification;
 import mydist.mydist.models.NewRetailer;
 import mydist.mydist.models.Product;
-import mydist.mydist.models.Retailer;
+import mydist.mydist.models.ProductOrder;
 import mydist.mydist.models.SubChannel;
 
 import static mydist.mydist.data.MasterContract.*;
@@ -56,6 +58,39 @@ public class DatabaseManager {
 
     }
 
+    public boolean persistInvoice(Invoice invoice) {
+        ContentValues contentValues;
+        SQLiteDatabase mDatabase = mRouteDbHelper.getWritableDatabase();
+        contentValues = new ContentValues();
+        contentValues.put(InvoiceContract.INVOICE_ID, invoice.getId());
+        contentValues.put(InvoiceContract.RETAILER_ID, invoice.getRetailerId());
+        contentValues.put(InvoiceContract.DATE_ADDED, invoice.getDateAdded());
+        contentValues.put(InvoiceContract.TOTAL, invoice.getTotal());
+        long response = mDatabase.insertWithOnConflict(InvoiceContract.TABLE_NAME, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+        if (response > -1) {
+            boolean isSuccess = true;
+            for (ProductOrder productOrder : invoice.getProductOrders()) {
+                contentValues = new ContentValues();
+                contentValues.put(ProductOrderContract.DATE_ADDED, productOrder.getDateAdded());
+                contentValues.put(ProductOrderContract.INVOICE_ID, productOrder.getInvoiceId());
+                contentValues.put(ProductOrderContract.TOTAL, productOrder.getProductName());
+                contentValues.put(ProductOrderContract.PRODUCT_NAME, productOrder.getProductName());
+                contentValues.put(ProductOrderContract.OC, productOrder.getOc());
+                contentValues.put(ProductOrderContract.OP, productOrder.getOp());
+                response = mDatabase.insertWithOnConflict(ProductOrderContract.TABLE_NAME, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+                isSuccess = isSuccess && response > -1;
+                if (!isSuccess)
+                    return false;
+            }
+
+            return isSuccess;
+
+        }
+
+        return false;
+    }
+
+
     public void persistAllChannel(List<Channel> channels) {
         ContentValues values;
         SQLiteDatabase mDataBase = mRouteDbHelper.getWritableDatabase();
@@ -76,6 +111,8 @@ public class DatabaseManager {
             values = new ContentValues();
             values.put(MerchandizeContract.BRAND_NAME, merchandize.getBrandName());
             values.put(MerchandizeContract.COLUMN_MERCHANDIZE_ITEM, merchandize.getMerchandizeItem());
+            values.put(MerchandizeContract.MERCHANDIZE_ID, merchandize.getMerchantId());
+            values.put(MerchandizeContract.BRAND_ID, merchandize.getBrandId());
             mDataBase.insertWithOnConflict(MerchandizeContract.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
         }
         mDataBase.close();
@@ -144,6 +181,28 @@ public class DatabaseManager {
         return true;
     }
 
+    public boolean persistMerchandizingVerification(List<MerchandizingVerification> merchandizingVerificationList) {
+        MerchandizingVerification firstItem = merchandizingVerificationList.get(0);
+        deleteMerchandizingVerification(firstItem.getRetailerId(), firstItem.getDateAdded());
+        ContentValues values;
+        boolean result = true;
+        long response;
+        SQLiteDatabase mDataBase = mRouteDbHelper.getWritableDatabase();
+        for (MerchandizingVerification m : merchandizingVerificationList) {
+            values = new ContentValues();
+            values.put(MerchandizingListVerificationContract.DATE_ADDED, m.getDateAdded());
+            values.put(MerchandizingListVerificationContract.MERCHANDIZING_ID, m.getMerchandizingId());
+            values.put(MerchandizingListVerificationContract.RETAILER_ID, m.getRetailerId());
+            values.put(MerchandizingListVerificationContract.BRAND_ID, m.getBrandId());
+            values.put(MerchandizingListVerificationContract.AVAILABLE, m.getAvailable());
+            response = mDataBase.insertWithOnConflict(MerchandizingListVerificationContract.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            result = result && response > -1;
+        }
+
+        return result;
+
+    }
+
     public Cursor queryAllBrand() {
         //TODO: Implement the query
         String[] projection = {
@@ -199,7 +258,10 @@ public class DatabaseManager {
         String[] projection = {
                 MerchandizeContract._ID,
                 MerchandizeContract.BRAND_NAME,
-                MerchandizeContract.COLUMN_MERCHANDIZE_ITEM
+                MerchandizeContract.COLUMN_MERCHANDIZE_ITEM,
+                MerchandizeContract.MERCHANDIZE_ID,
+                MerchandizeContract.BRAND_ID
+
         };
 
         String selection = null;
@@ -334,7 +396,7 @@ public class DatabaseManager {
         return cursor;
     }
 
-    public Cursor getRetailerProfileById(String id){
+    public Cursor getRetailerProfileById(String id) {
         final String QUERY = "SELECT " +
                 RetailerContract.TABLE_NAME + "." + RetailerContract._ID + "," +
                 RetailerContract.TABLE_NAME + "." + RetailerContract.DATE_ADDED + "," +
@@ -343,7 +405,7 @@ public class DatabaseManager {
                 RetailerContract.CONTACT_PERSON_NAME + "," +
                 RetailerContract.ADDRESS + "," +
                 RetailerContract.PHONE + "," +
-                ChannelContract.TABLE_NAME + "."+ChannelContract.COLUMN_NAME+ "," +
+                ChannelContract.TABLE_NAME + "." + ChannelContract.COLUMN_NAME + "," +
                 SubChannelContract.TABLE_NAME + "." + SubChannelContract.COLUMN_NAME +
                 " FROM " + RetailerContract.TABLE_NAME +
                 " INNER JOIN " + ChannelContract.TABLE_NAME + " ON " +
@@ -351,8 +413,8 @@ public class DatabaseManager {
                 ChannelContract.COLUMN_CHANNEL_ID + " = " +
                 RetailerContract.TABLE_NAME + "." +
                 RetailerContract.CHANNEL_ID +
-                " INNER JOIN "+
-                SubChannelContract.TABLE_NAME + " ON "+
+                " INNER JOIN " +
+                SubChannelContract.TABLE_NAME + " ON " +
                 SubChannelContract.TABLE_NAME + "." +
                 SubChannelContract.COLUMN_SUB_CHANNEL_ID + " = " +
                 RetailerContract.TABLE_NAME + "." +
@@ -364,6 +426,7 @@ public class DatabaseManager {
         Cursor cursor = db.rawQuery(QUERY, new String[]{id});
         return cursor;
     }
+
     public Cursor getRetailerById(String id) {
         String[] projection = {
                 RetailerContract._ID,
@@ -418,6 +481,85 @@ public class DatabaseManager {
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(QUERY, new String[]{week, day});
         return cursor;
+
+    }
+
+
+    public Cursor queryAllInvoiceByRetailerId(String retailerId, String dateAdded) {
+        String[] projection = new String[]{
+                InvoiceContract._ID,
+                InvoiceContract.INVOICE_ID,
+                InvoiceContract.RETAILER_ID,
+                InvoiceContract.DATE_ADDED,
+                InvoiceContract.TOTAL
+        };
+
+        String selection = InvoiceContract.RETAILER_ID + " = ? " + " AND " + InvoiceContract.DATE_ADDED + " = ?";
+        String selectionArgs[] = {retailerId, dateAdded};
+        String sortOrder = InvoiceContract.INVOICE_ID + " ASC";
+
+        SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
+
+        Cursor invoice = db.query(
+                InvoiceContract.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+
+        return invoice;
+    }
+
+    public Cursor getMerchandisingVerification(String retailerId, String dateAdded) {
+
+        String[] projection = new String[]{
+                MerchandizingListVerificationContract._ID,
+                MerchandizingListVerificationContract.DATE_ADDED,
+                MerchandizingListVerificationContract.RETAILER_ID,
+                MerchandizingListVerificationContract.MERCHANDIZING_ID,
+                MerchandizingListVerificationContract.BRAND_ID,
+                MerchandizingListVerificationContract.AVAILABLE
+        };
+
+        String selection = MerchandizingListVerificationContract.RETAILER_ID + " = ? " + " AND " + MerchandizingListVerificationContract.DATE_ADDED + " = ?";
+        String selectionArgs[] = new String[]{retailerId, dateAdded};
+        String sortOrder = MerchandizingListVerificationContract.MERCHANDIZING_ID + " ASC";
+
+        SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
+
+        Cursor merchandizingVerification = db.query(
+                MerchandizingListVerificationContract.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+
+        return merchandizingVerification;
+    }
+
+
+    private void deleteMerchandizingVerification(String retailerId, String date) {
+        SQLiteDatabase db = mRouteDbHelper.getWritableDatabase();
+        db.delete(MerchandizingListVerificationContract.TABLE_NAME
+                , MerchandizingListVerificationContract.RETAILER_ID + " = ? AND " +
+                        MerchandizingListVerificationContract.DATE_ADDED + " = ?", new String[]{retailerId, date});
+    }
+
+    public boolean deleteInvoice(String invoiceId) {
+        SQLiteDatabase db = mRouteDbHelper.getWritableDatabase();
+        int result = db.delete(InvoiceContract.TABLE_NAME, InvoiceContract.INVOICE_ID + " = ?",
+                new String[]{invoiceId});
+        if (result > 0) {
+            result = db.delete(ProductOrderContract.TABLE_NAME, ProductOrderContract.INVOICE_ID + " = ?",
+                    new String[]{invoiceId});
+        }
+        return result > 0;
 
     }
 }

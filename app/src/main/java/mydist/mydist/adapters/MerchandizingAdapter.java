@@ -20,17 +20,17 @@ import mydist.mydist.models.Merchandize;
  * Created by Blessing.Ekundayo on 11/26/2017.
  */
 
-public class MerchandizingAdapter extends ArrayAdapter<Merchandize>
-{
+public class MerchandizingAdapter extends ArrayAdapter<Merchandize> {
 
     public MerchandizingAdapter(@NonNull Context context, List<Merchandize> merchandizes) {
         super(context, 0, merchandizes);
     }
 
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        if(convertView == null){
+        if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.merchandizing_item, parent, false);
         }
         TextView brandName = (TextView) convertView.findViewById(R.id.brand_name);

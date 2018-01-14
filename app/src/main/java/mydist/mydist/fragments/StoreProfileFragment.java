@@ -29,7 +29,7 @@ public class StoreProfileFragment extends Fragment {
     TextView mPhone;
     TextView mChannel;
     TextView mSubChannel;
-    public static final String KEY_ID = "id";
+    public static final String KEY_ID = "merchantId";
 
     public StoreProfileFragment() {
         // Required empty public constructor

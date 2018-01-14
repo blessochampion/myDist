@@ -83,7 +83,7 @@
     <string name="credit_balance">Credit Balance</string>
     <string name="credit_days">Credit days</string>
     <string name="max_os_invoice">Max OS Invoice</string>
-    <string name="id">ID</string>
+    <string name="merchantId">ID</string>
     <string name="date">Date</string>
     <string name="planning">Planning</string>
     <string name="devitation_question">Select Deviate reason to plan this Retailer for Today</string>
@@ -148,4 +148,15 @@
     <string name="weeks_error">Select at least one week</string>
     <string name="contact_person">Contact Person</string>
     <string name="no_history_retailer">This is a new Retailer, no history found</string>
+    <string name="invoice_saved">Invoice Saved</string>
+    <string name="invoice_not_saved">Unable To save Invoice</string>
+    <string name="no_invoice">No Invoice created Today</string>
+    <string name="inoice_delete_question">Are you sure you want to delete Invoice?</string>
+    <string name="yes">Yes</string>
+    <string name="invoice_delete_error">Unable to Delete Invoice</string>
+    <string name="invoice_delete_success">Deleted Successully</string>
+    <string name="merchandizing_saving_success">Saved</string>
+    <string name="merchandizing_saving_error">Unable To save</string>
+    <string name="merchant_id">merchant_id</string>
+    <string name="brand_id">brand_id</string>
 </resources>

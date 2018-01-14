@@ -51,7 +51,6 @@ public class CoverageActivity extends AuthenticatedActivity {
     private void loadDailyRetailers() {
         Calendar now = Calendar.getInstance();
         int weekNo = now.get(Calendar.WEEK_OF_MONTH);
-        Log.e("weeeeee", weekNo + "");
         if (weekNo < 1) {
             weekNo = 1;
         } else if (weekNo > 4) {
@@ -96,7 +95,7 @@ public class CoverageActivity extends AuthenticatedActivity {
 /*
         // Associate searchable configuration with the SearchView
         // SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.merchantId.action_search));
         // searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));*/
 
 

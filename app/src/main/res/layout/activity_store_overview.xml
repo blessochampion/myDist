@@ -167,7 +167,7 @@
 
             <!--Stock Report-->
             <LinearLayout
-                android:id="@+id/ll_invoice_cancel"
+                android:id="@+id/ll_invoice_edit"
                 android:elevation="2dp"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"

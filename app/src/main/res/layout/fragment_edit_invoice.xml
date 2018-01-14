@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+    <TextView
+        android:layout_gravity="center_vertical"
+        android:textSize="18sp"
+        android:id="@+id/invoice_id"
+        android:layout_height="wrap_content"
+        android:layout_weight="5"
+        android:layout_width="0dp"/>
+
+    <FrameLayout
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        >
+
+
+        <TextView
+            android:textSize="32sp"
+            android:text="@string/fa_icon_invoice_edit"
+            android:textColor="@color/primary_text"
+            android:id="@+id/icon_invoice_edit"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        >
+
+
+        <TextView
+            android:textSize="32sp"
+            android:text="@string/fa_icon_invoice_delete"
+            android:textColor="@color/crispy_red"
+            android:id="@+id/icon_invoice_delete"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            />
+    </FrameLayout>
+
+</LinearLayout>

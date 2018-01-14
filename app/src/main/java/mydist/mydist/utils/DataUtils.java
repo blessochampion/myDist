@@ -24,9 +24,12 @@ import mydist.mydist.models.AuthenticationResponse;
 import mydist.mydist.models.Brand;
 import mydist.mydist.models.Channel;
 import mydist.mydist.models.DownloadMastersResponse;
+import mydist.mydist.models.Invoice;
 import mydist.mydist.models.Merchandize;
+import mydist.mydist.models.MerchandizingVerification;
 import mydist.mydist.models.NewRetailer;
 import mydist.mydist.models.Product;
+import mydist.mydist.models.ProductOrder;
 import mydist.mydist.models.Retailer;
 import mydist.mydist.models.SubChannel;
 import mydist.mydist.printing.PrintingModel;
@@ -68,14 +71,18 @@ public class DataUtils {
 
     public static boolean saveNewRetailers(List<NewRetailer> newRetailers, Context context) {
         DatabaseManager manager = DatabaseManager.getInstance(context);
-        boolean isSuccess =  true;
-       for (NewRetailer retailer : newRetailers){
-           isSuccess = isSuccess && manager.persistNewRetailer(retailer);
-       }
+        boolean isSuccess = true;
+        for (NewRetailer retailer : newRetailers) {
+            isSuccess = isSuccess && manager.persistNewRetailer(retailer);
+        }
         return isSuccess;
     }
 
-
+    public static boolean saveInvoice(Invoice invoice, Context context) {
+        DatabaseManager manager = DatabaseManager.getInstance(context);
+        boolean isSuccess = manager.persistInvoice(invoice);
+        return isSuccess;
+    }
 
     public static List<Retailer> getRetailerByVisitingInfo(String week, String day, Context context) {
         List<Retailer> retailers = new ArrayList<>();
@@ -190,6 +197,10 @@ public class DataUtils {
         return products;
     }
 
+    public static final Cursor getAllInvoice(String retailerId, Context context) {
+        return DatabaseManager.getInstance(context).queryAllInvoiceByRetailerId(retailerId, Days.getTodayDate());
+    }
+
     public static List<Product> getAllProductsByBrandId(Context context, String brandId) {
         List<Product> products = new ArrayList<>();
         Cursor productCursor = DatabaseManager.getInstance(context).queryAllProduct(brandId);
@@ -213,5 +224,34 @@ public class DataUtils {
 
     public static double getTotalAmountToBePaid() {
         return totalAmountToBePaid;
+    }
+
+    public static boolean deleteRetailer(String invoiceId, Context context) {
+        return DatabaseManager.getInstance(context).deleteInvoice(invoiceId);
+    }
+
+    public static HashMap<String, MerchandizingVerification> getMerchandizingVerification(String retailerId, String todayDate, Context context) {
+
+        HashMap<String, MerchandizingVerification> result = new HashMap<>();
+        Cursor cursor = DatabaseManager.getInstance(context).getMerchandisingVerification(retailerId, todayDate);
+        MerchandizingVerification currentItem;
+        int count = cursor.getCount();
+        if (count > 0) {
+            cursor.moveToFirst();
+            for (int i = 0; i < count; i++) {
+                currentItem = new MerchandizingVerification(cursor);
+                result.put(currentItem.getMerchandizingId() + "_" + currentItem.getBrandId(), currentItem);
+                cursor.moveToNext();
+            }
+        }
+
+        return result;
+    }
+
+    public static boolean persistMerchandizingVerification(HashMap<String, MerchandizingVerification> mList, Context context){
+
+       List<MerchandizingVerification> verification =  new ArrayList<MerchandizingVerification>(mList.values());
+
+        return  DatabaseManager.getInstance(context).persistMerchandizingVerification(verification);
     }
 }

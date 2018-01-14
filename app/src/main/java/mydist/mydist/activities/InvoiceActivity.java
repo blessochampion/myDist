@@ -5,10 +5,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,23 +15,32 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import mydist.mydist.R;
 import mydist.mydist.data.DatabaseManager;
 import mydist.mydist.data.MasterContract;
 import mydist.mydist.data.ProductLogic;
 import mydist.mydist.data.UserPreference;
+import mydist.mydist.models.Invoice;
+import mydist.mydist.models.ProductOrder;
 import mydist.mydist.printing.PrintingActivity;
 import mydist.mydist.printing.PrintingModel;
 import mydist.mydist.utils.DataUtils;
+import mydist.mydist.utils.Days;
 import mydist.mydist.utils.FontManager;
+import mydist.mydist.utils.UIUtils;
 
 import static android.view.Gravity.CENTER;
 import static android.view.Gravity.CENTER_HORIZONTAL;
+import static java.lang.String.valueOf;
 
 public class InvoiceActivity extends AuthenticatedActivity implements View.OnClickListener {
     TableLayout mInvoiceTableLayout;
@@ -44,6 +51,8 @@ public class InvoiceActivity extends AuthenticatedActivity implements View.OnCli
     Button mEdit;
     Button mSave;
     Button mSaveAndPrint;
+    boolean invoiceSaved = false;
+    String invoiceNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +122,7 @@ public class InvoiceActivity extends AuthenticatedActivity implements View.OnCli
         productRow.addView(productName);
 
         TextView oc = new TextView(context);
-        oc.setText(String.valueOf(currentProductLogic.oc));
+        oc.setText(valueOf(currentProductLogic.oc));
         oc.setTextSize(17);
         oc.setGravity(CENTER_HORIZONTAL);
         oc.setTextColor(Color.parseColor("#212121"));
@@ -122,7 +131,7 @@ public class InvoiceActivity extends AuthenticatedActivity implements View.OnCli
         productRow.addView(oc);
 
         TextView op = new TextView(context);
-        op.setText(String.valueOf(currentProductLogic.op));
+        op.setText(valueOf(currentProductLogic.op));
         op.setTextSize(17);
         op.setGravity(CENTER_HORIZONTAL);
         op.setTextColor(Color.parseColor("#212121"));
@@ -202,26 +211,117 @@ public class InvoiceActivity extends AuthenticatedActivity implements View.OnCli
                 onBackPressed();
                 break;
             case R.id.save:
+                if (!invoiceSaved) {
+                    invoiceSaved = saveInvoice(
+                            invoiceNumber == null ?
+                                    generateInvoiceNumber(StoreOverviewActivity.retailerId)
+                                    : invoiceNumber, StoreOverviewActivity.retailerId);
+                } else {
+                    makeToast(getString(R.string.invoice_saved));
+                }
                 break;
             case R.id.save_and_print:
-                launchPrintActivity();
+                saveAndPrint();
                 break;
             default:
                 break;
         }
     }
 
-    private void launchPrintActivity() {
+    private void makeToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void saveAndPrint() {
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         String salesRep = UserPreference.getInstance(this).getFullName().split(" ")[0];
-        Cursor cursor = DatabaseManager.getInstance(this).getRetailerById(StoreOverviewActivity.retailerId);
-        cursor.moveToFirst();
-        String name = cursor.getString(cursor.getColumnIndex(MasterContract.RetailerContract.RETAILER_NAME));
-        PrintingModel printingModel = new PrintingModel(name, salesRep,
-                "INV/SS001/100118/001", dateFormat.format(new Date()));
+        String retailerId = StoreOverviewActivity.retailerId;
+        String retailerName = getRetailerName(retailerId);
+
+        if (!invoiceSaved) {
+            invoiceNumber = invoiceNumber == null ? generateInvoiceNumber(retailerId) : invoiceNumber;
+            invoiceSaved = saveInvoice(invoiceNumber, retailerId);
+
+        }
+
+        PrintingModel printingModel = new PrintingModel(retailerName, salesRep,
+                invoiceNumber, dateFormat.format(new Date()));
         DataUtils.setPrintingModel(printingModel);
+
         Intent intent = new Intent(context, PrintingActivity.class);
         startActivity(intent);
-        overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
+    }
+
+    private boolean saveInvoice(String invoiceId, String retailerId) {
+        List<ProductOrder> productOrders = getProductOrders(Days.getTodayDate(), invoiceId);
+        Invoice invoice = new Invoice(invoiceId, retailerId, Days.getTodayDate()
+                , String.valueOf(DataUtils.getTotalAmountToBePaid()), productOrders);
+
+        boolean success = DataUtils.saveInvoice(invoice, this);
+        if (!success) {
+            UserPreference userPreference = UserPreference.getInstance(this);
+            userPreference.setInvoiceLastIndex(userPreference.lastInvoiceIndex() - 1);
+            makeToast(getString(R.string.invoice_not_saved));
+
+        } else {
+            mSaveAndPrint.setText(getString(R.string.print));
+            makeToast(getString(R.string.invoice_saved));
+        }
+
+        return success;
+    }
+
+    private String generateInvoiceNumber(String retailerId) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyy");
+        StringBuilder stringBuilder = new StringBuilder("INV");
+        stringBuilder.append("/");
+        stringBuilder.append(retailerId);
+        stringBuilder.append("/");
+        stringBuilder.append(dateFormat.format(new Date()));
+        stringBuilder.append("/");
+        UserPreference userPreference = UserPreference.getInstance(this);
+        int lastInvoiceIndex = userPreference.lastInvoiceIndex();
+
+        String invoiceNumber = valueOf(lastInvoiceIndex);
+        if (invoiceNumber.length() == 1) {
+            stringBuilder.append("00").append(invoiceNumber);
+        } else if (invoiceNumber.length() == 2) {
+            stringBuilder.append("0").append(invoiceNumber);
+        } else {
+            stringBuilder.append(invoiceNumber);
+        }
+
+        lastInvoiceIndex++;
+        userPreference.setInvoiceLastIndex(lastInvoiceIndex);
+        return stringBuilder.toString();
+    }
+
+    private String getRetailerName(String retailerId) {
+        Cursor cursor = DatabaseManager.getInstance(this).getRetailerById(retailerId);
+        cursor.moveToFirst();
+        return cursor.getString(cursor.getColumnIndex(MasterContract.RetailerContract.RETAILER_NAME));
+    }
+
+    public List<ProductOrder> getProductOrders(String dateAdded, String invoiceId) {
+        List<ProductOrder> productOrders = new ArrayList<>();
+        HashMap<String, ProductLogic> products = DataUtils.getSelectedProducts();
+        ProductLogic productLogic;
+        ProductOrder productOrder;
+        for (String productKey : products.keySet()) {
+            productLogic = products.get(productKey);
+            productOrder = new ProductOrder(
+                    dateAdded,
+                    invoiceId,
+                    String.format("%.2f",productLogic.getTotal()),
+                    productLogic.getProduct().productName,
+                    productLogic.getProduct().productId,
+                    productLogic.oc,
+                    productLogic.op
+            );
+            productOrders.add(productOrder);
+        }
+
+        return productOrders;
     }
 }

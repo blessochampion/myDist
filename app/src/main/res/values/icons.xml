@@ -16,4 +16,5 @@
     <string name="fa_icon_close" translatable="false">&#xf00d;</string>
     <string name="fa_icon_invoice" translatable="false">&#xf0c5;</string>
     <string name="fa_icon_invoice_edit" translatable="false">&#xf040;</string>
+    <string name="fa_icon_invoice_delete" translatable="false">&#xf014;</string>
 </resources>

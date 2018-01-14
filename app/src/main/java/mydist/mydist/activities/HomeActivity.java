@@ -118,7 +118,7 @@ public class HomeActivity extends AuthenticatedActivity implements View.OnClickL
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-          /*  case R.id.menu_home_settings:
+          /*  case R.merchantId.menu_home_settings:
                 launchSettingsActivity();
                 return true;*/
             case R.id.menu_home_logout:
