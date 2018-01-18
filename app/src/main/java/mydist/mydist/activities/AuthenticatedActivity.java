@@ -35,6 +35,8 @@ public class AuthenticatedActivity extends AppCompatActivity
                     }).create();
             if(!((Activity) context).isFinishing())
             {
+                mDialog.setCancelable(false);
+                mDialog.setCanceledOnTouchOutside(false);
                 mDialog.show();
             }
 

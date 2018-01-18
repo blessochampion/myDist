@@ -69,16 +69,23 @@ public class MasterContract {
         public static final String DATE_ADDED = "date_added";
         public static final String RETAILER_ID = "retailer_id";
         public static final String TOTAL = "total";
+        public static final String TOTAL_ALIAS = "total_alias";
+        public static final String AMOUNT_PAID = "amount_paid";
+        public static final String PAYMENT_MODE = "payment_mode";
+        public static final String PAYMENT_MODE_VALUE = "payment_mode_value";
         public static final String INVOICE_ID = "invoice_id";
+        public static final String STATUS = "status";
     }
 
     public static class ProductOrderContract implements BaseColumns {
         public static final String TABLE_NAME = "product_order";
         public static final String DATE_ADDED = "date_added";
         public static final String INVOICE_ID = "invoice_id";
+        public static final String INVOICE_ID_ALIAS = "invoice_id_alias";
         public static final String TOTAL = "total";
         public static final String PRODUCT_NAME = "product_name";
         public static final String PRODUCT_ID = "product_id";
+        public static final String PRODUCT_ID_ALIAS = "product_id_alias";
         public static final String BRAND_ID = "brand_id";
         public static final String OC = "oc";
         public static final String OP = "OP";

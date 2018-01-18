@@ -6,12 +6,6 @@ package mydist.mydist.utils;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
-import android.widget.TableLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +23,6 @@ import mydist.mydist.models.Merchandize;
 import mydist.mydist.models.MerchandizingVerification;
 import mydist.mydist.models.NewRetailer;
 import mydist.mydist.models.Product;
-import mydist.mydist.models.ProductOrder;
 import mydist.mydist.models.Retailer;
 import mydist.mydist.models.SubChannel;
 import mydist.mydist.printing.PrintingModel;
@@ -197,8 +190,8 @@ public class DataUtils {
         return products;
     }
 
-    public static final Cursor getAllInvoice(String retailerId, Context context) {
-        return DatabaseManager.getInstance(context).queryAllInvoiceByRetailerId(retailerId, Days.getTodayDate());
+    public static final Cursor getAllInvoice(String retailerId ,int status, Context context) {
+        return DatabaseManager.getInstance(context).queryAllInvoiceByRetailerId(retailerId, Days.getTodayDate(), status);
     }
 
     public static List<Product> getAllProductsByBrandId(Context context, String brandId) {
@@ -226,8 +219,11 @@ public class DataUtils {
         return totalAmountToBePaid;
     }
 
-    public static boolean deleteRetailer(String invoiceId, Context context) {
-        return DatabaseManager.getInstance(context).deleteInvoice(invoiceId);
+    public static boolean cancelInvoice(String invoiceId, Context context) {
+        return DatabaseManager.getInstance(context).cancelInvoice(invoiceId);
+    }
+    public static boolean saveCollectionForInvoice(Context context, String invoiceId, String amount, String paymentMode, String paymentModeValue){
+        return DatabaseManager.getInstance(context).updateAmountPaidForInvoice(invoiceId,amount, paymentMode, paymentModeValue);
     }
 
     public static HashMap<String, MerchandizingVerification> getMerchandizingVerification(String retailerId, String todayDate, Context context) {

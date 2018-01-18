@@ -16,7 +16,7 @@ import mydist.mydist.utils.Days;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class NewRetailer {
 
-    String dateAdded;
+    String dateAdded = "01/11/1970";
     @JsonProperty("retailerName")
     String name;
     @JsonProperty("contactPerson")
@@ -143,6 +143,7 @@ public class NewRetailer {
             for (int i = 0; i < weeks.length; i++) {
                 weekNos.add("wk"+weeks[i]);
             }
+
         }
         return weekNos;
     }

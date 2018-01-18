@@ -33,11 +33,8 @@ public class StoreInfoInvoiceEditFragment extends Fragment implements View.OnCli
     public static final String KEY_RETAILER_ID = "retailer_id";
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_store_info_invoice_cancel, container, false);
-
         invoiceMessage = (TextView) view.findViewById(R.id.invoice_message);
         contentContainer = (LinearLayout) view.findViewById(R.id.parent_layout);
         listView = (ListView) view.findViewById(R.id.list_view);
@@ -47,7 +44,7 @@ public class StoreInfoInvoiceEditFragment extends Fragment implements View.OnCli
     }
 
     private void bindView() {
-        Cursor cursor = DataUtils.getAllInvoice(retailerId, getActivity());
+        Cursor cursor = DataUtils.getAllInvoice(retailerId, -1, getActivity());
         if (cursor.getCount() > 0) {
             adapter = new InvoiceAdapter(getActivity(), cursor, this);
             listView.setAdapter(adapter);
@@ -86,7 +83,7 @@ public class StoreInfoInvoiceEditFragment extends Fragment implements View.OnCli
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    boolean result = DataUtils.deleteRetailer(invoiceId, getContext());
+                                    boolean result = DataUtils.cancelInvoice(invoiceId, getContext());
                                     if (result) {
                                         Toast.makeText(getActivity(), getString(R.string.invoice_delete_success), Toast.LENGTH_SHORT).show();
                                         bindView();

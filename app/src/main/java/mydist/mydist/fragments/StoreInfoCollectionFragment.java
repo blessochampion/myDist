@@ -1,45 +1,67 @@
 package mydist.mydist.fragments;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import mydist.mydist.R;
+import mydist.mydist.activities.StoreOverviewActivity;
+import mydist.mydist.adapters.InvoiceAdapter;
+import mydist.mydist.data.DatabaseManager;
+import mydist.mydist.data.MasterContract;
 import mydist.mydist.data.UserPreference;
+import mydist.mydist.models.Invoice;
 import mydist.mydist.printing.CollectionModel;
 import mydist.mydist.printing.PrintingActivity;
+import mydist.mydist.utils.DataUtils;
 import mydist.mydist.utils.FontManager;
+
+import static mydist.mydist.models.Invoice.MODE_CASH;
+import static mydist.mydist.models.Invoice.MODE_CHEQUE;
+import static mydist.mydist.models.Invoice.MODE_DRAFT;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class StoreInfoCollectionFragment extends Fragment implements View.OnClickListener {
-
+    InvoiceAdapter adapter;
     private RadioButton mCash;
     private RadioButton mCheque;
     private RadioButton mDraft;
     private EditText mNumber;
-    private TextView mInvoiceNumber;
-    private TextView mTotal;
-    private String mode = MODE_CASH;
-    private static final String MODE_CASH = "CASH";
-    private static final String MODE_CHEQUE = "CHEQUE";
-    private static final String MODE_DRAFT = "DRAFT";
+    private EditText mAmount;
+    private String  mode = MODE_CASH;
     private static final String EMPTY = "";
     private String chequeOrDraftNumber = EMPTY;
+    private static final String SEPARATOR = ":";
+    private LinearLayout mAmountInputContainer;
+    private Button mSave;
+    String retailerId;
+    ListView mListView;
+    private TextView mMessage;
+    private String invoiceNumber;
+    private int selectedPosition;
+    View page;
     /*Todo: Fix hard coded value*/
     private double total = 34099.345;
 
@@ -55,11 +77,11 @@ public class StoreInfoCollectionFragment extends Fragment implements View.OnClic
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        retailerId = StoreOverviewActivity.retailerId;
         View view = inflater.inflate(R.layout.fragment_store_info_collection, container, false);
+        page = view;
         getReferencesToViews(view);
         setHasOptionsMenu(true);
-        setFonts(view);
         return view;
     }
 
@@ -67,26 +89,37 @@ public class StoreInfoCollectionFragment extends Fragment implements View.OnClic
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save:
-                saveAndPrint();
                 return true;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
+    private String getRetailerName(String retailerId) {
+        Cursor cursor = DatabaseManager.getInstance(getActivity()).getRetailerById(retailerId);
+        cursor.moveToFirst();
+        return cursor.getString(cursor.getColumnIndex(MasterContract.RetailerContract.RETAILER_NAME));
+    }
+
 
     private void saveAndPrint() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-        /*Todo: Remove hardcoded name*/
-        CollectionModel model = new CollectionModel(mInvoiceNumber.getText().toString(), dateFormat
+        String retailerName = getRetailerName(retailerId);
+        CollectionModel model = new CollectionModel(invoiceNumber, dateFormat
                 .format(new Date()), String.format("%,.2f", total),
-                "Blessing", UserPreference.getInstance(getActivity()).getFullName());
+                retailerName, UserPreference.getInstance(getActivity()).getFullName());
+
+        String amount = mAmount.getText().toString();
+        if (amount.equals(EMPTY)) {
+            mAmount.setError("Field Cannot be empty");
+            return;
+        }
         if (mode.equalsIgnoreCase(MODE_CHEQUE)) {
             chequeOrDraftNumber = mNumber.getText().toString().trim();
             if (chequeOrDraftNumber.equalsIgnoreCase(EMPTY)) {
                 mNumber.setError("Field can not be empty");
                 return;
-            }else {
+            } else {
                 model.setChequeNumber(chequeOrDraftNumber);
             }
         } else if (mode.equalsIgnoreCase(MODE_DRAFT)) {
@@ -94,13 +127,22 @@ public class StoreInfoCollectionFragment extends Fragment implements View.OnClic
             if (chequeOrDraftNumber.equalsIgnoreCase(EMPTY)) {
                 mNumber.setError("Field can not be empty");
                 return;
-            }else {
+            } else {
                 model.setDraftNumber(chequeOrDraftNumber);
             }
         }
-        Intent intent = new Intent(getActivity(), PrintingActivity.class);
+
+       boolean result = DataUtils.saveCollectionForInvoice(getActivity(), invoiceNumber, amount,mode, chequeOrDraftNumber );
+        if(result){
+            Toast.makeText(getActivity(), "Saved", Toast.LENGTH_SHORT).show();
+            bindView();
+        }else{
+            Toast.makeText(getActivity(), "Unable to save", Toast.LENGTH_SHORT).show();
+        }
+        mAmountInputContainer.setVisibility(View.GONE);
+       /* Intent intent = new Intent(getActivity(), PrintingActivity.class);
         intent.putExtra(PrintingActivity.KEY_COLLECTION, model);
-        startActivity(intent);
+        startActivity(intent);*/
         //getActivity().overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
 
     }
@@ -109,14 +151,64 @@ public class StoreInfoCollectionFragment extends Fragment implements View.OnClic
         mCash = (RadioButton) view.findViewById(R.id.cash);
         mCheque = (RadioButton) view.findViewById(R.id.cheque);
         mDraft = (RadioButton) view.findViewById(R.id.draft);
-        mInvoiceNumber = (TextView) view.findViewById(R.id.invoiceNo);
-        mTotal = (TextView) view.findViewById(R.id.total);
-        /*Todo: fix hard coding*/
-        mTotal.setText(String.format("%,.2f", total));
         mCash.setOnClickListener(this);
         mCheque.setOnClickListener(this);
         mDraft.setOnClickListener(this);
         mNumber = (EditText) view.findViewById(R.id.number);
+        mAmountInputContainer = (LinearLayout) view.findViewById(R.id.amount_input_container);
+        mSave = (Button) view.findViewById(R.id.btn_save);
+        mSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveAndPrint();
+            }
+        });
+
+        mListView = (ListView) view.findViewById(R.id.list_view);
+        mMessage = (TextView) view.findViewById(R.id.tv_message);
+        bindView();
+        mAmount = (EditText) view.findViewById(R.id.collection_amount);
+        setFonts(page);
+    }
+
+
+    private void bindView() {
+        Cursor cursor = DataUtils.getAllInvoice(retailerId, Invoice.KEY_STATUS_SUCCESS, getActivity());
+        if (cursor.getCount() > 0) {
+            adapter = new InvoiceAdapter(getActivity(), cursor, this) {
+                @Override
+                public void bindView(View view, Context context, Cursor cursor) {
+
+                    TextView value = (TextView) view.findViewById(R.id.invoice_value);
+                    TextView invoice_Number = (TextView) view.findViewById(R.id.invoice_number);
+                    Button payButton = (Button) view.findViewById(R.id.btn_pay);
+                    String valueStr = cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.TOTAL));
+                    value.setText(
+                            getString(R.string.naira) + String.format("%,.2f", Double.valueOf(valueStr))
+                    );
+                    valueStr = cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.INVOICE_ID));
+                    invoice_Number.setText(valueStr);
+                    payButton.setTag(valueStr + SEPARATOR + cursor.getPosition());
+                    payButton.setOnClickListener(StoreInfoCollectionFragment.this);
+                    TextView amountValue = (TextView) view.findViewById(R.id.amount_value);
+                    valueStr = cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.AMOUNT_PAID));
+                    amountValue.setText(  getString(R.string.naira) + String.format("%,.2f",Double.valueOf(valueStr)));
+                }
+
+                @Override
+                public View newView(Context context, Cursor cursor, ViewGroup parent) {
+
+                    return LayoutInflater.from(getActivity()).inflate(R.layout.collection_item, parent, false);
+                }
+            };
+            mListView.setAdapter(adapter);
+            mMessage.setVisibility(View.GONE);
+            mListView.setVisibility(View.VISIBLE);
+        } else {
+            mMessage.setVisibility(View.VISIBLE);
+            mListView.setVisibility(View.GONE);
+        }
+        setFonts(page);
     }
 
     private void setFonts(View v) {
@@ -153,6 +245,13 @@ public class StoreInfoCollectionFragment extends Fragment implements View.OnClic
                 break;
             case R.id.draft:
                 showDraftEditText();
+                break;
+            case R.id.btn_pay:
+                mAmountInputContainer.setVisibility(View.VISIBLE);
+                String []  tags = v.getTag().toString().split(SEPARATOR);
+                invoiceNumber = tags[0];
+                selectedPosition = Integer.valueOf(tags[1]);
+
                 break;
             default:
                 break;

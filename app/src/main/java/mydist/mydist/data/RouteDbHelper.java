@@ -78,6 +78,10 @@ public class RouteDbHelper extends SQLiteOpenHelper {
                     InvoiceContract.DATE_ADDED + " TEXT," +
                     InvoiceContract.RETAILER_ID + " TEXT," +
                     InvoiceContract.TOTAL + " TEXT," +
+                    InvoiceContract.AMOUNT_PAID + " TEXT," +
+                    InvoiceContract.PAYMENT_MODE + " TEXT," +
+                    InvoiceContract.PAYMENT_MODE_VALUE + " TEXT," +
+                    InvoiceContract.STATUS + " INTEGER," +
                     InvoiceContract.INVOICE_ID + " TEXT UNIQUE)";
 
     private static final String SQL_CREATE_PRODUCT_ORDER =
@@ -162,7 +166,7 @@ public class RouteDbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_VISITING_INFO_ENTRIES);
         db.execSQL(SQL_DELETE_INVOICE);
         db.execSQL(SQL_DELETE_PRODUCT_ORDER);
-        db.execSQL(SQL_CREATE_MERCHANDIZING_VERIFICATION);
+        db.execSQL(SQL_DELETE_MERCHANDIZING_VERIFICATION);
 
         onCreate(db);
     }

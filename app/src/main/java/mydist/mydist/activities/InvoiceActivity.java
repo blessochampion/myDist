@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +19,6 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +35,6 @@ import mydist.mydist.printing.PrintingModel;
 import mydist.mydist.utils.DataUtils;
 import mydist.mydist.utils.Days;
 import mydist.mydist.utils.FontManager;
-import mydist.mydist.utils.UIUtils;
 
 import static android.view.Gravity.CENTER;
 import static android.view.Gravity.CENTER_HORIZONTAL;
@@ -257,7 +254,9 @@ public class InvoiceActivity extends AuthenticatedActivity implements View.OnCli
     private boolean saveInvoice(String invoiceId, String retailerId) {
         List<ProductOrder> productOrders = getProductOrders(Days.getTodayDate(), invoiceId);
         Invoice invoice = new Invoice(invoiceId, retailerId, Days.getTodayDate()
-                , String.valueOf(DataUtils.getTotalAmountToBePaid()), productOrders);
+                , String.valueOf(DataUtils.getTotalAmountToBePaid()), Invoice.NO_AMOUNT,
+                Invoice.MODE_CASH, Invoice.CASH_DEFAULT_VALUE,
+                Invoice.KEY_STATUS_SUCCESS, productOrders);
 
         boolean success = DataUtils.saveInvoice(invoice, this);
         if (!success) {

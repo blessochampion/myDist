@@ -15,6 +15,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.Calendar;
 
 import mydist.mydist.R;
 import mydist.mydist.activities.StoreOverviewActivity;
@@ -22,6 +25,7 @@ import mydist.mydist.adapters.DailyRetailersAdapter;
 import mydist.mydist.data.DatabaseManager;
 import mydist.mydist.data.MasterContract;
 import mydist.mydist.models.Retailer;
+import mydist.mydist.utils.Days;
 import mydist.mydist.utils.FontManager;
 
 /**
@@ -91,6 +95,37 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onDateChangeRequested(String id) {
-        Log.e("eee", id);
+        Calendar now = Calendar.getInstance();
+        int value = now.get(Calendar.WEEK_OF_MONTH);
+        if (value < 1) {
+            value = 1;
+        } else if (value > 4) {
+            value = 4;
+        }
+        String week = "wk" + value;
+        value = now.get(Calendar.DAY_OF_WEEK);
+        String day = getDay(value);
+       if(DatabaseManager.getInstance(getActivity()).changeRetailerVisitingDate(id, Days.getTodayDate(), day, week)){
+           Toast.makeText(getActivity(), getString(R.string.date_changed), Toast.LENGTH_LONG).show();
+       }
+    }
+
+    private String getDay(int day){
+        switch (day){
+            case 1:
+                return "Sun";
+            case 2:
+                return "Mon";
+            case 3:
+                return "Tue";
+            case 4:
+                return "Wed";
+            case 5:
+                return "Thur";
+            case 6:
+                return "Fri";
+            default:
+                return "Sat";
+        }
     }
 }

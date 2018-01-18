@@ -28,7 +28,6 @@ public class StoreInfoDetailsActivity extends AuthenticatedActivity {
     public static final int KEY_CALL_ANALYSIS = 5;
     public static final String KEY_STORE_INFO = "storeinfo";
     private static int DEFAULT_REPORT_KEY_VALUE = -1;
-    private String retailerId;
     String title = "";
     int storeKey;
     StoreFilterDialogFragment storeFilterDialogFragment;

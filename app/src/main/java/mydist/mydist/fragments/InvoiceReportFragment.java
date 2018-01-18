@@ -15,6 +15,7 @@ import android.widget.TextView;
 import mydist.mydist.R;
 import mydist.mydist.adapters.InvoiceAdapter;
 import mydist.mydist.data.MasterContract;
+import mydist.mydist.models.Invoice;
 import mydist.mydist.utils.DataUtils;
 import mydist.mydist.utils.FontManager;
 
@@ -52,7 +53,7 @@ public class InvoiceReportFragment extends Fragment implements View.OnClickListe
     }
 
     private void bindView() {
-        Cursor cursor = DataUtils.getAllInvoice(null, getActivity());
+        Cursor cursor = DataUtils.getAllInvoice(null, Invoice.KEY_STATUS_SUCCESS, getActivity());
         if (cursor.getCount() > 0) {
             adapter = new InvoiceAdapter(getActivity(), cursor, this) {
                 @Override
@@ -60,7 +61,6 @@ public class InvoiceReportFragment extends Fragment implements View.OnClickListe
 
                     TextView value = (TextView) view.findViewById(R.id.value);
                     TextView invoice_Number = (TextView) view.findViewById(R.id.invoice_number);
-                    TextView status = (TextView) view.findViewById(R.id.status);
 
                     String valueStr = cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.TOTAL));
                     value.setText(
@@ -68,7 +68,7 @@ public class InvoiceReportFragment extends Fragment implements View.OnClickListe
                     );
                     valueStr = cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.INVOICE_ID));
                     invoice_Number.setText(valueStr);
-                    status.setText("Successful");
+
 
                 }
 

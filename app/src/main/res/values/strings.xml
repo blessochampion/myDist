@@ -160,4 +160,9 @@
     <string name="merchant_id">merchant_id</string>
     <string name="brand_id">brand_id</string>
     <string name="no_retailer_info">No Retailer for Today</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="amount_label">Amount: </string>
+    <string name="pay">Pay</string>
+    <string name="synchronization_message">Sending your data to server</string>
+    <string name="date_changed">Visiting Date Changed</string>
 </resources>

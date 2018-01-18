@@ -205,8 +205,7 @@ public class NewRetailerActivity extends AuthenticatedActivity {
         String salesRepFullName = UserPreference.getInstance(this).getFullName();
         String names[] = salesRepFullName.split(" ");
         String initials = names[0].charAt(0) + String.valueOf(names[1].charAt(0));
-        String retailerId = initials + getRetailerIndex();
-        Log.e("sass", retailerId);
+        String retailerId = "R" + initials + getRetailerIndex();
 
         NewRetailer newRetailer = new NewRetailer(dateAdded,
                 name, contactPerson, address, phone, channel, subChannel,
