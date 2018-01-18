@@ -41,7 +41,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         userPreference = UserPreference.getInstance(this);
@@ -75,7 +74,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         UIUtils.hideKeyboard(this);
-        if (userHasClosedSalesToday()) {
+        if (userHasClosedSalesToday() && v.getId() == R.id.login_activity_download) {
             launchDialog(getString(R.string.login_user_closed_for_the_day));
             return;
         }

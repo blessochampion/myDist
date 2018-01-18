@@ -165,4 +165,9 @@
     <string name="pay">Pay</string>
     <string name="synchronization_message">Sending your data to server</string>
     <string name="date_changed">Visiting Date Changed</string>
+    <string name="generating_masters">Generating Masters</string>
+    <string name="generating_masters_error">Unable to generate Masters</string>
+    <string name="upload_failed">Upload Failed</string>
+    <string name="upload_success">Masters Uploaded successfully</string>
+    <string name="uploading_masters">Uploading Masters</string>
 </resources>

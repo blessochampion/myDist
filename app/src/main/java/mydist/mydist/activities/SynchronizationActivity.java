@@ -22,6 +22,9 @@ import android.widget.Toast;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,8 +36,10 @@ import mydist.mydist.R;
 import mydist.mydist.data.DatabaseManager;
 import mydist.mydist.data.MasterContract;
 import mydist.mydist.data.UserPreference;
+import mydist.mydist.listeners.UploadMastersListener;
 import mydist.mydist.models.Invoice;
 import mydist.mydist.models.NewRetailer;
+import mydist.mydist.models.UploadMastersResponse;
 import mydist.mydist.models.push.CallAnalysis;
 import mydist.mydist.models.push.CollectionPush;
 import mydist.mydist.models.push.Coverage;
@@ -42,12 +47,14 @@ import mydist.mydist.models.push.InvoicePush;
 import mydist.mydist.models.push.MasterPush;
 import mydist.mydist.models.push.MerchandizingPush;
 import mydist.mydist.models.push.NewRetailerPush;
+import mydist.mydist.network.NetworkUtils;
+import mydist.mydist.network.UploadMastersClient;
 import mydist.mydist.utils.DataUtils;
 import mydist.mydist.utils.Days;
 import mydist.mydist.utils.FontManager;
 import mydist.mydist.utils.UIUtils;
 
-public class SynchronizationActivity extends AuthenticatedActivity implements View.OnClickListener {
+public class SynchronizationActivity extends AuthenticatedActivity implements View.OnClickListener, UploadMastersListener {
 
     Button mStartSyncButton;
     EditText mUsername;
@@ -58,6 +65,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
     ProgressDialog mProgressDialog;
     UserPreference userPreference;
     Cursor allInvoiceCursor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,40 +129,67 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
     public void onClick(View v) {
         UIUtils.hideKeyboard(this);
         if (v.getId() == R.id.bt_start_sync) {
-            if (mCloseForTheDay.isChecked()) {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                String todayDate = dateFormat.format(new Date());
-                UserPreference.getInstance(this).setUserCloseForTheDayDate(todayDate);
-                AlertDialog dialog = new AlertDialog.Builder(SynchronizationActivity.this).
-                        setMessage(this.getString(R.string.closing_message, todayDate)).
-                        setPositiveButton(this.getString(R.string.ok), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                generatePushMasters();
-                            }
-                        }).create();
-                dialog.show();
+            if (!NetworkUtils.isNetworkAvailable(SynchronizationActivity.this)) {
+                launchDialog(R.string.network_error);
+            } else {
+                if (mCloseForTheDay.isChecked()) {
+                    AlertDialog dialog = new AlertDialog.Builder(SynchronizationActivity.this).
+                            setMessage(this.getString(R.string.closing_message, Days.getTodayDate())).
+                            setPositiveButton(this.getString(R.string.ok), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mProgressDialog.setMessage(getString(R.string.generating_masters));
+                                    MasterPush push = generatePushMasters();
+                                    if (push != null) {
+
+                                        try {
+                                            ObjectMapper mapper = new ObjectMapper();
+                                            JSONObject masters = new JSONObject(mapper.writeValueAsString(push));
+                                            new UploadMastersClient().uploadMasters(masters, SynchronizationActivity.this);
+                                        } catch (JsonProcessingException e) {
+
+                                        } catch (JSONException e) {
+
+
+                                        }
+
+                                    } else {
+                                        mProgressDialog.cancel();
+                                        launchDialog(R.string.generating_masters_error);
+                                    }
+                                }
+                            }).create();
+                    dialog.show();
+                }
             }
         }
     }
 
-    private void generatePushMasters() {
-        String repId = userPreference.getRepId();
-        String repCode = userPreference.getRepCode();
-        List<NewRetailerPush> newRetailerPushes = getNewRetailers();
-        List<CollectionPush> collectionPushes = getCollectionPushes();
-        List<Coverage> coverages = getCoverages();
-        MasterPush push = new MasterPush(repId,
-                repCode, newRetailerPushes, collectionPushes,
-                coverages);
+    private void launchDialog(int stringResource) {
+        AlertDialog mDialog = new AlertDialog.Builder(SynchronizationActivity.this).
+                setMessage(getString(stringResource)).
+                setPositiveButton(SynchronizationActivity.this.getText(R.string.ok), null).create();
+        mDialog.show();
+    }
+
+    private MasterPush generatePushMasters() {
+        MasterPush push;
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            System.out.println(mapper.writeValueAsString(push));
+            String repId = userPreference.getRepId();
+            String repCode = userPreference.getRepCode();
+            List<NewRetailerPush> newRetailerPushes = getNewRetailers();
+            List<CollectionPush> collectionPushes = getCollectionPushes();
+            List<Coverage> coverages = getCoverages();
+            push = new MasterPush(repId,
+                    repCode, newRetailerPushes, collectionPushes,
+                    coverages);
             Toast.makeText(this, "Report generated Successfully", Toast.LENGTH_SHORT).show();
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             Log.e("Exception", e.getMessage());
             Toast.makeText(this, "Unable to collate Report", Toast.LENGTH_SHORT).show();
+            return null;
         }
+        return push;
     }
 
     public String getUsername() {
@@ -169,7 +204,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
             cursor.moveToFirst();
             List<String> suggestedVisitDays;
             List<String> weekNo;
-            String retailerId = cursor.getString(cursor.getColumnIndex( MasterContract.RetailerContract.RETAILER_ID));
+            String retailerId = cursor.getString(cursor.getColumnIndex(MasterContract.RetailerContract.RETAILER_ID));
             HashMap<String, List<String>> visitingInfo;
             String key_days = "days", key_weeks = "weeks";
             for (int i = 0; i < count; i++) {
@@ -304,7 +339,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
                 } else {
                     invoicePushes = new ArrayList<>();
                     invoicePushes.add(new InvoicePush(cursor));
-                    invoicePushMap.put(retailerId,invoicePushes);
+                    invoicePushMap.put(retailerId, invoicePushes);
                 }
                 cursor.moveToNext();
             }
@@ -335,5 +370,27 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
             }
         }
         return merchandizingPushMap;
+    }
+
+    @Override
+    public void onStartUpload() {
+        mProgressDialog.setMessage(getString(R.string.uploading_masters));
+        mProgressDialog.show();
+    }
+
+    @Override
+    public void onSuccess(UploadMastersResponse response) {
+        mProgressDialog.cancel();
+        if (response.getStatus().isSuccess()) {
+            UserPreference.getInstance(this).setUserCloseForTheDayDate(Days.getTodayDate().toString());
+            launchDialog(R.string.upload_success);
+        } else {
+            launchDialog(R.string.upload_failed);
+        }
+    }
+
+    @Override
+    public void onFailure() {
+        launchDialog(R.string.upload_failed);
     }
 }

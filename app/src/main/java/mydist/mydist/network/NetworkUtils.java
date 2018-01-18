@@ -36,6 +36,12 @@ public class NetworkUtils
         return mastersDownloadUri.toString();
     }
 
+    public static String getUploadURL(){
+        String mastersUploadPath = "senddata.php";
+        Uri mastersUploadUri = Uri.parse(BASE_URL).buildUpon().appendPath(mastersUploadPath).build();
+        return mastersUploadUri.toString();
+    }
+
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
