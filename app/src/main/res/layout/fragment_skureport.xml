@@ -1,31 +1,30 @@
-<LinearLayout
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:id="@+id/parent_layout"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/crispy_white"
+    android:orientation="vertical"
     tools:context="mydist.mydist.fragments.SKUReportFragment">
 
     <LinearLayout
-        android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        android:padding="16dp">
+
         <TextView
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:gravity="center_vertical"
-            android:textStyle="bold"
-            android:textColor="@color/colorPrimary"
-            android:text="@string/brand"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/brand"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold" />
 
         <FrameLayout
-            android:layout_marginLeft="24dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -44,151 +43,54 @@
                     android:paddingLeft="4dp" />
             </RelativeLayout>
         </FrameLayout>
-        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
-        android:padding="1dp"
         android:layout_width="match_parent"
-        android:layout_height="36dp">
+        android:layout_height="36dp"
+        android:padding="1dp">
+
         <TextView
-            android:paddingLeft="16dp"
-            android:textColor="@color/white"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:background="@color/colorPrimary"
             android:gravity="center_vertical"
+            android:paddingLeft="16dp"
             android:text="@string/product_name"
-            android:background="@color/colorPrimary"
-            android:layout_weight="5"
-            android:layout_width="0dp"
-            android:layout_height="match_parent" />
+            android:textColor="@color/white" />
+
         <TextView
-            android:textColor="@color/white"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="3"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
             android:text="@string/qty"
-            android:gravity="center"
-            android:layout_marginLeft="1dp"
-            android:background="@color/colorPrimary"
-            android:layout_weight="3"
-            android:layout_width="0dp"
-            android:layout_height="match_parent" />
+            android:textColor="@color/white" />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:padding="1dp"
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="36dp">
+        android:layout_height="match_parent">
+
         <TextView
-            android:textColor="@color/secondary_text"
-            android:paddingLeft="16dp"
-            android:gravity="center_vertical"
-            android:text="Product 1"
-            android:layout_weight="5"
-            android:layout_width="0dp"
-            android:layout_height="match_parent" />
-        <TextView
-            android:paddingRight="8dp"
-            android:textColor="@color/secondary_text"
-            android:text="1"
+            android:id="@+id/product_brand_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:layout_marginLeft="1dp"
-            android:layout_weight="3"
-            android:layout_width="0dp"
-            android:layout_height="match_parent" />
+            android:text="@string/no_product_for_brand" />
 
-    </LinearLayout>
+        <ListView
+            android:id="@+id/list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <LinearLayout
-        android:padding="1dp"
-        android:layout_width="match_parent"
-        android:layout_height="36dp">
-        <TextView
-            android:textColor="@color/secondary_text"
-            android:paddingLeft="16dp"
-            android:gravity="center_vertical"
-            android:text="Product 2"
-            android:layout_weight="5"
-            android:layout_width="0dp"
-            android:layout_height="match_parent" />
-        <TextView
-            android:paddingRight="8dp"
-            android:textColor="@color/secondary_text"
-            android:text="30"
-            android:gravity="center"
-            android:layout_marginLeft="1dp"
-            android:layout_weight="3"
-            android:layout_width="0dp"
-            android:layout_height="match_parent" />
+        </ListView>
+    </FrameLayout>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:padding="1dp"
-        android:layout_width="match_parent"
-        android:layout_height="36dp">
-        <TextView
-            android:textColor="@color/secondary_text"
-            android:paddingLeft="16dp"
-            android:gravity="center_vertical"
-            android:text="Product 3"
-            android:layout_weight="5"
-            android:layout_width="0dp"
-            android:layout_height="match_parent" />
-        <TextView
-            android:paddingRight="8dp"
-            android:textColor="@color/secondary_text"
-            android:text="6"
-            android:gravity="center"
-            android:layout_marginLeft="1dp"
-            android:layout_weight="3"
-            android:layout_width="0dp"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:padding="1dp"
-        android:layout_width="match_parent"
-        android:layout_height="36dp">
-        <TextView
-            android:textColor="@color/secondary_text"
-            android:paddingLeft="16dp"
-            android:gravity="center_vertical"
-            android:text="Product 4"
-            android:layout_weight="5"
-            android:layout_width="0dp"
-            android:layout_height="match_parent" />
-        <TextView
-            android:paddingRight="8dp"
-            android:textColor="@color/secondary_text"
-            android:text="23"
-            android:gravity="center"
-            android:layout_marginLeft="1dp"
-            android:layout_weight="3"
-            android:layout_width="0dp"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:padding="1dp"
-        android:layout_width="match_parent"
-        android:layout_height="36dp">
-        <TextView
-            android:textColor="@color/secondary_text"
-            android:paddingLeft="16dp"
-            android:gravity="center_vertical"
-            android:text="Product 5"
-            android:layout_weight="5"
-            android:layout_width="0dp"
-            android:layout_height="match_parent" />
-        <TextView
-            android:paddingRight="8dp"
-            android:textColor="@color/secondary_text"
-            android:text="5"
-            android:gravity="center"
-            android:layout_marginLeft="1dp"
-            android:layout_weight="3"
-            android:layout_width="0dp"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
 
 </LinearLayout>

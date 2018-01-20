@@ -541,6 +541,7 @@ public class DatabaseManager {
 
     public Cursor getProductInvoiceByBrandId(String brandId, String dateAdded) {
         final String QUERY = "SELECT " +
+                ProductOrderContract._ID + ", "+
                 ProductOrderContract.PRODUCT_NAME + "," +
                 "COUNT(" + ProductOrderContract.PRODUCT_NAME + ") AS " +
                 ProductOrderContract.PRODUCT_COUNT +
