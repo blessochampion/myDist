@@ -57,14 +57,11 @@ import mydist.mydist.utils.UIUtils;
 public class SynchronizationActivity extends AuthenticatedActivity implements View.OnClickListener, UploadMastersListener {
 
     Button mStartSyncButton;
-    EditText mUsername;
-    EditText mPassword;
     CheckBox mCloseForTheDay;
-    TextView mUsernameLabel;
-    TextView mPasswordLabel;
     ProgressDialog mProgressDialog;
     UserPreference userPreference;
     Cursor allInvoiceCursor;
+    TextView uploadIcon;
 
 
     @Override
@@ -90,15 +87,14 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
         setupToolBar();
         mStartSyncButton = (Button) findViewById(R.id.bt_start_sync);
         mCloseForTheDay = (CheckBox) findViewById(R.id.cb_close_for_the_day);
-        mUsername = (EditText) findViewById(R.id.et_username);
-        mUsername.setText(getUsername());
-        mPassword = (EditText) findViewById(R.id.password);
-        mUsernameLabel = (TextView) findViewById(R.id.username_label);
-        mPasswordLabel = (TextView) findViewById(R.id.password_label);
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage(getString(R.string.synchronization_message));
         mProgressDialog.setCancelable(false);
         mProgressDialog.setCanceledOnTouchOutside(false);
+        uploadIcon = (TextView) findViewById(R.id.upload_icon);
+        uploadIcon.setTag(FontManager.IMMUTABLE_TYPFACE_USED);
+        Typeface typeface = FontManager.getTypeface(this, FontManager.FONT_AWESOME);
+        uploadIcon.setTypeface(typeface);
     }
 
     private void setupToolBar() {
@@ -177,10 +173,11 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
         try {
             String repId = userPreference.getRepId();
             String repCode = userPreference.getRepCode();
+            String username = userPreference.getUsername();
             List<NewRetailerPush> newRetailerPushes = getNewRetailers();
             List<CollectionPush> collectionPushes = getCollectionPushes();
             List<Coverage> coverages = getCoverages();
-            push = new MasterPush(repId,
+            push = new MasterPush(repId, username,
                     repCode, newRetailerPushes, collectionPushes,
                     coverages);
             Toast.makeText(this, "Report generated Successfully", Toast.LENGTH_SHORT).show();

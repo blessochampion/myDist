@@ -11,6 +11,8 @@ import java.util.List;
 public class MasterPush {
     @JsonProperty("repId")
     String repId;
+    @JsonProperty("username")
+    String username;
     @JsonProperty("repCode")
     String repCode;
     @JsonProperty("new_retailers")
@@ -20,12 +22,21 @@ public class MasterPush {
     @JsonProperty("coverage")
     List<Coverage> coverage;
 
-    public MasterPush(String repId, String repCode, List<NewRetailerPush> newRetailers, List<CollectionPush> collections, List<Coverage> coverage) {
+    public MasterPush(String repId, String username, String repCode, List<NewRetailerPush> newRetailers, List<CollectionPush> collections, List<Coverage> coverage) {
         this.repId = repId;
+        this.username = username;
         this.repCode = repCode;
         this.newRetailers = newRetailers;
         this.collections = collections;
         this.coverage = coverage;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getRepId() {

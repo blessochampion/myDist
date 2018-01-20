@@ -20,16 +20,16 @@
             android:gravity="center_vertical"
             android:paddingLeft="8dp"
             android:text="Invoice No"
-            android:textColor="@color/primary_text"
+            android:textColor="@color/crispy_green"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.5"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:text="@string/value"
-            android:textColor="@color/primary_text"
+            android:textColor="@color/crispy_green"
             android:textStyle="bold" />
 
 

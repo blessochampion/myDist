@@ -1,4 +1,5 @@
 <LinearLayout
+    android:padding="16dp"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,29 +8,7 @@
     android:id="@+id/parent_layout"
     tools:context="mydist.mydist.fragments.DayReportFragment">
 
-    <LinearLayout
-        android:padding="1dp"
-        android:layout_width="match_parent"
-        android:layout_height="36dp">
-        <TextView
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:text="@string/name"
-            android:background="@color/colorPrimary"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent" />
-        <TextView
-            android:textColor="@color/white"
-            android:text="@string/value"
-            android:gravity="center"
-            android:layout_marginLeft="1dp"
-            android:background="@color/colorPrimary"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent" />
 
-    </LinearLayout>
 
     <LinearLayout
         android:padding="1dp"
@@ -73,7 +52,7 @@
             android:textColor="@color/secondary_text"
             android:gravity="right|center_vertical"
             android:layout_marginLeft="1dp"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:layout_width="0dp"
             android:layout_height="match_parent" />
 
@@ -121,7 +100,7 @@
             android:textColor="@color/secondary_text"
             android:gravity="right|center_vertical"
             android:layout_marginLeft="1dp"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:layout_width="0dp"
             android:layout_height="match_parent" />
 
@@ -145,7 +124,7 @@
             android:textColor="@color/secondary_text"
             android:gravity="right|center_vertical"
             android:layout_marginLeft="1dp"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:layout_width="0dp"
             android:layout_height="match_parent" />
 
@@ -169,7 +148,7 @@
             android:textColor="@color/secondary_text"
             android:gravity="right|center_vertical"
             android:layout_marginLeft="1dp"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:layout_width="0dp"
             android:layout_height="match_parent" />
 
@@ -193,7 +172,7 @@
             android:textColor="@color/secondary_text"
             android:gravity="right|center_vertical"
             android:layout_marginLeft="1dp"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:layout_width="0dp"
             android:layout_height="match_parent" />
 
@@ -217,7 +196,7 @@
             android:textColor="@color/secondary_text"
             android:gravity="right|center_vertical"
             android:layout_marginLeft="1dp"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:layout_width="0dp"
             android:layout_height="match_parent" />
 
@@ -241,7 +220,7 @@
             android:textColor="@color/secondary_text"
             android:gravity="right|center_vertical"
             android:layout_marginLeft="1dp"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:layout_width="0dp"
             android:layout_height="match_parent" />
 

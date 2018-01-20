@@ -78,6 +78,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             launchDialog(getString(R.string.login_user_closed_for_the_day));
             return;
         }
+        if(userHasClosedSalesToday() && v.getId() == R.id.login_activity_login){
+            doLogin();
+            return;
+        }
 
         if (!NetworkUtils.isNetworkAvailable(this)) {
             launchDialog(getString(R.string.network_error));
@@ -132,7 +136,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void doLogin() {
         if (mastersDownloadedToday()) {
             if (userInputIsValid()) {
-                makeNetworkCallForLogin();
+                if(userPreference.getPassword().equals(usernameValue + ":" + passwordValue)){
+                    launchHomeActivity();
+                }else {
+                    loginFailed();
+                }
             }
         } else {
             launchDialog(getString(R.string.login_masters_info));
@@ -202,6 +210,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         DataUtils.saveUser(response.getUser(), UserPreference.getInstance(this));
         DataUtils.saveNewRetailers(response.getMaster().getRetailers(), this);
         DataUtils.saveMasters(response, this);
+        userPreference.savePassword(usernameValue + ":" + passwordValue);
         dismissDialog();
         launchHomeActivity();
     }

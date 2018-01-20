@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import mydist.mydist.R;
 import mydist.mydist.data.UserPreference;
+import mydist.mydist.utils.Days;
 import mydist.mydist.utils.FontManager;
 import mydist.mydist.utils.UIUtils;
 
@@ -41,10 +42,7 @@ public class HomeActivity extends AuthenticatedActivity implements View.OnClickL
     private void setFonts() {
         Typeface ralewayFont = FontManager.getTypeface(getApplicationContext(), FontManager.RALEWAY_REGULAR);
         FontManager.setFontsForView(findViewById(R.id.parent_layout), ralewayFont );
-
-        //set icons
         setIcons();
-
     }
 
     private void setIcons() {
@@ -69,7 +67,7 @@ public class HomeActivity extends AuthenticatedActivity implements View.OnClickL
         mReports = (LinearLayout) findViewById(R.id.ll_reports);
         mCoverage = (LinearLayout) findViewById(R.id.ll_coverage);
         mWelcomeMessage = (TextView) findViewById(R.id.tv_welcome_message);
-        mWelcomeMessage.setText(getString(R.string.home_welcome_message, UserPreference.getInstance(this).getUsername()));
+        mWelcomeMessage.setText(UserPreference.getInstance(this).getFullName());
 
     }
 
@@ -85,9 +83,21 @@ public class HomeActivity extends AuthenticatedActivity implements View.OnClickL
         getMenuInflater().inflate(R.menu.menu_home, menu);
         return true;
     }
+    private boolean userHasClosedSalesToday() {
+        String todayDate = Days.getTodayDate();
+        return todayDate.equalsIgnoreCase(UserPreference.getInstance(this).getLastUserClosedForTheDayDate());
+    }
 
     @Override
     public void onClick(View v) {
+        if(userHasClosedSalesToday() && v.getId() != R.id.ll_reports ){
+
+            AlertDialog alertDialog = new AlertDialog.Builder(HomeActivity.this).
+                    setMessage(HomeActivity.this.getString(R.string.close_for_the_day)).
+                    setPositiveButton(HomeActivity.this.getString(R.string.ok), null).create();
+            alertDialog.show();
+            return;
+        }
         if (v.getId() == R.id.ll_new_retailer) {
             Intent intent = new Intent(HomeActivity.this, NewRetailerActivity.class);
             startActivity(intent);
@@ -118,9 +128,6 @@ public class HomeActivity extends AuthenticatedActivity implements View.OnClickL
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-          /*  case R.merchantId.menu_home_settings:
-                launchSettingsActivity();
-                return true;*/
             case R.id.menu_home_logout:
                 showLogoutDialog();
                 return true;
@@ -130,10 +137,7 @@ public class HomeActivity extends AuthenticatedActivity implements View.OnClickL
         }
     }
 
-    private void launchSettingsActivity() {
-        Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
-        startActivity(intent);
-    }
+
 
     private void showLogoutDialog() {
         AlertDialog dialog = new AlertDialog.Builder(HomeActivity.this).

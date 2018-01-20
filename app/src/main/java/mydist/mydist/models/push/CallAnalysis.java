@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CallAnalysis
 {
-    @JsonProperty("sale")
+    @JsonProperty("sales")
     double sale;
     @JsonProperty("collectionAmount")
     double collectionAmount;

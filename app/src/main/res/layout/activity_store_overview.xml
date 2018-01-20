@@ -59,7 +59,7 @@
                     <TextView
                         android:textSize="32sp"
                         android:text="@string/fa_icon_check"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/icons_color"
                         android:id="@+id/icon_review"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
@@ -72,7 +72,7 @@
                     android:paddingRight="32dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/item_background_button"
+                    android:background="@drawable/gradient"
                     android:gravity="center_vertical"
                     android:paddingLeft="40dp"
                     android:text="@string/review"
@@ -102,7 +102,7 @@
                     <TextView
                         android:textSize="32sp"
                         android:text="@string/fa_icon_invoice"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/icons_color"
                         android:id="@+id/icon_invoice"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
@@ -115,7 +115,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/item_background_button"
+                    android:background="@drawable/gradient"
                     android:gravity="center_vertical"
                     android:paddingLeft="40dp"
                     android:text="@string/invoice"
@@ -144,7 +144,7 @@
                     <TextView
                         android:textSize="32sp"
                         android:text="@string/fa_icon_money"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/icons_color"
                         android:id="@+id/icon_collection"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
@@ -156,7 +156,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/item_background_button"
+                    android:background="@drawable/gradient"
                     android:gravity="center_vertical"
                     android:paddingLeft="40dp"
                     android:text="@string/collection"
@@ -186,7 +186,7 @@
                     <TextView
                         android:textSize="32sp"
                         android:text="@string/fa_icon_invoice_edit"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/icons_color"
                         android:id="@+id/icon_invoice_edit"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
@@ -198,7 +198,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/item_background_button"
+                    android:background="@drawable/gradient"
                     android:gravity="center_vertical"
                     android:paddingLeft="40dp"
                     android:text="@string/invoice_edit"
@@ -227,7 +227,7 @@
                     <TextView
                         android:textSize="32sp"
                         android:text="@string/fa_icon_inr"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/icons_color"
                         android:id="@+id/icon_sbd_merchandising"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
@@ -239,7 +239,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/item_background_button"
+                    android:background="@drawable/gradient"
                     android:gravity="center_vertical"
                     android:paddingLeft="40dp"
                     android:text="@string/sbd_merchandising"
@@ -266,7 +266,7 @@
                     <TextView
                         android:textSize="32sp"
                         android:text="@string/fa_icon_phone"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/icons_color"
                         android:id="@+id/icon_call_analysis"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
@@ -279,7 +279,7 @@
                     android:elevation="2dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/item_background_button"
+                    android:background="@drawable/gradient"
                     android:gravity="center_vertical"
                     android:paddingLeft="40dp"
                     android:text="@string/call_analysis"

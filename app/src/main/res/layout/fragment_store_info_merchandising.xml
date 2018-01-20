@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/crispy_white"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:orientation="vertical">
 
 
     <ListView
@@ -21,8 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/colorPrimary"
-        android:elevation="2dp"
+        android:background="@drawable/gradient"
         android:text="@string/save"
         android:textAllCaps="false"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"

@@ -17,6 +17,7 @@ public class UserPreference {
     private static final String KEY_LAST_INVOICE_INDEX = "last_invoice_index";
     private static final String KEY_CLOSED_FOR_THE_DAY = "closed_for_the_day";
     private static final String KEY_LAST_MASTER_DOWNLOAD_DATE = "last_master_download";
+    private static final String KEY_PASSWORD = "password";
     SharedPreferences sharedPreferences;
     static UserPreference INSTANCE;
 
@@ -40,15 +41,24 @@ public class UserPreference {
         editor.commit();
     }
 
+    public void savePassword(String password) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_PASSWORD, password);
+        editor.commit();
+    }
+
+    public String getPassword() {
+        return sharedPreferences.getString(KEY_PASSWORD, "");
+    }
 
 
-    public int lastInvoiceIndex(){
+    public int lastInvoiceIndex() {
         return sharedPreferences.getInt(KEY_LAST_INVOICE_INDEX, 0);
     }
 
-    public void setInvoiceLastIndex(int lastIndex){
+    public void setInvoiceLastIndex(int lastIndex) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(KEY_LAST_INVOICE_INDEX,lastIndex);
+        editor.putInt(KEY_LAST_INVOICE_INDEX, lastIndex);
         editor.commit();
     }
 
@@ -57,17 +67,17 @@ public class UserPreference {
         return sharedPreferences.getString(KEY_CLOSED_FOR_THE_DAY, "");
     }
 
-    public void setUserCloseForTheDayDate(String  closedForTheDay) {
+    public void setUserCloseForTheDayDate(String closedForTheDay) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_CLOSED_FOR_THE_DAY, closedForTheDay);
         editor.commit();
     }
 
-    public String getLastMastersDownloadDate(){
+    public String getLastMastersDownloadDate() {
         return sharedPreferences.getString(KEY_LAST_MASTER_DOWNLOAD_DATE, "");
     }
 
-    public void setLasMastersDownloadDate(String date){
+    public void setLasMastersDownloadDate(String date) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_LAST_MASTER_DOWNLOAD_DATE, date);
         editor.commit();

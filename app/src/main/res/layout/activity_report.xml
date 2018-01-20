@@ -58,7 +58,7 @@
                     <TextView
                         android:textSize="32sp"
                         android:text="@string/fa_icon_day"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/icons_color"
                         android:id="@+id/icon_day"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
@@ -71,7 +71,7 @@
                     android:paddingRight="32dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/item_background_button"
+                    android:background="@drawable/gradient"
                     android:gravity="center_vertical"
                     android:paddingLeft="40dp"
                     android:text="@string/day"
@@ -101,7 +101,7 @@
                     <TextView
                         android:textSize="32sp"
                         android:text="@string/fa_icon_shopping_basket"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/icons_color"
                         android:id="@+id/icon_order_p_order"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
@@ -114,7 +114,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/item_background_button"
+                    android:background="@drawable/gradient"
                     android:gravity="center_vertical"
                     android:paddingLeft="40dp"
                     android:text="@string/order_p_order"
@@ -143,7 +143,7 @@
                     <TextView
                         android:textSize="32sp"
                         android:text="@string/fa_icon_barcode"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/icons_color"
                         android:id="@+id/icon_sku_report"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
@@ -155,7 +155,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/item_background_button"
+                    android:background="@drawable/gradient"
                     android:gravity="center_vertical"
                     android:paddingLeft="40dp"
                     android:text="@string/sku_report"
@@ -185,7 +185,7 @@
                     <TextView
                         android:textSize="32sp"
                         android:text="@string/fa_icon_file_pdf_o"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/icons_color"
                         android:id="@+id/icon_invoice_report"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
@@ -197,7 +197,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/item_background_button"
+                    android:background="@drawable/gradient"
                     android:gravity="center_vertical"
                     android:paddingLeft="40dp"
                     android:text="@string/invoice_report"
@@ -224,7 +224,7 @@
                     <TextView
                         android:textSize="32sp"
                         android:text="@string/fa_icon_close"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/icons_color"
                         android:id="@+id/icon_invoice_close"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
@@ -237,7 +237,7 @@
                     android:elevation="2dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/item_background_button"
+                    android:background="@drawable/gradient"
                     android:gravity="center_vertical"
                     android:paddingLeft="40dp"
                     android:text="@string/close"

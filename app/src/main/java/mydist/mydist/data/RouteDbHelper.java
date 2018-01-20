@@ -33,7 +33,7 @@ public class RouteDbHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + MerchandizeContract.TABLE_NAME + " (" +
                     MerchandizeContract._ID + " INTEGER PRIMARY KEY," +
                     MerchandizeContract.BRAND_NAME + " TEXT," +
-                    MerchandizeContract.MERCHANDIZE_ID + " TEXT," +
+                    MerchandizeContract.MERCHANDIZE_ID + " TEXT UNIQUE," +
                     MerchandizeContract.BRAND_ID + " TEXT," +
                     MerchandizeContract.COLUMN_MERCHANDIZE_ITEM + " TEXT)";
 

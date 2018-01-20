@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#225d7d</color>
+    <color name="colorPrimaryDeep">#14374A</color>
     <color name="colorPrimaryDark">#033b58</color>
     <color name="colorAccent">#FF4081</color>
 
@@ -9,7 +10,7 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
     <color name="white_grey">#f5f5f5</color>
-    <color name="edit_text_bacground_border">#262626</color>
+    <color name="edit_text_bacground_border">#565353</color>
     <color name="white">#ffffff</color>
     <color name="crispy_white">#f3f3f3</color>
     <color name="home_username">#6d6e71</color>
@@ -17,4 +18,5 @@
     <color name="crispy_red">#EA4335</color>
     <color name="invoice_title">#808080</color>
     <color name="jade_green">#009588</color>
+    <color name="icons_color">#45454b</color>
 </resources>

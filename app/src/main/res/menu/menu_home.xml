@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <group>
-    <!--<item
-        android:id="@+id/menu_home_settings"
-        android:title="@string/settings"></item>-->
-    <item
+    <item xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:showAsAction="never"
         android:id="@+id/menu_home_logout"
-        android:title="@string/logout">
-        </item>
-
-    </group>
-
-
+        android:title="@string/logout"></item>
 </menu>
