@@ -273,17 +273,21 @@ public class InvoiceActivity extends AuthenticatedActivity implements View.OnCli
     }
 
     private String generateInvoiceNumber(String retailerId) {
+        String salesRepFullName = UserPreference.getInstance(this).getFullName();
+        String names[] = salesRepFullName.split(" ");
+        String initials = names[0].charAt(0) + String.valueOf(names[1].charAt(0));
+        String retailerInitials = "R" + initials ;
         SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyy");
         StringBuilder stringBuilder = new StringBuilder("INV");
         stringBuilder.append("/");
-        stringBuilder.append(retailerId);
+        stringBuilder.append(retailerInitials);
         stringBuilder.append("/");
         stringBuilder.append(dateFormat.format(new Date()));
         stringBuilder.append("/");
         UserPreference userPreference = UserPreference.getInstance(this);
         int lastInvoiceIndex = userPreference.lastInvoiceIndex();
 
-        String invoiceNumber = valueOf(lastInvoiceIndex);
+        String invoiceNumber = valueOf(++lastInvoiceIndex);
         if (invoiceNumber.length() == 1) {
             stringBuilder.append("00").append(invoiceNumber);
         } else if (invoiceNumber.length() == 2) {
@@ -291,8 +295,6 @@ public class InvoiceActivity extends AuthenticatedActivity implements View.OnCli
         } else {
             stringBuilder.append(invoiceNumber);
         }
-
-        lastInvoiceIndex++;
         userPreference.setInvoiceLastIndex(lastInvoiceIndex);
         return stringBuilder.toString();
     }

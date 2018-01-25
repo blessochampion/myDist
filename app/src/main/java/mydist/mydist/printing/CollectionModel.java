@@ -16,14 +16,24 @@ public class CollectionModel implements Parcelable
     private String total;
     private String retailer;
     private String salesRep;
+    private double orderAmount;
 
-    public CollectionModel(String invoiceNumber, String invoiceDate, String total, String retailer, String salesRep) {
+    public CollectionModel(String invoiceNumber, String invoiceDate, String total, String retailer, String salesRep, double orderAmount) {
         this.invoiceNumber = invoiceNumber;
         this.invoiceDate = invoiceDate;
         this.chequeNumber = chequeNumber;
         this.total = total;
         this.retailer = retailer;
         this.salesRep = salesRep;
+        this.orderAmount = orderAmount;
+    }
+
+    public double getOrderAmount() {
+        return orderAmount;
+    }
+
+    public void setOrderAmount(double orderAmount) {
+        this.orderAmount = orderAmount;
     }
 
     protected CollectionModel(Parcel in) {
@@ -34,6 +44,7 @@ public class CollectionModel implements Parcelable
         total = in.readString();
         retailer = in.readString();
         salesRep = in.readString();
+        orderAmount = in.readDouble();
 
     }
 
@@ -100,10 +111,10 @@ public class CollectionModel implements Parcelable
 
     public String getExtras(){
         if(chequeNumber != null){
-            return PrintingFormatter.formatNameValuePair("Cheque Number", chequeNumber);
+            return PrintingFormatter.formatNameValuePair("Cheque Number", chequeNumber.toUpperCase());
         }
         if(draftNumber != null){
-            return PrintingFormatter.formatNameValuePair("Draft Number", draftNumber);
+            return PrintingFormatter.formatNameValuePair("Draft Number", draftNumber.toUpperCase());
         }
         return "";
    }
@@ -130,5 +141,6 @@ public class CollectionModel implements Parcelable
         dest.writeString(total);
         dest.writeString(retailer);
         dest.writeString(salesRep);
+        dest.writeDouble(orderAmount);
     }
 }

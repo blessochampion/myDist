@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 import mydist.mydist.R;
 import mydist.mydist.activities.StoreOverviewActivity;
@@ -34,6 +35,7 @@ import mydist.mydist.models.Invoice;
 import mydist.mydist.printing.CollectionModel;
 import mydist.mydist.printing.PrintingActivity;
 import mydist.mydist.utils.DataUtils;
+import mydist.mydist.utils.Days;
 import mydist.mydist.utils.FontManager;
 
 import static mydist.mydist.models.Invoice.MODE_CASH;
@@ -50,7 +52,7 @@ public class StoreInfoCollectionFragment extends Fragment implements View.OnClic
     private RadioButton mDraft;
     private EditText mNumber;
     private EditText mAmount;
-    private String  mode = MODE_CASH;
+    private String mode = MODE_CASH;
     private static final String EMPTY = "";
     private String chequeOrDraftNumber = EMPTY;
     private static final String SEPARATOR = ":";
@@ -60,10 +62,11 @@ public class StoreInfoCollectionFragment extends Fragment implements View.OnClic
     ListView mListView;
     private TextView mMessage;
     private String invoiceNumber;
+    private HashMap<String, CollectionModel> collectionModelHashMap = new HashMap<>();
     private int selectedPosition;
     View page;
-    /*Todo: Fix hard coded value*/
-    private double total = 34099.345;
+    Cursor cursor;
+    private double invoiceAmount;
 
     public StoreInfoCollectionFragment() {
         // Required empty public constructor
@@ -95,6 +98,7 @@ public class StoreInfoCollectionFragment extends Fragment implements View.OnClic
         }
         return super.onOptionsItemSelected(item);
     }
+
     private String getRetailerName(String retailerId) {
         Cursor cursor = DatabaseManager.getInstance(getActivity()).getRetailerById(retailerId);
         cursor.moveToFirst();
@@ -105,11 +109,11 @@ public class StoreInfoCollectionFragment extends Fragment implements View.OnClic
     private void saveAndPrint() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         String retailerName = getRetailerName(retailerId);
-        CollectionModel model = new CollectionModel(invoiceNumber, dateFormat
-                .format(new Date()), String.format("%,.2f", total),
-                retailerName, UserPreference.getInstance(getActivity()).getFullName());
-
         String amount = mAmount.getText().toString();
+        CollectionModel model = new CollectionModel(invoiceNumber, dateFormat
+                .format(new Date()), String.format("%,.2f", Double.valueOf(amount)),
+                retailerName, UserPreference.getInstance(getActivity()).getFullName(), invoiceAmount);
+
         if (amount.equals(EMPTY)) {
             mAmount.setError("Field Cannot be empty");
             return;
@@ -132,18 +136,15 @@ public class StoreInfoCollectionFragment extends Fragment implements View.OnClic
             }
         }
 
-       boolean result = DataUtils.saveCollectionForInvoice(getActivity(), invoiceNumber, amount,mode, chequeOrDraftNumber );
-        if(result){
+        boolean result = DataUtils.saveCollectionForInvoice(getActivity(), invoiceNumber, amount, mode, chequeOrDraftNumber);
+        if (result) {
             Toast.makeText(getActivity(), "Saved", Toast.LENGTH_SHORT).show();
             bindView();
-        }else{
+        } else {
             Toast.makeText(getActivity(), "Unable to save", Toast.LENGTH_SHORT).show();
         }
         mAmountInputContainer.setVisibility(View.GONE);
-       /* Intent intent = new Intent(getActivity(), PrintingActivity.class);
-        intent.putExtra(PrintingActivity.KEY_COLLECTION, model);
-        startActivity(intent);*/
-        //getActivity().overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
+        collectionModelHashMap.put(retailerId, model);
 
     }
 
@@ -173,7 +174,7 @@ public class StoreInfoCollectionFragment extends Fragment implements View.OnClic
 
 
     private void bindView() {
-        Cursor cursor = DataUtils.getAllInvoice(retailerId, Invoice.KEY_STATUS_SUCCESS, getActivity());
+        cursor = DataUtils.getAllInvoice(retailerId, Invoice.KEY_STATUS_SUCCESS, getActivity());
         if (cursor.getCount() > 0) {
             adapter = new InvoiceAdapter(getActivity(), cursor, this) {
                 @Override
@@ -182,17 +183,20 @@ public class StoreInfoCollectionFragment extends Fragment implements View.OnClic
                     TextView value = (TextView) view.findViewById(R.id.invoice_value);
                     TextView invoice_Number = (TextView) view.findViewById(R.id.invoice_number);
                     Button payButton = (Button) view.findViewById(R.id.btn_pay);
-                    String valueStr = cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.TOTAL));
+                    Button printButton = (Button) view.findViewById(R.id.btn_print);
+                    String amount = cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.TOTAL));
                     value.setText(
-                            getString(R.string.naira) + String.format("%,.2f", Double.valueOf(valueStr))
+                            getString(R.string.naira) + String.format("%,.2f", Double.valueOf(amount))
                     );
-                    valueStr = cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.INVOICE_ID));
+                   String valueStr = cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.INVOICE_ID));
                     invoice_Number.setText(valueStr);
-                    payButton.setTag(valueStr + SEPARATOR + cursor.getPosition());
+                    printButton.setTag(valueStr+SEPARATOR + cursor.getPosition()+ SEPARATOR + amount);
+                    payButton.setTag(valueStr + SEPARATOR + cursor.getPosition() + SEPARATOR + amount);
                     payButton.setOnClickListener(StoreInfoCollectionFragment.this);
+                    printButton.setOnClickListener(StoreInfoCollectionFragment.this);
                     TextView amountValue = (TextView) view.findViewById(R.id.amount_value);
                     valueStr = cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.AMOUNT_PAID));
-                    amountValue.setText(  getString(R.string.naira) + String.format("%,.2f",Double.valueOf(valueStr)));
+                    amountValue.setText(getString(R.string.naira) + String.format("%,.2f", Double.valueOf(valueStr)));
                 }
 
                 @Override
@@ -248,13 +252,46 @@ public class StoreInfoCollectionFragment extends Fragment implements View.OnClic
                 break;
             case R.id.btn_pay:
                 mAmountInputContainer.setVisibility(View.VISIBLE);
-                String []  tags = v.getTag().toString().split(SEPARATOR);
+                String[] tags = v.getTag().toString().split(SEPARATOR);
                 invoiceNumber = tags[0];
                 selectedPosition = Integer.valueOf(tags[1]);
-
+                invoiceAmount = Double.valueOf(tags[2]);
                 break;
+            case R.id.btn_print:
+                String[] printTags = v.getTag().toString().split(SEPARATOR);
+                invoiceNumber = printTags[0];
+                selectedPosition = Integer.valueOf(printTags[1]);
+                invoiceAmount = Double.valueOf(printTags[2]);
+                launchPrinting();
             default:
                 break;
         }
+    }
+
+    private void launchPrinting() {
+        CollectionModel model;
+        if (collectionModelHashMap.isEmpty()) {
+            cursor.moveToPosition(selectedPosition);
+            String amount = cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.AMOUNT_PAID));
+            String retailerName = getRetailerName(retailerId);
+           // String invoiceAmount = cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.TOTAL));
+            model = new CollectionModel(invoiceNumber, Days.getTodayDate().toString()
+                    , String.format("%,.2f", Double.valueOf(amount)),
+                    retailerName, UserPreference.getInstance(getActivity()).getFullName(), Double.valueOf(invoiceAmount));
+            String modeOfPayment = cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.PAYMENT_MODE));
+            String modeOfPaymentValue = cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.PAYMENT_MODE_VALUE));
+            if(modeOfPayment.equals(Invoice.MODE_CHEQUE)){
+                model.setChequeNumber(modeOfPaymentValue);
+            }else if(modeOfPayment.equals(Invoice.MODE_DRAFT)){
+                model.setDraftNumber(modeOfPaymentValue);
+            }
+
+        } else {
+            model = collectionModelHashMap.get(retailerId);
+        }
+        Intent intent = new Intent(getActivity(), PrintingActivity.class);
+        intent.putExtra(PrintingActivity.KEY_COLLECTION, model);
+        startActivity(intent);
+
     }
 }

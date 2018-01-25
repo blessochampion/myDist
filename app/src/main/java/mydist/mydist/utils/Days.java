@@ -1,6 +1,7 @@
 package mydist.mydist.utils;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -39,5 +40,16 @@ public enum Days
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String todayDate = dateFormat.format(new Date());
         return todayDate;
+    }
+    public static String getThisWeek(){
+        Calendar now = Calendar.getInstance();
+        int weekNo = now.get(Calendar.WEEK_OF_MONTH);
+        if (weekNo < 1) {
+            weekNo = 1;
+        } else if (weekNo > 4) {
+            weekNo = 4;
+        }
+
+        return "wk" + weekNo;
     }
 }

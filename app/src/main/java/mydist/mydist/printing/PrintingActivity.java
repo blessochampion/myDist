@@ -12,6 +12,7 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -167,9 +168,10 @@ public class PrintingActivity extends AppCompatActivity {
         printText("\n");
         printModelItem(PrintingFormatter.formatNameValuePair(PrintingFormatter.TRANSACTION_DATE, model.getInvoiceDate()));
         printModelItem(model.getExtras());
+        printText(PrintingFormatter.formatNameValuePair("Order Amount(NGN)",  String.valueOf(model.getOrderAmount())));
         printText("\n");
         printText("\n");
-        printText(PrintingFormatter.formatNameValuePair("Total(NGN)",  model.getTotal()));
+        printText(PrintingFormatter.formatNameValuePair("Amount Paid(NGN)",  model.getTotal()));
         printText("\n");
     }
 
@@ -531,4 +533,14 @@ public class PrintingActivity extends AppCompatActivity {
         }
         animated = false;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

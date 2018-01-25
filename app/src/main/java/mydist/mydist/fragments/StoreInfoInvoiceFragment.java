@@ -12,7 +12,6 @@ import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,7 +32,6 @@ import mydist.mydist.data.ProductLogic;
 import mydist.mydist.models.Product;
 import mydist.mydist.utils.DataUtils;
 import mydist.mydist.utils.FontManager;
-import mydist.mydist.utils.UIUtils;
 
 import static android.view.Gravity.CENTER;
 import static android.view.Gravity.CENTER_VERTICAL;
@@ -56,7 +54,7 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
     HashMap<String, ProductLogic> selectedProducts = new HashMap<>();
     private static final int OC_POSITION = 2;
     private static final int OP_POSITION = 3;
-    private static final String DELIMETER = ":";
+    private static final String DELIMITER = ":";
     private String EMPTY_STRING = "";
 
 
@@ -178,7 +176,7 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
         pricesLayoutParams.setMargins(0, 0, 10, 0);
 
         TextView ppc = new TextView(context);
-        ppc.setText(getString(R.string.ppc) + DELIMETER);
+        ppc.setText(getString(R.string.ppc) + DELIMITER);
         ppc.setLayoutParams(pricesLayoutParams);
         ppc.setTextSize(14);
         ppc.setTypeface(FontManager.getTypeface(context, FontManager.RALEWAY_BOLD));
@@ -193,7 +191,7 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
         productPrices.addView(ppcValue);
 
         TextView ppq = new TextView(context);
-        ppq.setText(getString(R.string.ppq) + DELIMETER);
+        ppq.setText(getString(R.string.ppq) + DELIMITER);
         ppq.setLayoutParams(pricesLayoutParams);
         ppq.setTextSize(14);
         ppq.setTypeface(FontManager.getTypeface(context, FontManager.RALEWAY_BOLD));
@@ -282,7 +280,7 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
     }
 
     private void updateTotalValue(String indicator, String value, EditText totalEditText) {
-        String[] keys = indicator.split(DELIMETER);
+        String[] keys = indicator.split(DELIMITER);
         if (selectedProducts.containsKey(keys[0])) {
             ProductLogic productLogic = selectedProducts.get(keys[0]);
             //first remove the sum from total
@@ -302,18 +300,24 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
     }
 
     public void checkBoxClicked(CheckBox checkBox) {
-        String[] values = ((String) checkBox.getTag()).split(DELIMETER);
+        String[] values = ((String) checkBox.getTag()).split(DELIMITER);
         final String productId = values[0];
         int position = Integer.valueOf(values[1]);
         TableRow selectedRow = (TableRow) mTableLayout.getChildAt(position);
         if (checkBox.isChecked()) {
-            selectedProducts.put(productId, new ProductLogic(getProducts().get(currentPage * 10 + position - 1)));
+            final ProductLogic productLogic = new ProductLogic(getProducts().get(currentPage * 10 + position - 1));
+            selectedProducts.put(productId, productLogic);
             final EditText totalValueEditText = (EditText) selectedRow.getChildAt(TOTAL_POSITION);
             for (int i = 2; i < 4; i++) {
                 View view = selectedRow.getChildAt(i);
                 final int viewPosition = i;
                 if (view instanceof EditText) {
                     view.setEnabled(true);
+                    if (i == 2) {
+                        view.setEnabled(Double.valueOf(productLogic.getProduct().casePrice) > 0);
+                    } else {
+                        view.setEnabled(Double.valueOf(productLogic.getProduct().piecePrice) > 0);
+                    }
                     final EditText editText = ((EditText) view);
                     editText.addTextChangedListener(new TextWatcher() {
                         @Override
@@ -331,10 +335,10 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
                                 if (!('0' <= lastChar && lastChar <= '9')) {
                                     editText.setText(s.toString().substring(0, count - 1));
                                 } else {
-                                    updateTotalValue(productId + DELIMETER + viewPosition, s.toString(), totalValueEditText);
+                                    updateTotalValue(productId + DELIMITER + viewPosition, s.toString(), totalValueEditText);
                                 }
                             } else {
-                                updateTotalValue(productId + DELIMETER + viewPosition, "0", totalValueEditText);
+                                updateTotalValue(productId + DELIMITER + viewPosition, "0", totalValueEditText);
                             }
                         }
 

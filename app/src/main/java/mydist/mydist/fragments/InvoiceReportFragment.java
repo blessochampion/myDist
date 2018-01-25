@@ -19,8 +19,6 @@ import mydist.mydist.models.Invoice;
 import mydist.mydist.utils.DataUtils;
 import mydist.mydist.utils.FontManager;
 
-import static mydist.mydist.activities.StoreOverviewActivity.retailerId;
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -28,7 +26,7 @@ public class InvoiceReportFragment extends Fragment implements View.OnClickListe
     InvoiceAdapter adapter;
     TextView invoiceMessage;
     ListView listView;
-    View page;
+    View view;
 
     public InvoiceReportFragment() {
         // Required empty public constructor
@@ -39,10 +37,9 @@ public class InvoiceReportFragment extends Fragment implements View.OnClickListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_invoice_report, container, false);
+         view = inflater.inflate(R.layout.fragment_invoice_report, container, false);
         invoiceMessage = (TextView) view.findViewById(R.id.invoice_message);
         listView = (ListView) view.findViewById(R.id.list_view);
-        page = view;
         bindView();
         return view;
     }
@@ -85,7 +82,7 @@ public class InvoiceReportFragment extends Fragment implements View.OnClickListe
             invoiceMessage.setVisibility(View.VISIBLE);
             listView.setVisibility(View.GONE);
         }
-        setFonts(page);
+        setFonts(view);
     }
 
     @Override

@@ -50,61 +50,13 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/secondary_text" />
 
-        <TextView
-            android:id="@+id/initial_value_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/psku_target_label"
-            android:layout_marginTop="24dp"
-            android:text="Initiative List"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/primary_text" />
-
-        <LinearLayout
-            android:paddingBottom="8dp"
-            android:id="@+id/initiative_value_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/initial_value_label"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/initiative_or_mechandising_list"
-            android:orientation="vertical">
-
-            <TextView
-                android:paddingLeft="8dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:paddingTop="4dp"
-                android:text="@string/address"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1.2dp"
-                android:background="@color/white" />
-            <TextView
-                android:paddingLeft="8dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:paddingTop="4dp"
-                android:text="Ariel"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1.2dp"
-                android:background="@color/white" />
-
-        </LinearLayout>
 
 
         <TextView
             android:id="@+id/mechandising_list_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/initiative_value_container"
+            android:layout_below="@id/psku_target_value"
             android:layout_marginTop="24dp"
             android:text="MechandisingList"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"

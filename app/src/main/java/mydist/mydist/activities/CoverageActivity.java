@@ -49,14 +49,8 @@ public class CoverageActivity extends AuthenticatedActivity {
     }
 
     private void loadDailyRetailers() {
-        Calendar now = Calendar.getInstance();
-        int weekNo = now.get(Calendar.WEEK_OF_MONTH);
-        if (weekNo < 1) {
-            weekNo = 1;
-        } else if (weekNo > 4) {
-            weekNo = 4;
-        }
-        String week = "wk" + weekNo;
+
+        String week = Days.getThisWeek();
         SUNDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.SUN.toString());
         MONDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.MON.toString());
         TUESDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.TUE.toString());

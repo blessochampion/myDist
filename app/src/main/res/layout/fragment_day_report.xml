@@ -23,6 +23,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent" />
         <TextView
+            android:id="@+id/tv_total_earned_value"
             android:paddingRight="8dp"
             android:textColor="@color/secondary_text"
             android:text="0"
@@ -47,7 +48,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent" />
         <TextView
-            android:text="0/8"
+            android:id="@+id/tv_distribution_extension"
             android:paddingRight="8dp"
             android:textColor="@color/secondary_text"
             android:gravity="right|center_vertical"
@@ -71,7 +72,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent" />
         <TextView
-            android:text="153,123.00"
+            android:id="@+id/tv_sales"
             android:paddingRight="8dp"
             android:textColor="@color/secondary_text"
             android:gravity="right|center_vertical"

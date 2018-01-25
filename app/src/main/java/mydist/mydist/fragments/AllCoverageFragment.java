@@ -34,6 +34,10 @@ import mydist.mydist.utils.FontManager;
 public class AllCoverageFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener, StoreDeviateDialogFragment.RetailerDateChangeListener {
 
     DailyRetailersAdapter adapter;
+    Cursor cursor;
+    View view;
+    ListView listView;
+    TextView message;
 
     public AllCoverageFragment() {
         // Required empty public constructor
@@ -43,16 +47,37 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_coverage, container, false);
-        ListView listView = (ListView) view.findViewById(R.id.list_view);
-        TextView message = (TextView) view.findViewById(R.id.tv_message);
-        Cursor cursor = DatabaseManager.getInstance(getActivity()).
-                getAllRetailer();
-        if(cursor.getCount() < 1){
+        view = inflater.inflate(R.layout.fragment_coverage, container, false);
+        listView = (ListView) view.findViewById(R.id.list_view);
+        message = (TextView) view.findViewById(R.id.tv_message);
+        bindView();
+        return view;
+    }
+
+    private void bindView() {
+        Calendar now = Calendar.getInstance();
+        int value = now.get(Calendar.WEEK_OF_MONTH);
+        if (value < 1) {
+            value = 1;
+        } else if (value > 4) {
+            value = 4;
+        }
+        String week = "wk" + value;
+        value = now.get(Calendar.DAY_OF_WEEK);
+        String day = getDay(value);
+        Cursor todaysRetailerscursor = DatabaseManager.getInstance(getActivity()).
+                getRetailerByVisitingInfo(week, day);
+        String filter = null;
+        if (todaysRetailerscursor.getCount() > 0) {
+            filter = getRetailers(todaysRetailerscursor);
+        }
+
+        cursor = DatabaseManager.getInstance(getActivity()).
+                getAllRetailerExceptTheCurrentDate(filter);
+        if (cursor.getCount() < 1) {
             message.setVisibility(View.VISIBLE);
             listView.setVisibility(View.GONE);
-        }else {
+        } else {
             adapter = new DailyRetailersAdapter(getActivity(), cursor, this);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(this);
@@ -60,7 +85,20 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
             listView.setVisibility(View.VISIBLE);
         }
         setFonts(view);
-        return view;
+    }
+
+    private String getRetailers(Cursor todaysRetailerscursor) {
+        String result = "(";
+        todaysRetailerscursor.moveToFirst();
+        int count = 0;
+        for (int i = 0; i < count - 1; i++) {
+            result += "\"" +todaysRetailerscursor.getString(todaysRetailerscursor.
+                    getColumnIndex(MasterContract.RetailerContract.RETAILER_ID)) +"\""+ ", ";
+            todaysRetailerscursor.moveToNext();
+        }
+        result += "\""+todaysRetailerscursor.getString(todaysRetailerscursor.
+                getColumnIndex(MasterContract.RetailerContract.RETAILER_ID)) +"\"" + ")";
+        return result;
     }
 
     private void setFonts(View v) {
@@ -73,7 +111,7 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
 
         StoreProfileHistoryDialogFragment.getNewInstance(v.getTag().toString())
                 .show(getActivity().
-                        getSupportFragmentManager(),
+                                getSupportFragmentManager(),
                         "");
 
     }
@@ -81,7 +119,6 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
     private void launchStoreDetailsActivity() {
         Intent intent = new Intent(getActivity(), StoreOverviewActivity.class);
         startActivity(intent);
-        //getActivity().overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
     }
 
     @Override
@@ -105,13 +142,14 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
         String week = "wk" + value;
         value = now.get(Calendar.DAY_OF_WEEK);
         String day = getDay(value);
-       if(DatabaseManager.getInstance(getActivity()).changeRetailerVisitingDate(id, Days.getTodayDate(), day, week)){
-           Toast.makeText(getActivity(), getString(R.string.date_changed), Toast.LENGTH_LONG).show();
-       }
+        if (DatabaseManager.getInstance(getActivity()).changeRetailerVisitingDate(id, Days.getTodayDate(), day, week)) {
+            Toast.makeText(getActivity(), getString(R.string.date_changed), Toast.LENGTH_LONG).show();
+            bindView();
+        }
     }
 
-    private String getDay(int day){
-        switch (day){
+    private String getDay(int day) {
+        switch (day) {
             case 1:
                 return "Sun";
             case 2:
