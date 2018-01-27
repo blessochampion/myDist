@@ -108,7 +108,7 @@ public class DayReportFragment extends Fragment implements LoaderManager.LoaderC
                     case LOADER_ID_TOTAL_EARNED_VALUE:
                         DatabaseManager.getInstance(getActivity()).queryCollectionTotal(Days.getTodayDate(), Invoice.KEY_STATUS_SUCCESS );
                     case LOADER_ID_DISTRIBUTION_EXTENSION:
-                        return DatabaseManager.getInstance(getActivity()).getAllNewRetailers(Days.getTodayDate());
+                        return DatabaseManager.getInstance(getActivity()).getAllNewRetailers(Days.getRetailerDate());
                     case LOADER_ID_SALES:
                         return DataUtils.getAllOrderTotal(Invoice.KEY_STATUS_SUCCESS, getActivity());
                     default:

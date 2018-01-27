@@ -29,6 +29,12 @@ public class RouteDbHelper extends SQLiteOpenHelper {
                     ChannelContract.COLUMN_NAME + " TEXT," +
                     ChannelContract.COLUMN_CHANNEL_ID + " TEXT UNIQUE)";
 
+    private static final String SQL_CREATE_AREA_ENTRIES =
+            "CREATE TABLE " + AreaContract.TABLE_NAME + " (" +
+                    AreaContract._ID + " INTEGER PRIMARY KEY," +
+                    AreaContract.COLUMN_NAME + " TEXT," +
+                    AreaContract.COLUMN_AREA_ID + " TEXT UNIQUE)";
+
     private static final String SQL_CREATE_MERCHANDIZE_ENTRIES =
             "CREATE TABLE " + MerchandizeContract.TABLE_NAME + " (" +
                     MerchandizeContract._ID + " INTEGER PRIMARY KEY," +
@@ -62,6 +68,7 @@ public class RouteDbHelper extends SQLiteOpenHelper {
                     RetailerContract.PHONE + " TEXT," +
                     RetailerContract.CHANNEL_ID + " TEXT," +
                     RetailerContract.SUB_CHANNEL_ID + " TEXT," +
+                    RetailerContract.AREA_ID+ " TEXT," +
                     RetailerContract.RETAILER_ID + " TEXT UNIQUE)";
 
     private static final String SQL_CREATE_VISITING_INFO =
@@ -120,6 +127,9 @@ public class RouteDbHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_SUB_CHANNEL_ENTRIES =
             "DROP TABLE IF EXISTS " + SubChannelContract.TABLE_NAME;
 
+    private static final String SQL_DELETE_AREA_ENTRIES =
+            "DROP TABLE IF EXISTS " + AreaContract.TABLE_NAME;
+
     private static final String SQL_DELETE_NEW_RETAILER_ENTRIES =
             "DROP TABLE IF EXISTS " + RetailerContract.TABLE_NAME;
 
@@ -147,12 +157,12 @@ public class RouteDbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_MERCHANDIZE_ENTRIES);
         db.execSQL(SQL_CREATE_PRODUCT_ENTRIES);
         db.execSQL(SQL_CREATE_SUB_CHANNEL_ENTRIES);
+        db.execSQL(SQL_CREATE_AREA_ENTRIES);
         db.execSQL(SQL_CREATE_NEW_RETAILER);
         db.execSQL(SQL_CREATE_VISITING_INFO);
         db.execSQL(SQL_CREATE_INVOICE);
         db.execSQL(SQL_CREATE_PRODUCT_ORDER);
         db.execSQL(SQL_CREATE_MERCHANDIZING_VERIFICATION);
-
     }
 
     @Override
@@ -162,12 +172,12 @@ public class RouteDbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_MERCHANDIZE_ENTRIES);
         db.execSQL(SQL_DELETE_PRODUCT_ENTRIES);
         db.execSQL(SQL_DELETE_SUB_CHANNEL_ENTRIES);
+        db.execSQL(SQL_DELETE_AREA_ENTRIES);
         db.execSQL(SQL_DELETE_NEW_RETAILER_ENTRIES);
         db.execSQL(SQL_DELETE_VISITING_INFO_ENTRIES);
         db.execSQL(SQL_DELETE_INVOICE);
         db.execSQL(SQL_DELETE_PRODUCT_ORDER);
         db.execSQL(SQL_DELETE_MERCHANDIZING_VERIFICATION);
-
         onCreate(db);
     }
 

@@ -171,4 +171,5 @@
     <string name="uploading_masters">Uploading Masters</string>
     <string name="close_for_the_day">You already closed for the day. You can only view Reports.</string>
     <string name="no_product_for_brand">No product sold for %s Brand</string>
+    <string name="area_name">Area Name</string>
 </resources>

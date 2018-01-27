@@ -14,6 +14,12 @@ public class MasterContract {
         public static final String COLUMN_NAME = "channel_name";
     }
 
+    public static class AreaContract implements BaseColumns {
+        public static final String TABLE_NAME = "area";
+        public static final String COLUMN_AREA_ID = "area_id";
+        public static final String COLUMN_NAME = "area_name";
+    }
+
     public static class SubChannelContract implements BaseColumns {
         public static final String TABLE_NAME = "sub_channel";
         public static final String COLUMN_SUB_CHANNEL_ID = "sub_channel_id";
@@ -52,6 +58,7 @@ public class MasterContract {
         public static final String PHONE = "phone";
         public static final String CHANNEL_ID = "channel_id";
         public static final String SUB_CHANNEL_ID = "sub_channel_id";
+        public static final String AREA_ID = "area_id";
         public static final String RETAILER_ID = "retailer_id";
     }
 

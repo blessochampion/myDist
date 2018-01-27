@@ -14,6 +14,7 @@ import java.util.List;
 import mydist.mydist.data.DatabaseManager;
 import mydist.mydist.data.ProductLogic;
 import mydist.mydist.data.UserPreference;
+import mydist.mydist.models.Area;
 import mydist.mydist.models.AuthenticationResponse;
 import mydist.mydist.models.Brand;
 import mydist.mydist.models.Channel;
@@ -101,6 +102,7 @@ public class DataUtils {
         manager.persistAllMerchandize(master.getMerchandizingList());
         manager.persistAllProduct(master.getProducts());
         manager.persistAllSubChannel(master.getSubChannels());
+        manager.persistAllArea(master.getAreas());
 
     }
 
@@ -120,6 +122,22 @@ public class DataUtils {
         }
 
         return channels;
+    }
+
+    public static List<Area> getAllArea(Context context) {
+        List<Area> areas = new ArrayList<>();
+        Cursor areaCursor = DatabaseManager.getInstance(context).queryAllArea();
+        Area area;
+        if (areaCursor != null) {
+            int count = areaCursor.getCount();
+            areaCursor.moveToFirst();
+            for (int i = 0; i < count; i++) {
+                area = new Area(areaCursor);
+                areas.add(area);
+                areaCursor.moveToNext();
+            }
+        }
+        return areas;
     }
 
     public static List<Merchandize> getAllMerchandize(Context context) {

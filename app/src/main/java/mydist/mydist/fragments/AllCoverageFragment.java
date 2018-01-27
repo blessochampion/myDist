@@ -72,8 +72,7 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
             filter = getRetailers(todaysRetailerscursor);
         }
 
-        cursor = DatabaseManager.getInstance(getActivity()).
-                getAllRetailerExceptTheCurrentDate(filter);
+        cursor = DatabaseManager.getInstance(getActivity()).getAllRetailerExceptTheCurrentDate(filter);
         if (cursor.getCount() < 1) {
             message.setVisibility(View.VISIBLE);
             listView.setVisibility(View.GONE);
@@ -90,14 +89,14 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
     private String getRetailers(Cursor todaysRetailerscursor) {
         String result = "(";
         todaysRetailerscursor.moveToFirst();
-        int count = 0;
+        int count = todaysRetailerscursor.getCount();
         for (int i = 0; i < count - 1; i++) {
-            result += "\"" +todaysRetailerscursor.getString(todaysRetailerscursor.
-                    getColumnIndex(MasterContract.RetailerContract.RETAILER_ID)) +"\""+ ", ";
+            result += "\"" + todaysRetailerscursor.getString(todaysRetailerscursor.
+                    getColumnIndex(MasterContract.RetailerContract.RETAILER_ID)) + "\"" + ", ";
             todaysRetailerscursor.moveToNext();
         }
-        result += "\""+todaysRetailerscursor.getString(todaysRetailerscursor.
-                getColumnIndex(MasterContract.RetailerContract.RETAILER_ID)) +"\"" + ")";
+        result += "\"" + todaysRetailerscursor.getString(todaysRetailerscursor.
+                getColumnIndex(MasterContract.RetailerContract.RETAILER_ID)) + "\"" + ")";
         return result;
     }
 
@@ -162,8 +161,10 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
                 return "Thur";
             case 6:
                 return "Fri";
-            default:
+            case 7:
                 return "Sat";
+            default:
+                return "";
         }
     }
 }

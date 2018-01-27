@@ -16,7 +16,7 @@ import mydist.mydist.utils.Days;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class NewRetailer {
 
-    String dateAdded = "01/11/1970";
+    String dateAdded = Days.getTodayDate();
     @JsonProperty("retailerName")
     String name;
     @JsonProperty("contactPerson")
@@ -29,6 +29,8 @@ public class NewRetailer {
     String channel;
     @JsonProperty("subChannelId")
     String subChannel;
+    @JsonProperty("areaId")
+    String areaId = "2";
     List<String> visitDays;
     List<String> weekNos;
     @JsonProperty("visitdays")
@@ -42,7 +44,8 @@ public class NewRetailer {
 
     }
 
-    public NewRetailer(String dateAdded, String name, String contactPersonName, String address, String phone, String channel, String subChannel, List<String> visitDays, List<String> weekNos, String retailerId) {
+    public NewRetailer(String dateAdded, String name, String contactPersonName, String address, String phone, String channel, String subChannel,
+                       String areaId, List<String> visitDays, List<String> weekNos, String retailerId) {
         this.dateAdded = dateAdded;
         this.name = name;
         this.contactPersonName = contactPersonName;
@@ -50,6 +53,7 @@ public class NewRetailer {
         this.phone = phone;
         this.channel = channel;
         this.subChannel = subChannel;
+        this.areaId = areaId;
         this.visitDays = visitDays;
         this.weekNos = weekNos;
         this.retailerId = retailerId;
@@ -88,6 +92,14 @@ public class NewRetailer {
         this.contactPersonName = contactPersonName;
     }
 
+    public String getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(String areadId) {
+        this.areaId = areadId;
+    }
+
     public String getAddress() {
         return address;
     }
@@ -121,7 +133,7 @@ public class NewRetailer {
     }
 
     public List<String> getVisitDays() {
-        if(visitDays == null){
+        if (visitDays == null) {
             String[] vDays = getVisitingDays().split(",");
             visitDays = new ArrayList<>();
             for (int i = 0; i < vDays.length; i++) {
@@ -137,11 +149,11 @@ public class NewRetailer {
     }
 
     public List<String> getWeekNos() {
-        if(weekNos == null) {
+        if (weekNos == null) {
             weekNos = new ArrayList<>();
             String[] weeks = getVisitingWeeks().split(",");
             for (int i = 0; i < weeks.length; i++) {
-                weekNos.add("wk"+weeks[i]);
+                weekNos.add("wk" + weeks[i]);
             }
 
         }

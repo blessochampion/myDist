@@ -8,6 +8,7 @@ import android.util.Log;
 
 import java.util.List;
 
+import mydist.mydist.models.Area;
 import mydist.mydist.models.Brand;
 import mydist.mydist.models.Channel;
 import mydist.mydist.models.Invoice;
@@ -153,6 +154,19 @@ public class DatabaseManager {
         mDataBase.close();
     }
 
+    public void persistAllArea(List<Area> areas) {
+        ContentValues values;
+        SQLiteDatabase mDataBase = mRouteDbHelper.getWritableDatabase();
+        for (Area area : areas) {
+            values = new ContentValues();
+            values.put(AreaContract.COLUMN_AREA_ID, area.getAreaId());
+            values.put(AreaContract.COLUMN_NAME, area.getAreaName());
+            mDataBase.insertWithOnConflict(AreaContract.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+        }
+
+        mDataBase.close();
+    }
+
     public boolean persistNewRetailer(NewRetailer newRetailer) {
         ContentValues values = new ContentValues();
         SQLiteDatabase mDataBase = mRouteDbHelper.getWritableDatabase();
@@ -163,6 +177,7 @@ public class DatabaseManager {
         values.put(RetailerContract.PHONE, newRetailer.getPhone());
         values.put(RetailerContract.CHANNEL_ID, newRetailer.getChannel());
         values.put(RetailerContract.SUB_CHANNEL_ID, newRetailer.getSubChannel());
+        values.put(RetailerContract.AREA_ID, newRetailer.getAreaId());
         values.put(RetailerContract.RETAILER_ID, newRetailer.getRetailerId());
         long id = mDataBase.insert(RetailerContract.TABLE_NAME, null, values);
         if (id > -1) {
@@ -247,17 +262,14 @@ public class DatabaseManager {
     }
 
     public Cursor queryAllChannel() {
-        //TODO: Implement the query
         String[] projection = {
                 ChannelContract._ID,
                 ChannelContract.COLUMN_NAME,
                 ChannelContract.COLUMN_CHANNEL_ID
         };
-
         String selection = null;
         String selectionArgs[] = null;
         String sortOrder = ChannelContract.COLUMN_NAME + " ASC";
-
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor allChannel = db.query(
                 ChannelContract.TABLE_NAME,
@@ -269,6 +281,28 @@ public class DatabaseManager {
                 sortOrder
         );
         return allChannel;
+    }
+
+    public Cursor queryAllArea() {
+        String[] projection = {
+                AreaContract._ID,
+                AreaContract.COLUMN_NAME,
+                AreaContract.COLUMN_AREA_ID
+        };
+        String selection = null;
+        String selectionArgs[] = null;
+        String sortOrder = AreaContract.COLUMN_NAME + " ASC";
+        SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
+        Cursor allArea = db.query(
+                AreaContract.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+        return allArea;
     }
 
     public Cursor queryAllMerchandize() {
@@ -398,7 +432,8 @@ public class DatabaseManager {
                 RetailerContract.ADDRESS + "," +
                 RetailerContract.PHONE + "," +
                 RetailerContract.CHANNEL_ID + "," +
-                RetailerContract.SUB_CHANNEL_ID +
+                RetailerContract.SUB_CHANNEL_ID + "," +
+                RetailerContract.AREA_ID +
                 " FROM " + RetailerContract.TABLE_NAME;
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(QUERY, new String[]{});
@@ -415,12 +450,12 @@ public class DatabaseManager {
                 RetailerContract.ADDRESS + "," +
                 RetailerContract.PHONE + "," +
                 RetailerContract.CHANNEL_ID + "," +
-                RetailerContract.SUB_CHANNEL_ID +
+                RetailerContract.SUB_CHANNEL_ID + "," +
+                RetailerContract.AREA_ID +
                 " FROM " + RetailerContract.TABLE_NAME;
         if (filter != null) {
             QUERY += " WHERE " + RetailerContract.RETAILER_ID + " NOT IN " + filter;
         }
-
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(QUERY, new String[]{});
         return cursor;
@@ -436,14 +471,14 @@ public class DatabaseManager {
                 RetailerContract.ADDRESS + "," +
                 RetailerContract.PHONE + "," +
                 RetailerContract.CHANNEL_ID + "," +
-                RetailerContract.SUB_CHANNEL_ID +
+                RetailerContract.SUB_CHANNEL_ID + "," +
+                RetailerContract.AREA_ID +
                 " FROM " + RetailerContract.TABLE_NAME +
                 " WHERE " + RetailerContract.DATE_ADDED + " = ?";
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(QUERY, new String[]{date});
         return cursor;
     }
-
 
     public Cursor getRetailerProfileById(String id) {
         final String QUERY = "SELECT " +
@@ -468,6 +503,12 @@ public class DatabaseManager {
                 SubChannelContract.COLUMN_SUB_CHANNEL_ID + " = " +
                 RetailerContract.TABLE_NAME + "." +
                 RetailerContract.SUB_CHANNEL_ID +
+                " INNER JOIN " +
+                AreaContract.TABLE_NAME + " ON " +
+                AreaContract.TABLE_NAME + "." +
+                AreaContract.COLUMN_AREA_ID + " = " +
+                RetailerContract.TABLE_NAME + "." +
+                RetailerContract.AREA_ID +
                 " WHERE " + RetailerContract.RETAILER_ID + " = ?";
 
 
@@ -486,7 +527,8 @@ public class DatabaseManager {
                 RetailerContract.ADDRESS,
                 RetailerContract.PHONE,
                 RetailerContract.CHANNEL_ID,
-                RetailerContract.SUB_CHANNEL_ID
+                RetailerContract.SUB_CHANNEL_ID,
+                RetailerContract.AREA_ID
         };
 
         String selection = RetailerContract.RETAILER_ID + " = ?";
@@ -516,7 +558,8 @@ public class DatabaseManager {
                 RetailerContract.ADDRESS + "," +
                 RetailerContract.PHONE + "," +
                 RetailerContract.CHANNEL_ID + "," +
-                RetailerContract.SUB_CHANNEL_ID +
+                RetailerContract.SUB_CHANNEL_ID + "," +
+                RetailerContract.AREA_ID +
                 " FROM " + RetailerContract.TABLE_NAME +
                 " INNER JOIN " + VisitingInfoContract.TABLE_NAME + " ON " +
                 VisitingInfoContract.TABLE_NAME + "." +
@@ -577,7 +620,6 @@ public class DatabaseManager {
         return cursor;
 
     }
-
 
     public Cursor queryAllInvoiceByRetailerId(String retailerId, String dateAdded, int status) {
         String[] projection = new String[]{
@@ -657,30 +699,24 @@ public class DatabaseManager {
                 " WHERE " +
                 InvoiceContract.DATE_ADDED + " = ? AND " +
                 InvoiceContract.STATUS + " = ?";
-
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(QUERY, new String[]{dateAdded, String.valueOf(status)});
         return cursor;
 
     }
 
-
     public Cursor getMerchandisingVerification(String retailerId, String dateAdded) {
-
         String[] projection = new String[]{
                 MerchandizingListVerificationContract._ID,
                 MerchandizingListVerificationContract.DATE_ADDED,
                 MerchandizingListVerificationContract.RETAILER_ID,
                 MerchandizingListVerificationContract.MERCHANDIZING_ID,
                 MerchandizingListVerificationContract.BRAND_ID,
-                MerchandizingListVerificationContract.AVAILABLE
-        };
+                MerchandizingListVerificationContract.AVAILABLE};
         String selection = MerchandizingListVerificationContract.RETAILER_ID + " = ? " + " AND " + MerchandizingListVerificationContract.DATE_ADDED + " = ?";
         String selectionArgs[] = new String[]{retailerId, dateAdded};
         String sortOrder = MerchandizingListVerificationContract.MERCHANDIZING_ID + " ASC";
-
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
-
         Cursor merchandizingVerification = db.query(
                 MerchandizingListVerificationContract.TABLE_NAME,
                 projection,
@@ -688,26 +724,21 @@ public class DatabaseManager {
                 selectionArgs,
                 null,
                 null,
-                sortOrder
-        );
-
+                sortOrder);
         return merchandizingVerification;
     }
 
     public Cursor getAllMerchandising(String dateAdded) {
-
         String[] projection = new String[]{
                 MerchandizingListVerificationContract._ID,
                 MerchandizingListVerificationContract.DATE_ADDED,
                 MerchandizingListVerificationContract.RETAILER_ID,
                 MerchandizingListVerificationContract.MERCHANDIZING_ID,
                 MerchandizingListVerificationContract.BRAND_ID,
-                MerchandizingListVerificationContract.AVAILABLE
-        };
+                MerchandizingListVerificationContract.AVAILABLE};
         String selection = MerchandizingListVerificationContract.DATE_ADDED + " = ?";
         String selectionArgs[] = new String[]{dateAdded};
         String sortOrder = MerchandizingListVerificationContract.MERCHANDIZING_ID + " ASC";
-
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
 
         Cursor merchandizingVerification = db.query(
@@ -723,7 +754,6 @@ public class DatabaseManager {
         return merchandizingVerification;
 
     }
-
 
     private void deleteMerchandizingVerification(String retailerId, String date) {
         SQLiteDatabase db = mRouteDbHelper.getWritableDatabase();
@@ -738,7 +768,6 @@ public class DatabaseManager {
         cv.put(InvoiceContract.STATUS, Invoice.KEY_STATUS_CANCEL);
         long result = db.update(InvoiceContract.TABLE_NAME, cv, InvoiceContract.INVOICE_ID + " = ?", new String[]{invoiceId});
         return result > 0;
-
     }
 
     public boolean updateAmountPaidForInvoice(String invoiceId, String amount, String modeOfPayment, String modeOfPaymentValue) {

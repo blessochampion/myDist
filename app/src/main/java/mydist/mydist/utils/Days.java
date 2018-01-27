@@ -8,8 +8,7 @@ import java.util.Date;
  * Created by Blessing.Ekundayo on 12/28/2017.
  */
 
-public enum Days
-{
+public enum Days {
     ALL("ALL"),
     SUNDAY("SUNDAY"),
     MONDAY("MONDAY"),
@@ -41,7 +40,12 @@ public enum Days
         String todayDate = dateFormat.format(new Date());
         return todayDate;
     }
-    public static String getThisWeek(){
+
+    public static String getRetailerDate() {
+        return "R" + getTodayDate();
+    }
+
+    public static String getThisWeek() {
         Calendar now = Calendar.getInstance();
         int weekNo = now.get(Calendar.WEEK_OF_MONTH);
         if (weekNo < 1) {

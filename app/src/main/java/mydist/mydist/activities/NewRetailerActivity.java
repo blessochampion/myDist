@@ -3,9 +3,7 @@ package mydist.mydist.activities;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,13 +19,13 @@ import java.util.Date;
 import java.util.List;
 
 import mydist.mydist.R;
+import mydist.mydist.adapters.AreaSpinnerAdapter;
 import mydist.mydist.adapters.ChannelSpinnerAdapter;
 import mydist.mydist.adapters.SubChannelSpinnerAdapter;
-import mydist.mydist.data.DatabaseManager;
 import mydist.mydist.data.UserPreference;
+import mydist.mydist.models.Area;
 import mydist.mydist.models.Channel;
 import mydist.mydist.models.NewRetailer;
-import mydist.mydist.models.Retailer;
 import mydist.mydist.models.SubChannel;
 import mydist.mydist.utils.DataUtils;
 import mydist.mydist.utils.Days;
@@ -42,7 +40,7 @@ public class NewRetailerActivity extends AuthenticatedActivity {
     EditText mPhoneNumber;
     Spinner mChannelSpinner;
     Spinner mSubChannelSpinner;
-
+    Spinner mAreaNameSpinner;
     String retailerName;
     String contactPerson;
     String address;
@@ -65,6 +63,7 @@ public class NewRetailerActivity extends AuthenticatedActivity {
         mPhoneNumber = (EditText) findViewById(R.id.et_phone);
         mChannelSpinner = (Spinner) findViewById(R.id.sp_channels);
         mSubChannelSpinner = (Spinner) findViewById(R.id.sp_sub_channels);
+        mAreaNameSpinner = (Spinner) findViewById(R.id.sp_area_names);
         setupToolBar();
         setupSpinners();
         daysRowOne = (LinearLayout) findViewById(R.id.cb_sun_wed);
@@ -77,6 +76,8 @@ public class NewRetailerActivity extends AuthenticatedActivity {
         mChannelSpinner.setAdapter(new ChannelSpinnerAdapter(this, channels));
         final List<SubChannel> subChannels = DataUtils.getAllSubChannel(this);
         mSubChannelSpinner.setAdapter(new SubChannelSpinnerAdapter(this, subChannels));
+        final List<Area> areas = DataUtils.getAllArea(this);
+        mAreaNameSpinner.setAdapter(new AreaSpinnerAdapter(this, areas));
     }
 
     private void setupToolBar() {
@@ -84,7 +85,6 @@ public class NewRetailerActivity extends AuthenticatedActivity {
         setSupportActionBar(toolbar);
         String title = getString(R.string.new_retailer);
         getSupportActionBar().setTitle(title);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         setFonts();
@@ -104,7 +104,6 @@ public class NewRetailerActivity extends AuthenticatedActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        //overridePendingTransition(0, R.anim.transition_right_to_left);
     }
 
     @Override
@@ -121,7 +120,6 @@ public class NewRetailerActivity extends AuthenticatedActivity {
     private void saveRetailer() {
         UIUtils.hideKeyboard(this);
         if (userInputIsValid()) {
-
             NewRetailer newRetailer = getNewRetailer();
             if (DataUtils.saveNewRetailer(newRetailer, this)) {
                 Toast.makeText(this, getString(R.string.new_retailer_info), Toast.LENGTH_SHORT).show();
@@ -192,26 +190,23 @@ public class NewRetailerActivity extends AuthenticatedActivity {
     }
 
     public NewRetailer getNewRetailer() {
-        String dateAdded = Days.getTodayDate();
+        String dateAdded = Days.getRetailerDate();
         String name = mRetailerName.getText().toString().trim();
         String contactPerson = mContactPerson.getText().toString().trim();
         String address = mAddress.getText().toString().trim();
         String phone = mPhoneNumber.getText().toString().trim();
         String channel = ((Channel) mChannelSpinner.getSelectedItem()).getChannelId();
         String subChannel = ((SubChannel) mSubChannelSpinner.getSelectedItem()).getSubChannelId();
+        String area = ((Area) mAreaNameSpinner.getSelectedItem()).getAreaId();
         List<String> days = getSelectedDays();
         List<String> weeks = getSelectedWeeks();
-
         String salesRepFullName = UserPreference.getInstance(this).getFullName();
         String names[] = salesRepFullName.split(" ");
         String initials = names[0].charAt(0) + String.valueOf(names[1].charAt(0));
         String retailerId = "R" + initials + getRetailerIndex();
-
-        NewRetailer newRetailer = new NewRetailer(dateAdded,
-                name, contactPerson, address, phone, channel, subChannel,
+        return new NewRetailer(dateAdded,
+                name, contactPerson, address, phone, channel, subChannel, area,
                 days, weeks, retailerId);
-
-        return newRetailer;
     }
 
     public List<String> getSelectedDays() {

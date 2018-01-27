@@ -20,6 +20,7 @@ public class DownloadMastersResponse {
     public Master master;
     @JsonProperty("salesrep")
     public AuthenticationResponse.User user;
+
     public DownloadMastersResponse() {
     }
 
@@ -81,6 +82,8 @@ public class DownloadMastersResponse {
         public List<Channel> channels;
         @JsonProperty("subchannels")
         public List<SubChannel> subChannels;
+        @JsonProperty("arealist")
+        public List<Area> areas;
         @JsonProperty("brands")
         public List<Brand> brands;
         @JsonProperty("products")
@@ -113,6 +116,14 @@ public class DownloadMastersResponse {
 
         public void setSubChannels(List<SubChannel> subChannels) {
             this.subChannels = subChannels;
+        }
+
+        public List<Area> getAreas() {
+            return areas;
+        }
+
+        public void setAreas(List<Area> areas) {
+            this.areas = areas;
         }
 
         public List<Brand> getBrands() {
