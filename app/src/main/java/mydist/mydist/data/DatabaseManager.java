@@ -90,14 +90,10 @@ public class DatabaseManager {
                 if (!isSuccess)
                     return false;
             }
-
             return isSuccess;
-
         }
-
         return false;
     }
-
 
     public void persistAllChannel(List<Channel> channels) {
         ContentValues values;
@@ -108,7 +104,6 @@ public class DatabaseManager {
             values.put(ChannelContract.COLUMN_NAME, channel.getChannelName());
             mDataBase.insertWithOnConflict(ChannelContract.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
         }
-
         mDataBase.close();
     }
 
@@ -150,7 +145,6 @@ public class DatabaseManager {
             values.put(SubChannelContract.COLUMN_NAME, subChannel.getSubChannelName());
             mDataBase.insertWithOnConflict(SubChannelContract.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
         }
-
         mDataBase.close();
     }
 
@@ -163,7 +157,6 @@ public class DatabaseManager {
             values.put(AreaContract.COLUMN_NAME, area.getAreaName());
             mDataBase.insertWithOnConflict(AreaContract.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
         }
-
         mDataBase.close();
     }
 
@@ -198,8 +191,6 @@ public class DatabaseManager {
         } else {
             return false;
         }
-
-
         return true;
     }
 
@@ -237,17 +228,13 @@ public class DatabaseManager {
     }
 
     public Cursor queryAllBrand() {
-        //TODO: Implement the query
         String[] projection = {
                 BrandContract._ID,
                 BrandContract.COLUMN_NAME,
-                BrandContract.COLUMN_BRAND_ID
-        };
-
+                BrandContract.COLUMN_BRAND_ID};
         String selection = null;
         String selectionArgs[] = null;
         String sortOrder = BrandContract.COLUMN_NAME + " ASC";
-
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor allBrand = db.query(
                 BrandContract.TABLE_NAME,
@@ -265,8 +252,7 @@ public class DatabaseManager {
         String[] projection = {
                 ChannelContract._ID,
                 ChannelContract.COLUMN_NAME,
-                ChannelContract.COLUMN_CHANNEL_ID
-        };
+                ChannelContract.COLUMN_CHANNEL_ID};
         String selection = null;
         String selectionArgs[] = null;
         String sortOrder = ChannelContract.COLUMN_NAME + " ASC";
@@ -306,20 +292,15 @@ public class DatabaseManager {
     }
 
     public Cursor queryAllMerchandize() {
-        //TODO: Implement the query
         String[] projection = {
                 MerchandizeContract._ID,
                 MerchandizeContract.BRAND_NAME,
                 MerchandizeContract.COLUMN_MERCHANDIZE_ITEM,
                 MerchandizeContract.MERCHANDIZE_ID,
-                MerchandizeContract.BRAND_ID
-
-        };
-
+                MerchandizeContract.BRAND_ID};
         String selection = null;
         String selectionArgs[] = null;
         String sortOrder = MerchandizeContract.BRAND_NAME + " ASC";
-
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor allMerchandize = db.query(
                 MerchandizeContract.TABLE_NAME,
@@ -341,13 +322,10 @@ public class DatabaseManager {
                 ProductContract.COLUMN_PRODUCT_ID,
                 ProductContract.COLUMN_BRAND_ID,
                 ProductContract.COLUMN_CASE_PRICE,
-                ProductContract.COLUMN_PIECE_PRICE
-        };
-
+                ProductContract.COLUMN_PIECE_PRICE};
         String selection = null;
         String selectionArgs[] = null;
         String sortOrder = ProductContract.COLUMN_NAME + " ASC";
-
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor allProduct = db.query(
                 ProductContract.TABLE_NAME,
@@ -356,26 +334,21 @@ public class DatabaseManager {
                 selectionArgs,
                 null,
                 null,
-                sortOrder
-        );
+                sortOrder);
         return allProduct;
     }
 
     public Cursor queryAllProduct(String brandID) {
-        //TODO: Implement the query
         String[] projection = {
                 ProductContract._ID,
                 ProductContract.COLUMN_NAME,
                 ProductContract.COLUMN_PRODUCT_ID,
                 ProductContract.COLUMN_BRAND_ID,
                 ProductContract.COLUMN_CASE_PRICE,
-                ProductContract.COLUMN_PIECE_PRICE
-        };
-
+                ProductContract.COLUMN_PIECE_PRICE};
         String selection = ProductContract.COLUMN_BRAND_ID + " = ?";
         String selectionArgs[] = {brandID};
         String sortOrder = ProductContract.COLUMN_NAME + " ASC";
-
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor allProduct = db.query(
                 ProductContract.TABLE_NAME,
@@ -390,17 +363,13 @@ public class DatabaseManager {
     }
 
     public Cursor queryAllSubChannel() {
-        //TODO: Implement the query
         String[] projection = {
                 SubChannelContract._ID,
                 SubChannelContract.COLUMN_NAME,
-                SubChannelContract.COLUMN_SUB_CHANNEL_ID
-        };
-
+                SubChannelContract.COLUMN_SUB_CHANNEL_ID};
         String selection = null;
         String selectionArgs[] = null;
         String sortOrder = SubChannelContract.COLUMN_NAME + " ASC";
-
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor allSubChannel = db.query(
                 SubChannelContract.TABLE_NAME,
@@ -420,7 +389,6 @@ public class DatabaseManager {
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         return db.rawQuery(Query, new String[]{retailerId});
     }
-
 
     public Cursor getAllRetailer() {
         final String QUERY = "SELECT " +
@@ -569,7 +537,6 @@ public class DatabaseManager {
                 " WHERE " +
                 VisitingInfoContract.TABLE_NAME + "." + VisitingInfoContract.WEEK + " =? AND " +
                 VisitingInfoContract.TABLE_NAME + "." + VisitingInfoContract.DAY + " =? ";
-
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(QUERY, new String[]{week, day});
         return cursor;
@@ -618,7 +585,6 @@ public class DatabaseManager {
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(QUERY, new String[]{brandId, dateAdded});
         return cursor;
-
     }
 
     public Cursor queryAllInvoiceByRetailerId(String retailerId, String dateAdded, int status) {
@@ -631,8 +597,7 @@ public class DatabaseManager {
                 InvoiceContract.AMOUNT_PAID,
                 InvoiceContract.PAYMENT_MODE,
                 InvoiceContract.PAYMENT_MODE_VALUE,
-                InvoiceContract.STATUS
-        };
+                InvoiceContract.STATUS};
         String firstClause = retailerId != null ? InvoiceContract.RETAILER_ID + " = ? " + " AND " :
                 InvoiceContract.STATUS + " = ? AND ";
         String selection = firstClause + InvoiceContract.DATE_ADDED + " = ?";
@@ -685,7 +650,6 @@ public class DatabaseManager {
                 " WHERE " +
                 InvoiceContract.TABLE_NAME + "." + InvoiceContract.DATE_ADDED + " = ? AND " +
                 InvoiceContract.STATUS + " = ?";
-
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(QUERY, new String[]{dateAdded, String.valueOf(status)});
         return cursor;
@@ -693,8 +657,8 @@ public class DatabaseManager {
     }
 
     public Cursor queryCollectionTotal(String dateAdded, int status) {
-        String QUERY = "SELECT " +
-                "SUM(CAST(" + InvoiceContract.AMOUNT_PAID + " AS FLOAT))  AS " + InvoiceContract.TOTAL_ALIAS +
+        String QUERY = "SELECT  * "
+               /* "SUM(CAST(" + InvoiceContract.AMOUNT_PAID + " AS FLOAT))  AS " + InvoiceContract.TOTAL_ALIAS */ +
                 " FROM " + InvoiceContract.TABLE_NAME +
                 " WHERE " +
                 InvoiceContract.DATE_ADDED + " = ? AND " +
@@ -780,5 +744,15 @@ public class DatabaseManager {
         return result > 0;
     }
 
-
+    public Cursor queryCoverageCount(String todayDate) {
+        final String QUERY = "SELECT " +
+                "COUNT( DISTINCT " + InvoiceContract.RETAILER_ID + ") AS " +
+                InvoiceContract.TOTAL_ALIAS +
+                " FROM " + InvoiceContract.TABLE_NAME + " WHERE " +
+                InvoiceContract.DATE_ADDED + " = ?" +
+                " GROUP BY " + InvoiceContract.RETAILER_ID;
+        SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(QUERY, new String[]{todayDate});
+        return cursor;
+    }
 }

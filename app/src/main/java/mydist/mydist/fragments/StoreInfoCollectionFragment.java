@@ -113,7 +113,6 @@ public class StoreInfoCollectionFragment extends Fragment implements View.OnClic
         CollectionModel model = new CollectionModel(invoiceNumber, dateFormat
                 .format(new Date()), String.format("%,.2f", Double.valueOf(amount)),
                 retailerName, UserPreference.getInstance(getActivity()).getFullName(), invoiceAmount);
-
         if (amount.equals(EMPTY)) {
             mAmount.setError("Field Cannot be empty");
             return;
@@ -179,7 +178,6 @@ public class StoreInfoCollectionFragment extends Fragment implements View.OnClic
             adapter = new InvoiceAdapter(getActivity(), cursor, this) {
                 @Override
                 public void bindView(View view, Context context, Cursor cursor) {
-
                     TextView value = (TextView) view.findViewById(R.id.invoice_value);
                     TextView invoice_Number = (TextView) view.findViewById(R.id.invoice_number);
                     Button payButton = (Button) view.findViewById(R.id.btn_pay);
@@ -274,7 +272,6 @@ public class StoreInfoCollectionFragment extends Fragment implements View.OnClic
             cursor.moveToPosition(selectedPosition);
             String amount = cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.AMOUNT_PAID));
             String retailerName = getRetailerName(retailerId);
-           // String invoiceAmount = cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.TOTAL));
             model = new CollectionModel(invoiceNumber, Days.getTodayDate().toString()
                     , String.format("%,.2f", Double.valueOf(amount)),
                     retailerName, UserPreference.getInstance(getActivity()).getFullName(), Double.valueOf(invoiceAmount));
@@ -285,7 +282,6 @@ public class StoreInfoCollectionFragment extends Fragment implements View.OnClic
             }else if(modeOfPayment.equals(Invoice.MODE_DRAFT)){
                 model.setDraftNumber(modeOfPaymentValue);
             }
-
         } else {
             model = collectionModelHashMap.get(retailerId);
         }

@@ -6,6 +6,7 @@ package mydist.mydist.utils;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v4.app.FragmentActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -208,13 +209,14 @@ public class DataUtils {
         return products;
     }
 
-    public static final Cursor getAllInvoice(String retailerId ,int status, Context context) {
+    public static final Cursor getAllInvoice(String retailerId, int status, Context context) {
         return DatabaseManager.getInstance(context).queryAllInvoiceByRetailerId(retailerId, Days.getTodayDate(), status);
     }
 
     public static final Cursor getAllOrder(int status, Context context) {
         return DatabaseManager.getInstance(context).queryAllOrder(Days.getTodayDate(), status);
     }
+
     public static final Cursor getAllOrderTotal(int status, Context context) {
         return DatabaseManager.getInstance(context).queryAllOrderTotal(Days.getTodayDate(), status);
     }
@@ -247,8 +249,9 @@ public class DataUtils {
     public static boolean cancelInvoice(String invoiceId, Context context) {
         return DatabaseManager.getInstance(context).cancelInvoice(invoiceId);
     }
-    public static boolean saveCollectionForInvoice(Context context, String invoiceId, String amount, String paymentMode, String paymentModeValue){
-        return DatabaseManager.getInstance(context).updateAmountPaidForInvoice(invoiceId,amount, paymentMode, paymentModeValue);
+
+    public static boolean saveCollectionForInvoice(Context context, String invoiceId, String amount, String paymentMode, String paymentModeValue) {
+        return DatabaseManager.getInstance(context).updateAmountPaidForInvoice(invoiceId, amount, paymentMode, paymentModeValue);
     }
 
     public static HashMap<String, MerchandizingVerification> getMerchandizingVerification(String retailerId, String todayDate, Context context) {
@@ -269,10 +272,14 @@ public class DataUtils {
         return result;
     }
 
-    public static boolean persistMerchandizingVerification(HashMap<String, MerchandizingVerification> mList, Context context){
+    public static boolean persistMerchandizingVerification(HashMap<String, MerchandizingVerification> mList, Context context) {
 
-       List<MerchandizingVerification> verification =  new ArrayList<MerchandizingVerification>(mList.values());
+        List<MerchandizingVerification> verification = new ArrayList<MerchandizingVerification>(mList.values());
 
-        return  DatabaseManager.getInstance(context).persistMerchandizingVerification(verification);
+        return DatabaseManager.getInstance(context).persistMerchandizingVerification(verification);
+    }
+
+    public static Cursor getCoverageCount(String todayDate, Context context) {
+        return DatabaseManager.getInstance(context).queryCoverageCount(todayDate);
     }
 }

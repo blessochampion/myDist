@@ -1,8 +1,10 @@
 package mydist.mydist.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -78,7 +80,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             launchDialog(getString(R.string.login_user_closed_for_the_day));
             return;
         }
-        if(userHasClosedSalesToday() && v.getId() == R.id.login_activity_login){
+        if (userHasClosedSalesToday() && v.getId() == R.id.login_activity_login) {
             doLogin();
             return;
         }
@@ -136,9 +138,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void doLogin() {
         if (mastersDownloadedToday()) {
             if (userInputIsValid()) {
-                if(userPreference.getPassword().equals(usernameValue + ":" + passwordValue)){
+                if (userPreference.getPassword().equals(usernameValue + ":" + passwordValue)) {
                     launchHomeActivity();
-                }else {
+                } else {
                     loginFailed();
                 }
             }
@@ -205,14 +207,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onSuccess(DownloadMastersResponse response) {
-        userPreference.setUserCloseForTheDayDate(EMPTY_STRING);
-        userPreference.setLasMastersDownloadDate(getTodayDate());
-        DataUtils.saveUser(response.getUser(), UserPreference.getInstance(this));
-        DataUtils.saveNewRetailers(response.getMaster().getRetailers(), this);
-        DataUtils.saveMasters(response, this);
-        userPreference.savePassword(usernameValue + ":" + passwordValue);
-        dismissDialog();
-        launchHomeActivity();
+        new SaveMastersTask().execute(response);
     }
 
     @Override
@@ -237,5 +232,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String todayDate = dateFormat.format(new Date());
         return todayDate;
+    }
+
+    private class SaveMastersTask extends AsyncTask<DownloadMastersResponse, Void, Void> {
+
+        @Override
+        protected Void doInBackground(DownloadMastersResponse... downloadMastersResponses) {
+            DownloadMastersResponse response = downloadMastersResponses[0];
+            Context context = LoginActivity.this;
+            userPreference.setUserCloseForTheDayDate(EMPTY_STRING);
+            userPreference.setLasMastersDownloadDate(getTodayDate());
+            DataUtils.saveUser(response.getUser(), UserPreference.getInstance(context));
+            DataUtils.saveNewRetailers(response.getMaster().getRetailers(), context);
+            DataUtils.saveMasters(response, context);
+            userPreference.setRetailerCount(response.getMaster().getRetailers().size());
+            userPreference.savePassword(usernameValue + ":" + passwordValue);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            dismissDialog();
+            launchHomeActivity();
+        }
     }
 }

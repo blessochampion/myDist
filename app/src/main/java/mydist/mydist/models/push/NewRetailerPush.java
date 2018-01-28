@@ -27,6 +27,8 @@ public class NewRetailerPush {
     String retailerName;
     @JsonProperty("subChannelId")
     String subChannelId;
+    @JsonProperty("areaId")
+    String areaId;
     @JsonProperty("suggestedVisitDays")
     List<String> suggestedVisitDays;
     @JsonProperty("weekNo")
@@ -106,6 +108,14 @@ public class NewRetailerPush {
 
     public void setSuggestedVisitDays(List<String> suggestedVisitDays) {
         this.suggestedVisitDays = suggestedVisitDays;
+    }
+
+    public String getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(String areaId) {
+        this.areaId = areaId;
     }
 
     public List<String> getWeekNo() {

@@ -43,10 +43,8 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
         // Required empty public constructor
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_coverage, container, false);
         listView = (ListView) view.findViewById(R.id.list_view);
         message = (TextView) view.findViewById(R.id.tv_message);
@@ -71,7 +69,6 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
         if (todaysRetailerscursor.getCount() > 0) {
             filter = getRetailers(todaysRetailerscursor);
         }
-
         cursor = DatabaseManager.getInstance(getActivity()).getAllRetailerExceptTheCurrentDate(filter);
         if (cursor.getCount() < 1) {
             message.setVisibility(View.VISIBLE);
@@ -107,12 +104,10 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-
         StoreProfileHistoryDialogFragment.getNewInstance(v.getTag().toString())
                 .show(getActivity().
                                 getSupportFragmentManager(),
                         "");
-
     }
 
     private void launchStoreDetailsActivity() {
