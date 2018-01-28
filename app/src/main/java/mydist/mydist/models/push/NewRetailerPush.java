@@ -41,6 +41,7 @@ public class NewRetailerPush {
         contactPerson = cursor.getString(cursor.getColumnIndex(RetailerContract.CONTACT_PERSON_NAME));
         phone = cursor.getString(cursor.getColumnIndex(RetailerContract.PHONE));
         retailerName = cursor.getString(cursor.getColumnIndex(RetailerContract.RETAILER_NAME));
+        areaId = cursor.getString(cursor.getColumnIndex(RetailerContract.AREA_ID));
         subChannelId = cursor.getString(cursor.getColumnIndex(RetailerContract.SUB_CHANNEL_ID));
         this.suggestedVisitDays = suggestedVisitDays;
         this.weekNo = weekNo;

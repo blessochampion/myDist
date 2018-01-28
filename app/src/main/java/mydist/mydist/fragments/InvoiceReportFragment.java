@@ -37,7 +37,7 @@ public class InvoiceReportFragment extends Fragment implements View.OnClickListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-         view = inflater.inflate(R.layout.fragment_invoice_report, container, false);
+        view = inflater.inflate(R.layout.fragment_invoice_report, container, false);
         invoiceMessage = (TextView) view.findViewById(R.id.invoice_message);
         listView = (ListView) view.findViewById(R.id.list_view);
         bindView();
@@ -65,8 +65,6 @@ public class InvoiceReportFragment extends Fragment implements View.OnClickListe
                     );
                     valueStr = cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.INVOICE_ID));
                     invoice_Number.setText(valueStr);
-
-
                 }
 
                 @Override

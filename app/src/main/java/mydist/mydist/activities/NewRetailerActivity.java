@@ -123,7 +123,6 @@ public class NewRetailerActivity extends AuthenticatedActivity {
             NewRetailer newRetailer = getNewRetailer();
             if (DataUtils.saveNewRetailer(newRetailer, this)) {
                 Toast.makeText(this, getString(R.string.new_retailer_info), Toast.LENGTH_SHORT).show();
-
             }
             onBackPressed();
 

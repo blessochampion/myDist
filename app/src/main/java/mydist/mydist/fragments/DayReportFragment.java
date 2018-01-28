@@ -137,7 +137,7 @@ public class DayReportFragment extends Fragment implements LoaderManager.LoaderC
                     case LOADER_ID_SALES:
                         return DataUtils.getAllOrderTotal(Invoice.KEY_STATUS_SUCCESS, getActivity());
                     case LOADER_ID_COVERAGE:
-                        return DataUtils.getCoverageCount(Days.getTodayDate(), getActivity());
+                        return DataUtils.getCoverageCount(Days.getTodayDate(), Invoice.KEY_STATUS_SUCCESS, getActivity());
                     default:
                         return null;
                 }

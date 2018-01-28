@@ -141,6 +141,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
                                         try {
                                             ObjectMapper mapper = new ObjectMapper();
                                             JSONObject masters = new JSONObject(mapper.writeValueAsString(push));
+                                            Log.e("ddddd", masters.toString());
                                             new UploadMastersClient().uploadMasters(masters, SynchronizationActivity.this);
                                         } catch (JsonProcessingException e) {
 
@@ -195,7 +196,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
 
     public List<NewRetailerPush> getNewRetailers() {
         List<NewRetailerPush> newRetailers = new ArrayList<>();
-        Cursor cursor = DatabaseManager.getInstance(this).getAllNewRetailers(Days.getTodayDate());
+        Cursor cursor = DatabaseManager.getInstance(this).getAllNewRetailers(Days.getRetailerDate());
         int count = cursor.getCount();
         if (count > 0) {
             cursor.moveToFirst();
@@ -249,11 +250,14 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
             } else {
                 merchandizingPushes = new ArrayList<>();
             }
+            double sumTotal = 0, collectionTotal = 0;
+            for (InvoicePush invoicePush : invoicePushes) {
+                sumTotal += invoicePush.getTotal();
+                collectionTotal += Double.valueOf(invoicePush.getAmountPaid());
+            }
             coverages.add(new Coverage(retailerId, date, invoicePushes, merchandizingPushes,
-                    new CallAnalysis(20000, 12000, 20)));
-
+                    new CallAnalysis(sumTotal, collectionTotal, 20)));
         }
-
         return coverages;
     }
 
@@ -314,10 +318,8 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
             allInvoiceCursor.moveToFirst();
             for (int i = 0; i < count; i++) {
                 retailerIds.add(allInvoiceCursor.getString(allInvoiceCursor.getColumnIndex(MasterContract.InvoiceContract.RETAILER_ID)));
-
             }
         }
-
         return retailerIds;
     }
 
@@ -340,9 +342,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
                 }
                 cursor.moveToNext();
             }
-
         }
-
         return invoicePushMap;
     }
 

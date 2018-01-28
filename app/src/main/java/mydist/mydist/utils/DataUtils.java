@@ -279,7 +279,7 @@ public class DataUtils {
         return DatabaseManager.getInstance(context).persistMerchandizingVerification(verification);
     }
 
-    public static Cursor getCoverageCount(String todayDate, Context context) {
-        return DatabaseManager.getInstance(context).queryCoverageCount(todayDate);
+    public static Cursor getCoverageCount(String todayDate, int status, Context context) {
+        return DatabaseManager.getInstance(context).queryCoverageCount(todayDate, status);
     }
 }

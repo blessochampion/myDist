@@ -184,9 +184,8 @@ public class DatabaseManager {
                     visitingInfo.put(VisitingInfoContract.RETAILER_ID, newRetailer.getRetailerId());
                     visitingInfo.put(VisitingInfoContract.WEEK, week);
                     visitingInfo.put(VisitingInfoContract.DAY, day);
-                    mDataBase.insertWithOnConflict(VisitingInfoContract.TABLE_NAME, null, visitingInfo, SQLiteDatabase.CONFLICT_IGNORE);
+                    mDataBase.insertWithOnConflict(VisitingInfoContract.TABLE_NAME, null, visitingInfo, SQLiteDatabase.CONFLICT_REPLACE);
                 }
-
             }
         } else {
             return false;
@@ -556,6 +555,7 @@ public class DatabaseManager {
                 ProductContract.COLUMN_PIECE_PRICE + ", " +
                 InvoiceContract.TABLE_NAME + "." + InvoiceContract.TOTAL + " AS " +
                 InvoiceContract.TOTAL_ALIAS + ", " +
+                InvoiceContract.AMOUNT_PAID + ", "+
                 InvoiceContract.RETAILER_ID + ", " +
                 InvoiceContract.STATUS + " FROM " +
                 ProductOrderContract.TABLE_NAME +
@@ -744,15 +744,16 @@ public class DatabaseManager {
         return result > 0;
     }
 
-    public Cursor queryCoverageCount(String todayDate) {
+    public Cursor queryCoverageCount(String todayDate, int status) {
         final String QUERY = "SELECT " +
                 "COUNT( DISTINCT " + InvoiceContract.RETAILER_ID + ") AS " +
                 InvoiceContract.TOTAL_ALIAS +
                 " FROM " + InvoiceContract.TABLE_NAME + " WHERE " +
-                InvoiceContract.DATE_ADDED + " = ?" +
+                InvoiceContract.DATE_ADDED + " = ?" + " AND "
+                + InvoiceContract.STATUS + " = ? " +
                 " GROUP BY " + InvoiceContract.RETAILER_ID;
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(QUERY, new String[]{todayDate});
+        Cursor cursor = db.rawQuery(QUERY, new String[]{todayDate, String.valueOf(status)});
         return cursor;
     }
 }

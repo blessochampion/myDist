@@ -2,6 +2,7 @@ package mydist.mydist.models.push;
 
 import android.database.Cursor;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import static mydist.mydist.data.MasterContract.*;
@@ -10,6 +11,7 @@ import static mydist.mydist.data.MasterContract.*;
  * Created by Blessing.Ekundayo on 1/17/2018.
  */
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class InvoicePush {
     @JsonProperty("invoiceNo")
     String invoiceNo;
@@ -27,18 +29,32 @@ public class InvoicePush {
     double casePrice;
     @JsonProperty("total")
     double total;
+    String amountPaid;
     @JsonProperty("orderStatus")
     int orderStatus;
 
     public InvoicePush(Cursor cursor) {
-        invoiceNo = getStringValueFromCursor(cursor,  ProductOrderContract.INVOICE_ID_ALIAS);
-        productId  = getStringValueFromCursor(cursor,  ProductOrderContract.PRODUCT_ID_ALIAS);
+        invoiceNo = getStringValueFromCursor(cursor, ProductOrderContract.INVOICE_ID_ALIAS);
+        productId = getStringValueFromCursor(cursor, ProductOrderContract.PRODUCT_ID_ALIAS);
         oc = getIntegerValueFromCursor(cursor, ProductOrderContract.OC);
         op = getIntegerValueFromCursor(cursor, ProductOrderContract.OP);
-        unitPrice = Double.valueOf(getStringValueFromCursor(cursor,ProductContract.COLUMN_PIECE_PRICE));
+        unitPrice = Double.valueOf(getStringValueFromCursor(cursor, ProductContract.COLUMN_PIECE_PRICE));
         casePrice = Double.valueOf(getStringValueFromCursor(cursor, ProductContract.COLUMN_CASE_PRICE));
         total = Double.valueOf(getStringValueFromCursor(cursor, InvoiceContract.TOTAL_ALIAS));
-        orderStatus =  getIntegerValueFromCursor(cursor, InvoiceContract.STATUS);
+        orderStatus = getIntegerValueFromCursor(cursor, InvoiceContract.STATUS);
+        amountPaid = getStringValueFromCursor(cursor, InvoiceContract.AMOUNT_PAID);
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    public String getAmountPaid() {
+        return amountPaid;
+    }
+
+    public void setAmountPaid(String amountPaid) {
+        this.amountPaid = amountPaid;
     }
 
     public String getStringValueFromCursor(Cursor c, String key) {
