@@ -2,6 +2,8 @@ package mydist.mydist.models.push;
 
 import android.database.Cursor;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import static mydist.mydist.data.MasterContract.*;
 
 /**
@@ -10,11 +12,20 @@ import static mydist.mydist.data.MasterContract.*;
 
 public class CollectionPush
 {
+    @JsonProperty("invoiceNo")
     String invoiceNo;
+    @JsonProperty("modeOfPayment")
     String modeOfPayment;
+    @JsonProperty("amount")
     String amount;
+    @JsonProperty("collectionAmount")
     String collectionAmount ;
+    @JsonProperty("modeId")
     String modeId;
+    @JsonProperty("retailerId")
+    String retailerId;
+    @JsonProperty("date")
+    String date;
 
     public CollectionPush(Cursor cursor){
         invoiceNo = cursor.getString(cursor.getColumnIndex(InvoiceContract.INVOICE_ID));
@@ -22,6 +33,8 @@ public class CollectionPush
         amount = cursor.getString(cursor.getColumnIndex(InvoiceContract.TOTAL));
         collectionAmount = cursor.getString(cursor.getColumnIndex(InvoiceContract.AMOUNT_PAID));
         modeId = cursor.getString(cursor.getColumnIndex(InvoiceContract.PAYMENT_MODE_VALUE));
+        retailerId = cursor.getString(cursor.getColumnIndex(InvoiceContract.RETAILER_ID));
+        date = cursor.getString(cursor.getColumnIndex(InvoiceContract.DATE_ADDED));
     }
 
     public String getInvoiceNo() {

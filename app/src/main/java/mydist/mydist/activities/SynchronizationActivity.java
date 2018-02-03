@@ -56,13 +56,13 @@ import mydist.mydist.utils.UIUtils;
 
 public class SynchronizationActivity extends AuthenticatedActivity implements View.OnClickListener, UploadMastersListener {
 
+    private static final String TAG = SynchronizationActivity.class.getSimpleName();
     Button mStartSyncButton;
     CheckBox mCloseForTheDay;
     ProgressDialog mProgressDialog;
     UserPreference userPreference;
     Cursor allInvoiceCursor;
     TextView uploadIcon;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +128,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
             if (!NetworkUtils.isNetworkAvailable(SynchronizationActivity.this)) {
                 launchDialog(R.string.network_error);
             } else {
-                if (mCloseForTheDay.isChecked()) {
+                if (!mCloseForTheDay.isChecked()) {
                     AlertDialog dialog = new AlertDialog.Builder(SynchronizationActivity.this).
                             setMessage(this.getString(R.string.closing_message, Days.getTodayDate())).
                             setPositiveButton(this.getString(R.string.ok), new DialogInterface.OnClickListener() {
@@ -141,7 +141,8 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
                                         try {
                                             ObjectMapper mapper = new ObjectMapper();
                                             JSONObject masters = new JSONObject(mapper.writeValueAsString(push));
-                                            new UploadMastersClient().uploadMasters(masters, SynchronizationActivity.this);
+                                            Log.e(TAG, masters.toString());
+                                            //new UploadMastersClient().uploadMasters(masters, SynchronizationActivity.this);
                                         } catch (JsonProcessingException e) {
 
                                         } catch (JSONException e) {

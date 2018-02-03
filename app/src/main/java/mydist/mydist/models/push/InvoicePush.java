@@ -29,6 +29,7 @@ public class InvoicePush {
     double casePrice;
     @JsonProperty("total")
     double total;
+    @JsonProperty("amountPaid")
     String amountPaid;
     @JsonProperty("orderStatus")
     int orderStatus;
