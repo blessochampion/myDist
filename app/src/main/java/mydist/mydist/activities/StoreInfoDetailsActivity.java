@@ -74,7 +74,7 @@ public class StoreInfoDetailsActivity extends AuthenticatedActivity {
                 title  = getString(R.string.collection);
                 return new StoreInfoCollectionFragment();
             case KEY_INVOICE_EDIT:
-                title = getString(R.string.invoice_edit);
+                title = getString(R.string.invoice_manage);
                 return  StoreInfoInvoiceEditFragment.getNewInstance(StoreOverviewActivity.retailerId);
             case KEY_SBD_MERCHANDISING:
                 title = getString(R.string.sbd_merchandising);

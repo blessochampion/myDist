@@ -231,18 +231,15 @@ public class InvoiceActivity extends AuthenticatedActivity implements View.OnCli
     }
 
     private void saveAndPrint() {
-
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         String salesRep = UserPreference.getInstance(this).getFullName().split(" ")[0];
         String retailerId = StoreOverviewActivity.retailerId;
         String retailerName = getRetailerName(retailerId);
-
         if (!invoiceSaved) {
             invoiceNumber = invoiceNumber == null ? generateInvoiceNumber(retailerId) : invoiceNumber;
             invoiceSaved = saveInvoice(invoiceNumber, retailerId);
 
         }
-
         PrintingModel printingModel = new PrintingModel(retailerName, salesRep,
                 invoiceNumber, dateFormat.format(new Date()));
         DataUtils.setPrintingModel(printingModel);
@@ -257,18 +254,15 @@ public class InvoiceActivity extends AuthenticatedActivity implements View.OnCli
                 , String.valueOf(DataUtils.getTotalAmountToBePaid()), Invoice.NO_AMOUNT,
                 Invoice.MODE_CASH, Invoice.CASH_DEFAULT_VALUE,
                 Invoice.KEY_STATUS_SUCCESS, productOrders);
-
         boolean success = DataUtils.saveInvoice(invoice, this);
         if (!success) {
             UserPreference userPreference = UserPreference.getInstance(this);
             userPreference.setInvoiceLastIndex(userPreference.lastInvoiceIndex() - 1);
             makeToast(getString(R.string.invoice_not_saved));
-
         } else {
             mSaveAndPrint.setText(getString(R.string.print));
             makeToast(getString(R.string.invoice_saved));
         }
-
         return success;
     }
 

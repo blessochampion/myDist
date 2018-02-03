@@ -101,17 +101,12 @@ public class PrintingActivity extends AppCompatActivity {
                     public void run() {
                         try {
                             //FIXME this example hard codes the text values to increase a little the readability of the code. Don't do it in production! :)
-
                             bixolonPrinterApi.setSingleByteFont(BixolonPrinter.CODE_PAGE_858_EURO); //It fixes an issue printing special values like €, áéíóú...
-
                             bixolonPrinterApi.lineFeed(2, false); //It's like printing \n\n
                             Bitmap fewlapsBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.route_48);
-
                             //BEWARE THE DOG: The 260 and 50 values are really MAGIC. They aren't as simple as width and height. It can break the Bitmap print.
                             bixolonPrinterApi.printBitmap(fewlapsBitmap, BixolonPrinter.ALIGNMENT_CENTER, 160, 50, false);
-
                             Thread.sleep(PRINTING_SLEEP_TIME); // Don't stress the printer while printing the Bitmap... it don't like it.
-
                             //bixolonPrinterApi.lineFeed(2, false);
                             PrintingModel printingModel = DataUtils.getPrintingModel();
                             printText(PrintingFormatter.COMPANY_NAME, BixolonPrinter.ALIGNMENT_CENTER, BixolonPrinter.TEXT_ATTRIBUTE_FONT_A);
@@ -119,9 +114,9 @@ public class PrintingActivity extends AppCompatActivity {
                             printText(PrintingFormatter.COMPANY_ADDRESS, BixolonPrinter.ALIGNMENT_CENTER, BixolonPrinter.TEXT_ATTRIBUTE_FONT_B);
                             printText("\n");
                             printText("\n");
-                            if(getIntent().hasExtra(KEY_COLLECTION)){
-                                printCollection((CollectionModel)getIntent().getParcelableExtra(KEY_COLLECTION));
-                            }else {
+                            if (getIntent().hasExtra(KEY_COLLECTION)) {
+                                printCollection((CollectionModel) getIntent().getParcelableExtra(KEY_COLLECTION));
+                            } else {
                                 printInvoice(printingModel);
                             }
 
@@ -156,7 +151,7 @@ public class PrintingActivity extends AppCompatActivity {
     private void printCollection(CollectionModel model) {
         String divider = PrintingFormatter.getLineDivider();
         printText("\n");
-        printText(PrintingFormatter.RECEIPT,  BixolonPrinter.ALIGNMENT_CENTER, BixolonPrinter.TEXT_ATTRIBUTE_FONT_A);
+        printText(PrintingFormatter.RECEIPT, BixolonPrinter.ALIGNMENT_CENTER, BixolonPrinter.TEXT_ATTRIBUTE_FONT_A);
         printText("\n");
         printText(divider);
         printText("\n");
@@ -168,17 +163,17 @@ public class PrintingActivity extends AppCompatActivity {
         printText("\n");
         printModelItem(PrintingFormatter.formatNameValuePair(PrintingFormatter.TRANSACTION_DATE, model.getInvoiceDate()));
         printModelItem(model.getExtras());
-        printText(PrintingFormatter.formatNameValuePair("Order Amount(NGN)",  String.valueOf(model.getOrderAmount())));
+        printText(PrintingFormatter.formatNameValuePair("Order Amount(NGN)", String.valueOf(model.getOrderAmount())));
         printText("\n");
         printText("\n");
-        printText(PrintingFormatter.formatNameValuePair("Amount Paid(NGN)",  model.getTotal()));
+        printText(PrintingFormatter.formatNameValuePair("Amount Paid(NGN)", model.getTotal()));
         printText("\n");
     }
 
     private void printInvoice(PrintingModel printingModel) {
         String divider = PrintingFormatter.getLineDivider();
         printText("\n");
-        printText(PrintingFormatter.INVOICE,  BixolonPrinter.ALIGNMENT_CENTER, BixolonPrinter.TEXT_ATTRIBUTE_FONT_A);
+        printText(PrintingFormatter.INVOICE, BixolonPrinter.ALIGNMENT_CENTER, BixolonPrinter.TEXT_ATTRIBUTE_FONT_A);
         printText("\n");
         printText(divider);
         printText("\n");
@@ -191,20 +186,29 @@ public class PrintingActivity extends AppCompatActivity {
         printModelItem(PrintingFormatter.formatNameValuePair(PrintingFormatter.TRANSACTION_DATE, printingModel.getTransactionDate()));
         printText("\n");
         printText("\n");
-        printText(PrintingFormatter.format("Product", "OC", "OP", "Price"));
+        printText(PrintingFormatter.format("Product", "OC", "OP", "Amount"));
         //printText(divider);
         printText("\n");
         HashMap<String, ProductLogic> products = DataUtils.getSelectedProducts();
         ProductLogic currentProduct;
         for (String key : products.keySet()) {
             currentProduct = products.get(key);
-            printText(
-                    PrintingFormatter.format(
-                            currentProduct.getProduct().getProductName(),
-                            String.valueOf(currentProduct.oc), String.valueOf(currentProduct.op),
-                            String.format("%,.2f", currentProduct.getTotal())),
+            String productName = currentProduct.getProduct().getProductName();
+            int MAX_LENGTH = 14;
+            boolean nameLongerThanOneLine = productName.length() > MAX_LENGTH;
+            String productNameLeftOver = "";
+            if (nameLongerThanOneLine) {
+                productNameLeftOver = productName.substring(MAX_LENGTH);
+                productName = productName.substring(0, MAX_LENGTH);
+            }
+            printText(PrintingFormatter.format(productName,
+                    String.valueOf(currentProduct.oc), String.valueOf(currentProduct.op),
+                    String.format("%,.2f", currentProduct.getTotal())),
                     BixolonPrinter.ALIGNMENT_LEFT, BixolonPrinter.TEXT_ATTRIBUTE_FONT_B);
             printText("\n");
+            printText(productNameLeftOver);
+            printText("\n");
+
         }
 
 
@@ -248,7 +252,6 @@ public class PrintingActivity extends AppCompatActivity {
             layoutPrinterReady.setVisibility(View.VISIBLE);
             iconLoadingStop();
         }
-
         updatePrintButtonState();
     }
 
@@ -257,13 +260,10 @@ public class PrintingActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         bixolonPrinterApi = new BixolonPrinter(this, handler, null);
         task = new PairWithPrinterTask();
         task.execute();
-
         updatePrintButtonState();
-
         BluetoothUtil.startBluetooth();
     }
 

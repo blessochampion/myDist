@@ -95,7 +95,7 @@ public class MasterContract {
         public static final String PRODUCT_ID_ALIAS = "product_id_alias";
         public static final String BRAND_ID = "brand_id";
         public static final String OC = "oc";
-        public static final String OP = "OP";
+        public static final String OP = "op";
         public static final String PRODUCT_COUNT = "count";
     }
 

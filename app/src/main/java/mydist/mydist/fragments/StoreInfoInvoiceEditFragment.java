@@ -1,10 +1,15 @@
 package mydist.mydist.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,21 +20,35 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+
 import mydist.mydist.R;
+import mydist.mydist.activities.InvoiceEditActivity;
 import mydist.mydist.adapters.InvoiceAdapter;
+import mydist.mydist.data.MasterContract;
+import mydist.mydist.data.ProductLogic;
+import mydist.mydist.data.UserPreference;
+import mydist.mydist.models.Product;
+import mydist.mydist.printing.PrintingActivity;
+import mydist.mydist.printing.PrintingModel;
 import mydist.mydist.utils.DataUtils;
 import mydist.mydist.utils.FontManager;
 
 import static mydist.mydist.activities.StoreOverviewActivity.retailerId;
 
 
-public class StoreInfoInvoiceEditFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class StoreInfoInvoiceEditFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener, LoaderManager.LoaderCallbacks<Cursor> {
 
     InvoiceAdapter adapter;
     ListView listView;
     TextView invoiceMessage;
     LinearLayout contentContainer;
+    String invoiceId = "";
     View page;
+    private static final int LOADER_ID_REPRINT = 1000;
+    private static final int LOADER_ID_EDIT = 999;
     public static final String KEY_RETAILER_ID = "retailer_id";
 
     @Override
@@ -73,9 +92,11 @@ public class StoreInfoInvoiceEditFragment extends Fragment implements View.OnCli
 
     @Override
     public void onClick(View v) {
-        final String invoiceId = v.getTag().toString();
+        invoiceId = v.getTag().toString();
         if (v.getId() == R.id.icon_invoice_edit) {
-
+            getActivity().getSupportLoaderManager().initLoader(LOADER_ID_EDIT, null, this);
+        } else if (v.getId() == R.id.btn_reprint) {
+            getActivity().getSupportLoaderManager().initLoader(LOADER_ID_REPRINT, null, this);
         } else if (v.getId() == R.id.icon_invoice_delete) {
             AlertDialog mDialog = new AlertDialog.Builder(getActivity()).
                     setMessage(getString(R.string.inoice_delete_question)).
@@ -91,13 +112,12 @@ public class StoreInfoInvoiceEditFragment extends Fragment implements View.OnCli
                                         Toast.makeText(getActivity(), getString(R.string.invoice_delete_error), Toast.LENGTH_SHORT).show();
                                     }
                                 }
-                            }).
-                    setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                            }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
 
-                        }
-                    }).create();
+                }
+            }).create();
             mDialog.show();
         }
 
@@ -105,6 +125,85 @@ public class StoreInfoInvoiceEditFragment extends Fragment implements View.OnCli
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    @Override
+    public Loader<Cursor> onCreateLoader(final int id, Bundle args) {
+        return new CursorLoader(getActivity()) {
+
+            @Override
+            public Cursor loadInBackground() {
+                switch (id) {
+                    case LOADER_ID_REPRINT:
+                        loadSavedInvoice();
+                        break;
+                    case LOADER_ID_EDIT:
+                        loadSavedInvoice();
+                        break;
+                    default:
+                        return null;
+                }
+                return null;
+            }
+
+            private void loadSavedInvoice() {
+                Cursor cursor = DataUtils.getProductsOrderByInvoiceId(invoiceId, getActivity());
+                int count = cursor.getCount();
+                if (count > 0) {
+                    cursor.moveToFirst();
+                    String total = cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.TABLE_NAME + "." + MasterContract.InvoiceContract.TOTAL));
+                    String retailerName = cursor.getString(cursor.getColumnIndex(MasterContract.RetailerContract.RETAILER_NAME));
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+                    String salesRep = UserPreference.getInstance(getActivity()).getFullName().split(" ")[0];
+                    PrintingModel printingModel = new PrintingModel(retailerName, salesRep, invoiceId,
+                            dateFormat.format(new Date()));
+                    DataUtils.printingModel = printingModel;
+                    HashMap<String, ProductLogic> productLogicHashMap = new HashMap<>();
+                    ProductLogic productLogic;
+                    Product product;
+                    String productId;
+                    for (int i = 0; i < count; i++) {
+                        product = getProductFromCursor(cursor);
+                        productId = cursor.getString(cursor.getColumnIndex(MasterContract.ProductOrderContract.TABLE_NAME + "." + MasterContract.ProductOrderContract.PRODUCT_ID));
+                        productLogic = new ProductLogic(product);
+                        productLogic.oc = cursor.getInt(cursor.getColumnIndex(MasterContract.ProductOrderContract.OC));
+                        productLogic.op = cursor.getInt(cursor.getColumnIndex(MasterContract.ProductOrderContract.OP));
+                        productLogicHashMap.put(productId, productLogic);
+                        cursor.moveToNext();
+                    }
+                    DataUtils.setSelectedProducts(productLogicHashMap);
+                    DataUtils.setTotalAmountToBePaid(Double.valueOf(total));
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.unable_to_process_request), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            private Product getProductFromCursor(Cursor cursor) {
+                return new Product(
+                        cursor.getString(cursor.getColumnIndex(MasterContract.ProductOrderContract.TABLE_NAME + "." + MasterContract.ProductOrderContract.PRODUCT_ID)),
+                        cursor.getString(cursor.getColumnIndex(MasterContract.ProductOrderContract.TABLE_NAME + "." + MasterContract.ProductOrderContract.PRODUCT_NAME)),
+                        cursor.getString(cursor.getColumnIndex(MasterContract.ProductContract.COLUMN_CASE_PRICE)),
+                        cursor.getString(cursor.getColumnIndex(MasterContract.ProductContract.COLUMN_PIECE_PRICE))
+                );
+            }
+        };
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (loader.getId() == LOADER_ID_EDIT) {
+            Intent intent = new Intent(getActivity(), InvoiceEditActivity.class);
+            startActivity(intent);
+        } else if (loader.getId() == LOADER_ID_REPRINT) {
+            Intent intent = new Intent(getActivity(), PrintingActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
 
     }
 }

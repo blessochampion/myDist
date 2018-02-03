@@ -201,7 +201,7 @@
                     android:background="@drawable/gradient"
                     android:gravity="center_vertical"
                     android:paddingLeft="40dp"
-                    android:text="@string/invoice_edit"
+                    android:text="@string/invoice_manage"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/white_grey" />
 

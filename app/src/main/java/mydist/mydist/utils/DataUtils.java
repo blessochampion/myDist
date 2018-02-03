@@ -209,6 +209,10 @@ public class DataUtils {
         return products;
     }
 
+    public static final Cursor getProductsOrderByInvoiceId(String id, Context context) {
+        return DatabaseManager.getInstance(context).getProductsOrder(id, Days.getTodayDate());
+    }
+
     public static final Cursor getAllInvoice(String retailerId, int status, Context context) {
         return DatabaseManager.getInstance(context).queryAllInvoiceByRetailerId(retailerId, Days.getTodayDate(), status);
     }

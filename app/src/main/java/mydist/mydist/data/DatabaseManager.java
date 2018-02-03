@@ -79,7 +79,7 @@ public class DatabaseManager {
                 contentValues = new ContentValues();
                 contentValues.put(ProductOrderContract.DATE_ADDED, productOrder.getDateAdded());
                 contentValues.put(ProductOrderContract.INVOICE_ID, productOrder.getInvoiceId());
-                contentValues.put(ProductOrderContract.TOTAL, productOrder.getProductName());
+                contentValues.put(ProductOrderContract.TOTAL, productOrder.getTotal());
                 contentValues.put(ProductOrderContract.PRODUCT_NAME, productOrder.getProductName());
                 contentValues.put(ProductOrderContract.PRODUCT_ID, productOrder.getProductId());
                 contentValues.put(ProductOrderContract.BRAND_ID, productOrder.getBrandId());
@@ -93,6 +93,34 @@ public class DatabaseManager {
             return isSuccess;
         }
         return false;
+    }
+
+    public Cursor getProductsOrder(String invoiceId, String dateAdded) {
+        final String QUERY = "SELECT " +
+                ProductOrderContract.TABLE_NAME + "." + ProductOrderContract.PRODUCT_NAME + ", " +
+                ProductOrderContract.TABLE_NAME + "." + ProductOrderContract.PRODUCT_ID + ", " +
+                ProductOrderContract.OC + ", " +
+                ProductOrderContract.OP + ", " +
+                ProductContract.COLUMN_PIECE_PRICE + ", " +
+                ProductContract.COLUMN_CASE_PRICE + ", " +
+                RetailerContract.RETAILER_NAME + "," +
+                InvoiceContract.TABLE_NAME + "." + InvoiceContract.TOTAL +
+                " FROM " + ProductOrderContract.TABLE_NAME +
+                " INNER JOIN " + ProductContract.TABLE_NAME +
+                " ON " +
+                ProductOrderContract.TABLE_NAME + "." + ProductOrderContract.PRODUCT_ID + " = " +
+                ProductContract.TABLE_NAME + "." + ProductContract.COLUMN_PRODUCT_ID +
+                " INNER JOIN " + InvoiceContract.TABLE_NAME +
+                " ON " + InvoiceContract.TABLE_NAME + "." + InvoiceContract.INVOICE_ID + " = " +
+                ProductOrderContract.TABLE_NAME + "." + ProductOrderContract.INVOICE_ID +
+                " INNER JOIN " + RetailerContract.TABLE_NAME +
+                " ON " + RetailerContract.TABLE_NAME + "." + RetailerContract.RETAILER_ID + " = " +
+                InvoiceContract.TABLE_NAME + "." + InvoiceContract.RETAILER_ID +
+                " WHERE " + ProductOrderContract.TABLE_NAME + "." + ProductOrderContract.INVOICE_ID + " = ? AND " +
+                ProductOrderContract.TABLE_NAME + "." + ProductOrderContract.DATE_ADDED + " = ?";
+        SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(QUERY, new String[]{invoiceId, dateAdded});
+        return cursor;
     }
 
     public void persistAllChannel(List<Channel> channels) {
@@ -543,7 +571,6 @@ public class DatabaseManager {
     }
 
     public Cursor getInvoicePush(String day) {
-
         final String QUERY = "SELECT " +
                 ProductOrderContract.TABLE_NAME + "." + ProductOrderContract.INVOICE_ID + " AS " +
                 ProductOrderContract.INVOICE_ID_ALIAS + ", " +
@@ -555,7 +582,7 @@ public class DatabaseManager {
                 ProductContract.COLUMN_PIECE_PRICE + ", " +
                 InvoiceContract.TABLE_NAME + "." + InvoiceContract.TOTAL + " AS " +
                 InvoiceContract.TOTAL_ALIAS + ", " +
-                InvoiceContract.AMOUNT_PAID + ", "+
+                InvoiceContract.AMOUNT_PAID + ", " +
                 InvoiceContract.RETAILER_ID + ", " +
                 InvoiceContract.STATUS + " FROM " +
                 ProductOrderContract.TABLE_NAME +

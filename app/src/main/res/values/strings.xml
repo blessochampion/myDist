@@ -91,7 +91,7 @@
     <string name="review">Review</string>
     <string name="invoice">Invoice</string>
     <string name="collection">Collection</string>
-    <string name="invoice_edit">Edit Invoice</string>
+    <string name="invoice_manage">Manage Invoice</string>
     <string name="sbd_merchandising">SBD Merchandising</string>
     <string name="call_analysis">Call Analysis</string>
     <string name="store">Store</string>
@@ -172,4 +172,7 @@
     <string name="close_for_the_day">You already closed for the day. You can only view Reports.</string>
     <string name="no_product_for_brand">No product sold for %s Brand</string>
     <string name="area_name">Area Name</string>
+    <string name="re_print">RePrint</string>
+    <string name="unable_to_process_request">Unable to process your request</string>
+    <string name="edit_invoice">Edit Invoice</string>
 </resources>

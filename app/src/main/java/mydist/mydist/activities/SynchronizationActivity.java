@@ -141,13 +141,10 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
                                         try {
                                             ObjectMapper mapper = new ObjectMapper();
                                             JSONObject masters = new JSONObject(mapper.writeValueAsString(push));
-                                            Log.e("ddddd", masters.toString());
                                             new UploadMastersClient().uploadMasters(masters, SynchronizationActivity.this);
                                         } catch (JsonProcessingException e) {
 
                                         } catch (JSONException e) {
-
-
                                         }
 
                                     } else {
@@ -318,6 +315,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
             allInvoiceCursor.moveToFirst();
             for (int i = 0; i < count; i++) {
                 retailerIds.add(allInvoiceCursor.getString(allInvoiceCursor.getColumnIndex(MasterContract.InvoiceContract.RETAILER_ID)));
+                allInvoiceCursor.moveToNext();
             }
         }
         return retailerIds;

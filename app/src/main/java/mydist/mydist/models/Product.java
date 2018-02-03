@@ -1,4 +1,5 @@
 package mydist.mydist.models;
+
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -11,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Created by Blessing.Ekundayo on 11/25/2017.
  */
 
-public class Product implements Parcelable
-{
+public class Product implements Parcelable {
     @JsonProperty("productId")
     public String productId;
     @JsonProperty("productName")
@@ -27,12 +27,21 @@ public class Product implements Parcelable
     public Product() {
     }
 
-    public Product(Cursor cursor){
+
+    public Product(Cursor cursor) {
         this.productId = cursor.getString(cursor.getColumnIndex(ProductContract.COLUMN_PRODUCT_ID));
         this.productName = cursor.getString(cursor.getColumnIndex(ProductContract.COLUMN_NAME));
         this.casePrice = String.valueOf(cursor.getDouble(cursor.getColumnIndex(ProductContract.COLUMN_CASE_PRICE)));
         this.piecePrice = String.valueOf(cursor.getDouble(cursor.getColumnIndex(ProductContract.COLUMN_PIECE_PRICE)));
         this.brandId = cursor.getString(cursor.getColumnIndex(ProductContract.COLUMN_BRAND_ID));
+    }
+
+    public Product(String productId, String productName, String casePrice, String piecePrice) {
+        this.productId = productId;
+        this.productName = productName;
+        this.casePrice = casePrice;
+        this.piecePrice = piecePrice;
+        this.brandId = "";
     }
 
 

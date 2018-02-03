@@ -1,17 +1,18 @@
-package mydist.mydist.fragments;
+package mydist.mydist.activities;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +23,13 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import mydist.mydist.R;
-import mydist.mydist.activities.InvoiceActivity;
 import mydist.mydist.data.ProductLogic;
+import mydist.mydist.fragments.StoreFilterDialogFragment;
 import mydist.mydist.models.Product;
 import mydist.mydist.utils.DataUtils;
 import mydist.mydist.utils.FontManager;
@@ -35,29 +37,73 @@ import mydist.mydist.utils.FontManager;
 import static android.view.Gravity.CENTER;
 import static android.view.Gravity.CENTER_VERTICAL;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickListener, StoreFilterDialogFragment.FilterItemListener {
+public class InvoiceEditActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final int TOTAL_POSITION = 4;
     TableLayout mTableLayout;
     TableLayout mPagination;
     List<Product> products;
-    List<Product> filteredProducts;
     TextView mTotalAmount;
     int currentPage = 0;
     Context context;
     double totalAmountToBePaid = 0;
-    private boolean isInFilterMode = false;
-    HashMap<String, ProductLogic> selectedProducts = new HashMap<>();
+    HashMap<String, ProductLogic> selectedProducts = DataUtils.getSelectedProducts();
     private static final int OC_POSITION = 2;
     private static final int OP_POSITION = 3;
     private static final String DELIMITER = ":";
     private String EMPTY_STRING = "";
+    List<CheckBox> checkBoxes = new ArrayList<>();
 
-    public StoreInfoInvoiceFragment() {
-        // Required empty public constructor
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_invoice_edit);
+        setupToolBar();
+        mTableLayout = (TableLayout) findViewById(R.id.tl_products);
+        mPagination = (TableLayout) findViewById(R.id.pagination);
+        mTotalAmount = (TextView) findViewById(R.id.total_amount);
+        totalAmountToBePaid = DataUtils.getTotalAmountToBePaid();
+        mTotalAmount.setText(String.format("%,.2f", totalAmountToBePaid));
+        products = getProducts();
+        context = this;
+        initProducts();
+        initPagination();
+        loadProducts();
+        setFonts();
+        clickSelectedCheckBoxes();
+    }
+
+    private void clickSelectedCheckBoxes() {
+        for (CheckBox c: checkBoxes){
+            checkBoxClicked(c);
+        }
+    }
+
+    private void setupToolBar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        String title = getString(R.string.edit_invoice);
+        getSupportActionBar().setTitle(title);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+    }
+
+    private List<Product> getProducts() {
+        if (products == null) {
+            List<Product> selectedProductsValues = new ArrayList<>();
+            for (String s : selectedProducts.keySet()) {
+                selectedProductsValues.add(selectedProducts.get(s).getProduct());
+            }
+            return selectedProductsValues;
+        } else {
+            return products;
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_fragment_invoice_edit, menu);
+        return true;
     }
 
     @Override
@@ -83,33 +129,16 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
                 launchInvoiceActivity();
             }
             return true;
-        } else if (item.getItemId() == R.id.filter) {
-            StoreFilterDialogFragment storeFilterDialogFragment = new StoreFilterDialogFragment();
-            storeFilterDialogFragment.setListener(this);
-            storeFilterDialogFragment.show(getActivity().getSupportFragmentManager(), "");
+        } else if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_store_info, container, false);
-        mTableLayout = (TableLayout) view.findViewById(R.id.tl_products);
-        mPagination = (TableLayout) view.findViewById(R.id.pagination);
-        mTotalAmount = (TextView) view.findViewById(R.id.total_amount);
-        products = DataUtils.getAllProducts(getActivity());
-        context = getActivity();
-        setHasOptionsMenu(true);
-        initProducts();
-        initPagination();
-        loadProducts();
-        setFonts(view);
-        return view;
-    }
-
-    private List<Product> getProducts() {
-        return isInFilterMode ? filteredProducts : products;
+    public void launchInvoiceActivity() {
+        Intent intent = new Intent(context, InvoiceActivity.class);
+        startActivity(intent);
     }
 
     private void loadProducts() {
@@ -135,6 +164,37 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
             productRow.setLayoutParams(layoutParams);
             mTableLayout.addView(productRow);
         }
+    }
+
+    private void fill(TextView page) {
+        page.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        page.setTextColor(Color.WHITE);
+    }
+
+    private void unFill(TextView page) {
+        page.setBackground(getResources().getDrawable(R.drawable.download_button));
+        page.setTextColor(getResources().getColor(R.color.colorPrimary));
+    }
+
+    private TextView getHeader(String name) {
+        TextView productHeader = new TextView(context);
+        productHeader.setTextSize(14);
+        TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, 70, 1);
+        layoutParams.setMargins(0, 0, 6, 0);
+        productHeader.setLayoutParams(layoutParams);
+        //productHeader.setHeight(90);
+        productHeader.setGravity(CENTER);
+        productHeader.setMinWidth(150);
+        productHeader.setPadding(16, 16, 16, 16);
+        productHeader.setText(name);
+        productHeader.setTextColor(Color.WHITE);
+        productHeader.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        return productHeader;
+    }
+
+    private void setFonts() {
+        Typeface ralewayFont = FontManager.getTypeface(getApplicationContext(), FontManager.RALEWAY_REGULAR);
+        FontManager.setFontsForView(findViewById(R.id.parent_layout), ralewayFont);
     }
 
     private void loadProductIntoRow(TableRow productRow, Product currentProduct, int position) {
@@ -195,6 +255,8 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
                 checkBoxClicked((CheckBox) v);
             }
         });
+        selectCheckbox.setChecked(selectedProducts.containsKey(currentProduct.getProductId()));
+        checkBoxes.add(selectCheckbox);
         productRow.addView(selectCheckbox);
         layoutParams.gravity = CENTER_VERTICAL;
         //oc
@@ -243,6 +305,7 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
             opEditText.setEnabled(true);
             totalEditText.setText(String.valueOf(logic.getTotal()));
         }
+
     }
 
     private void updateTotalValue(String indicator, String value, EditText totalEditText) {
@@ -389,37 +452,6 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
         }
     }
 
-    private void fill(TextView page) {
-        page.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        page.setTextColor(Color.WHITE);
-    }
-
-    private void unFill(TextView page) {
-        page.setBackground(getResources().getDrawable(R.drawable.download_button));
-        page.setTextColor(getResources().getColor(R.color.colorPrimary));
-    }
-
-    private TextView getHeader(String name) {
-        TextView productHeader = new TextView(context);
-        productHeader.setTextSize(14);
-        TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, 70, 1);
-        layoutParams.setMargins(0, 0, 6, 0);
-        productHeader.setLayoutParams(layoutParams);
-        //productHeader.setHeight(90);
-        productHeader.setGravity(CENTER);
-        productHeader.setMinWidth(150);
-        productHeader.setPadding(16, 16, 16, 16);
-        productHeader.setText(name);
-        productHeader.setTextColor(Color.WHITE);
-        productHeader.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        return productHeader;
-    }
-
-    private void setFonts(View v) {
-        Typeface ralewayFont = FontManager.getTypeface(getActivity().getApplicationContext(), FontManager.RALEWAY_REGULAR);
-        FontManager.setFontsForView(v.findViewById(R.id.parent_layout), ralewayFont);
-    }
-
     private CheckBox generateCheckbox(Context context) {
         CheckBox checkbox = new CheckBox(context);
         TableRow.LayoutParams lpCheckbox = new TableRow.LayoutParams(
@@ -448,24 +480,4 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
         loadProducts();
     }
 
-    public void launchInvoiceActivity() {
-        Intent intent = new Intent(context, InvoiceActivity.class);
-        startActivity(intent);
-    }
-
-    @Override
-    public void onFilterItemListener(String brandId) {
-        if (brandId.equalsIgnoreCase("ALL")) {
-            isInFilterMode = false;
-            currentPage = 0;
-            loadProducts();
-            initPagination();
-        } else {
-            filteredProducts = DataUtils.getAllProductsByBrandId(getActivity(), String.valueOf((int) Double.parseDouble(brandId)));
-            isInFilterMode = true;
-            currentPage = 0;
-            loadProducts();
-            initPagination();
-        }
-    }
 }

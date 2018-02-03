@@ -32,11 +32,9 @@ public class InvoiceReportFragment extends Fragment implements View.OnClickListe
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_invoice_report, container, false);
         invoiceMessage = (TextView) view.findViewById(R.id.invoice_message);
         listView = (ListView) view.findViewById(R.id.list_view);
@@ -55,14 +53,10 @@ public class InvoiceReportFragment extends Fragment implements View.OnClickListe
             adapter = new InvoiceAdapter(getActivity(), cursor, this) {
                 @Override
                 public void bindView(View view, Context context, Cursor cursor) {
-
                     TextView value = (TextView) view.findViewById(R.id.value);
                     TextView invoice_Number = (TextView) view.findViewById(R.id.invoice_number);
-
                     String valueStr = cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.TOTAL));
-                    value.setText(
-                            getString(R.string.naira) + String.format("%,.2f", Double.valueOf(valueStr))
-                    );
+                    value.setText(getString(R.string.naira) + String.format("%,.2f", Double.valueOf(valueStr)));
                     valueStr = cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.INVOICE_ID));
                     invoice_Number.setText(valueStr);
                 }

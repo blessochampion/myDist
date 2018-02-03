@@ -21,7 +21,6 @@ public class ProductLogic {
     public double getTotal() {
         total = Double.valueOf(this.product.getCasePrice()) * oc +
                 Double.valueOf(this.product.getPiecePrice()) * op;
-
         return total;
     }
 
