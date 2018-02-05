@@ -128,7 +128,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
             if (!NetworkUtils.isNetworkAvailable(SynchronizationActivity.this)) {
                 launchDialog(R.string.network_error);
             } else {
-                if (!mCloseForTheDay.isChecked()) {
+                if (mCloseForTheDay.isChecked()) {
                     AlertDialog dialog = new AlertDialog.Builder(SynchronizationActivity.this).
                             setMessage(this.getString(R.string.closing_message, Days.getTodayDate())).
                             setPositiveButton(this.getString(R.string.ok), new DialogInterface.OnClickListener() {
@@ -142,7 +142,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
                                             ObjectMapper mapper = new ObjectMapper();
                                             JSONObject masters = new JSONObject(mapper.writeValueAsString(push));
                                             Log.e(TAG, masters.toString());
-                                            //new UploadMastersClient().uploadMasters(masters, SynchronizationActivity.this);
+                                            new UploadMastersClient().uploadMasters(masters, SynchronizationActivity.this);
                                         } catch (JsonProcessingException e) {
 
                                         } catch (JSONException e) {
@@ -181,7 +181,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
                     coverages);
             Toast.makeText(this, "Report generated Successfully", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Log.e("Exception", e.getMessage());
+            e.printStackTrace();
             Toast.makeText(this, "Unable to collate Report", Toast.LENGTH_SHORT).show();
             return null;
         }
@@ -312,10 +312,14 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
         List<String> retailerIds = new ArrayList<>();
         allInvoiceCursor = DataUtils.getAllInvoice(null, Invoice.KEY_STATUS_SUCCESS, this);
         int count = allInvoiceCursor.getCount();
+        String retailerId;
         if (count > 0) {
             allInvoiceCursor.moveToFirst();
             for (int i = 0; i < count; i++) {
-                retailerIds.add(allInvoiceCursor.getString(allInvoiceCursor.getColumnIndex(MasterContract.InvoiceContract.RETAILER_ID)));
+                retailerId = allInvoiceCursor.getString(allInvoiceCursor.getColumnIndex(MasterContract.InvoiceContract.RETAILER_ID));
+                if(!retailerIds.contains(retailerId)){
+                    retailerIds.add(retailerId);
+                }
                 allInvoiceCursor.moveToNext();
             }
         }
@@ -324,25 +328,47 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
 
     public HashMap<String, List<InvoicePush>> getInvoicePushMap() {
         HashMap<String, List<InvoicePush>> invoicePushMap = new HashMap<>();
+        HashMap<String, List<InvoicePush>> result = new HashMap<>();
         Cursor cursor = DatabaseManager.getInstance(this).getInvoicePush(Days.getTodayDate());
         int count = cursor.getCount();
         List<InvoicePush> invoicePushes;
-        String retailerId;
+        String retailerId, invoiceId;
+        String temporaryMapKey;
+        String DELIMITER = "_";
         if (count > 0) {
             cursor.moveToFirst();
             for (int i = 0; i < count; i++) {
                 retailerId = cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.RETAILER_ID));
-                if (invoicePushMap.containsKey(retailerId)) {
-                    invoicePushMap.get(retailerId).add(new InvoicePush(cursor));
+                invoiceId = cursor.getString(cursor.getColumnIndex(MasterContract.ProductOrderContract.INVOICE_ID_ALIAS));
+                temporaryMapKey = retailerId + DELIMITER + invoiceId;
+                if (invoicePushMap.containsKey(temporaryMapKey)) {
+                    invoicePushes = invoicePushMap.get(temporaryMapKey);
+                    for (InvoicePush invoicePush : invoicePushes) {
+                        if (invoicePush.getInvoiceNo().equalsIgnoreCase(invoiceId)) {
+                            invoicePush.addProduct(cursor);
+                            break;
+                        }
+                    }
                 } else {
                     invoicePushes = new ArrayList<>();
-                    invoicePushes.add(new InvoicePush(cursor));
-                    invoicePushMap.put(retailerId, invoicePushes);
+                    InvoicePush invoicePush = new InvoicePush(cursor);
+                    invoicePush.addProduct(cursor);
+                    invoicePushes.add(invoicePush);
+                    invoicePushMap.put(temporaryMapKey, invoicePushes);
                 }
                 cursor.moveToNext();
             }
+
+            for(String key: invoicePushMap.keySet()){
+                temporaryMapKey = key.split(DELIMITER)[0];
+                if(result.containsKey(temporaryMapKey)){
+                    result.get(temporaryMapKey).addAll(invoicePushMap.get(key));
+                }else {
+                    result.put(key.split(DELIMITER)[0], invoicePushMap.get(key));
+                }
+            }
         }
-        return invoicePushMap;
+        return result;
     }
 
     public HashMap<String, List<MerchandizingPush>> getMerchandizingPushMap() {
