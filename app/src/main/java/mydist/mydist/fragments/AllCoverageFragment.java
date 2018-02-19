@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +29,10 @@ import mydist.mydist.models.Retailer;
 import mydist.mydist.utils.Days;
 import mydist.mydist.utils.FontManager;
 
+import static mydist.mydist.utils.Days.getCurrentDay;
+import static mydist.mydist.utils.Days.getDay;
+import static mydist.mydist.utils.Days.getThisWeek;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -38,6 +43,7 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
     View view;
     ListView listView;
     TextView message;
+    private ProgressBar mLoadingIndicator;
 
     public AllCoverageFragment() {
         // Required empty public constructor
@@ -48,21 +54,14 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
         view = inflater.inflate(R.layout.fragment_coverage, container, false);
         listView = (ListView) view.findViewById(R.id.list_view);
         message = (TextView) view.findViewById(R.id.tv_message);
+        mLoadingIndicator = (ProgressBar) view.findViewById(R.id.pb_progress_loading_indicator);
         bindView();
         return view;
     }
 
     private void bindView() {
-        Calendar now = Calendar.getInstance();
-        int value = now.get(Calendar.WEEK_OF_MONTH);
-        if (value < 1) {
-            value = 1;
-        } else if (value > 4) {
-            value = 4;
-        }
-        String week = "wk" + value;
-        value = now.get(Calendar.DAY_OF_WEEK);
-        String day = getDay(value);
+        String week = getThisWeek();
+        String day = getCurrentDay();
         Cursor todaysRetailerscursor = DatabaseManager.getInstance(getActivity()).
                 getRetailerByVisitingInfo(week, day);
         String filter = null;
@@ -73,12 +72,14 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
         if (cursor.getCount() < 1) {
             message.setVisibility(View.VISIBLE);
             listView.setVisibility(View.GONE);
+            mLoadingIndicator.setVisibility(View.GONE);
         } else {
             adapter = new DailyRetailersAdapter(getActivity(), cursor, this);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(this);
             message.setVisibility(View.GONE);
             listView.setVisibility(View.VISIBLE);
+            mLoadingIndicator.setVisibility(View.GONE);
         }
         setFonts(view);
     }
@@ -126,40 +127,11 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onDateChangeRequested(String id) {
-        Calendar now = Calendar.getInstance();
-        int value = now.get(Calendar.WEEK_OF_MONTH);
-        if (value < 1) {
-            value = 1;
-        } else if (value > 4) {
-            value = 4;
-        }
-        String week = "wk" + value;
-        value = now.get(Calendar.DAY_OF_WEEK);
-        String day = getDay(value);
+        String week = getThisWeek();
+        String day = getCurrentDay();
         if (DatabaseManager.getInstance(getActivity()).changeRetailerVisitingDate(id, Days.getTodayDate(), day, week)) {
             Toast.makeText(getActivity(), getString(R.string.date_changed), Toast.LENGTH_LONG).show();
             bindView();
-        }
-    }
-
-    private String getDay(int day) {
-        switch (day) {
-            case 1:
-                return "Sun";
-            case 2:
-                return "Mon";
-            case 3:
-                return "Tue";
-            case 4:
-                return "Wed";
-            case 5:
-                return "Thur";
-            case 6:
-                return "Fri";
-            case 7:
-                return "Sat";
-            default:
-                return "";
         }
     }
 }

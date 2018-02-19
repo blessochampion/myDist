@@ -49,7 +49,6 @@ public class CoverageActivity extends AuthenticatedActivity {
     }
 
     private void loadDailyRetailers() {
-
         String week = Days.getThisWeek();
         SUNDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.SUN.toString());
         MONDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.MON.toString());
@@ -58,7 +57,6 @@ public class CoverageActivity extends AuthenticatedActivity {
         THURSDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.THUR.toString());
         FRIDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.FRI.toString());
         SATURDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.SAT.toString());
-
     }
 
     private void setFonts() {

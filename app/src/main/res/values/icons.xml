@@ -18,4 +18,5 @@
     <string name="fa_icon_invoice_edit" translatable="false">&#xf040;</string>
     <string name="fa_icon_invoice_delete" translatable="false">&#xf014;</string>
     <string name="fa_icon_upload" translatable="false">&#xf093;</string>
+    <string name="fa_icon_info_circle" translatable="false">&#xf05a;</string>
 </resources>

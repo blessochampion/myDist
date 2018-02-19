@@ -6,7 +6,6 @@ package mydist.mydist.utils;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.app.FragmentActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,16 +58,16 @@ public class DataUtils {
         userPreference.setFullName(user.getFullName());
     }
 
-    public static boolean saveNewRetailer(NewRetailer newRetailer, Context context) {
+    public static boolean saveNewRetailer(NewRetailer newRetailer, String initialHPV, Context context) {
         DatabaseManager manager = DatabaseManager.getInstance(context);
-        return manager.persistNewRetailer(newRetailer);
+        return manager.persistNewRetailer(newRetailer, initialHPV);
     }
 
     public static boolean saveNewRetailers(List<NewRetailer> newRetailers, Context context) {
         DatabaseManager manager = DatabaseManager.getInstance(context);
         boolean isSuccess = true;
         for (NewRetailer retailer : newRetailers) {
-            isSuccess = isSuccess && manager.persistNewRetailer(retailer);
+            isSuccess = isSuccess && manager.persistNewRetailer(retailer, DatabaseLogicUtils.getDefaultHpv());
         }
         return isSuccess;
     }
@@ -285,5 +284,12 @@ public class DataUtils {
 
     public static Cursor getCoverageCount(String todayDate, int status, Context context) {
         return DatabaseManager.getInstance(context).queryCoverageCount(todayDate, status);
+    }
+
+    public static boolean updateHPV(String retailerId, String value, Context context) {
+        return DatabaseManager.getInstance(context).updateHPV(retailerId, value);
+    }
+    public static Cursor getHPV(String retailerId,Context context){
+        return DatabaseManager.getInstance(context).getHPV(retailerId);
     }
 }

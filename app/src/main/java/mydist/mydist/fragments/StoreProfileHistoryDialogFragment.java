@@ -25,8 +25,7 @@ import static mydist.mydist.fragments.StoreProfileFragment.KEY_ID;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StoreProfileHistoryDialogFragment extends DialogFragment
-{
+public class StoreProfileHistoryDialogFragment extends DialogFragment {
     public StoreProfileHistoryDialogFragment() {
         // Required empty public constructor
     }
@@ -35,10 +34,8 @@ public class StoreProfileHistoryDialogFragment extends DialogFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_store_profile_dialog, container,false);
-
+        View view = inflater.inflate(R.layout.fragment_store_profile_dialog, container, false);
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.vp_container);
-
         Bundle bundle = getArguments();
         String id = bundle.getString(KEY_ID);
         StoreProfileAdapter adapter = new StoreProfileAdapter(getChildFragmentManager(), getFragments(id), getTitles());
@@ -48,7 +45,7 @@ public class StoreProfileHistoryDialogFragment extends DialogFragment
 
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         setFonts(view);
-        return  view;
+        return view;
 
     }
 
@@ -67,7 +64,9 @@ public class StoreProfileHistoryDialogFragment extends DialogFragment
 
     public List<Fragment> getFragments(String id) {
         List<Fragment> fragments = new ArrayList<>();
-        fragments.add(StoreProfileFragment.getNewInstance(id));
+        StoreProfileFragment storeProfileFragment = StoreProfileFragment.getNewInstance(id);
+        storeProfileFragment.setParent(this);
+        fragments.add(storeProfileFragment);
         fragments.add(new HistoryFragment());
         return fragments;
     }
@@ -83,8 +82,7 @@ public class StoreProfileHistoryDialogFragment extends DialogFragment
     public void onStart() {
         super.onStart();
         Dialog dialog = getDialog();
-        if (dialog != null)
-        {
+        if (dialog != null) {
             int width = ViewGroup.LayoutParams.MATCH_PARENT;
             int height = ViewGroup.LayoutParams.MATCH_PARENT;
             dialog.getWindow().setLayout(width, height);

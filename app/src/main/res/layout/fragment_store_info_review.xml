@@ -19,12 +19,11 @@
             android:textColor="@color/primary_text" />
 
         <TextView
-            android:id="@+id/store_target_value"
+            android:id="@+id/tv_store_target_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
             android:layout_toRightOf="@id/store_target_label"
-            android:text="33201"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/secondary_text" />
 
@@ -32,7 +31,7 @@
             android:id="@+id/psku_target_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/store_target_value"
+            android:layout_below="@id/tv_store_target_value"
             android:layout_marginTop="16dp"
             android:text="@string/psku_target"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -42,7 +41,7 @@
             android:id="@+id/psku_target_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/store_target_value"
+            android:layout_below="@id/tv_store_target_value"
             android:layout_marginLeft="24dp"
             android:layout_marginTop="16dp"
             android:layout_toRightOf="@id/psku_target_label"

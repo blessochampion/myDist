@@ -28,6 +28,7 @@ import mydist.mydist.models.Channel;
 import mydist.mydist.models.NewRetailer;
 import mydist.mydist.models.SubChannel;
 import mydist.mydist.utils.DataUtils;
+import mydist.mydist.utils.DatabaseLogicUtils;
 import mydist.mydist.utils.Days;
 import mydist.mydist.utils.FontManager;
 import mydist.mydist.utils.UIUtils;
@@ -121,11 +122,10 @@ public class NewRetailerActivity extends AuthenticatedActivity {
         UIUtils.hideKeyboard(this);
         if (userInputIsValid()) {
             NewRetailer newRetailer = getNewRetailer();
-            if (DataUtils.saveNewRetailer(newRetailer, this)) {
+            if (DataUtils.saveNewRetailer(newRetailer, DatabaseLogicUtils.getDefaultHpv(), this)) {
                 Toast.makeText(this, getString(R.string.new_retailer_info), Toast.LENGTH_SHORT).show();
             }
             onBackPressed();
-
         }
     }
 
@@ -203,9 +203,8 @@ public class NewRetailerActivity extends AuthenticatedActivity {
         String names[] = salesRepFullName.split(" ");
         String initials = names[0].charAt(0) + String.valueOf(names[1].charAt(0));
         String retailerId = "R" + initials + getRetailerIndex();
-        return new NewRetailer(dateAdded,
-                name, contactPerson, address, phone, channel, subChannel, area,
-                days, weeks, retailerId);
+        return new NewRetailer(dateAdded, name, contactPerson, address, phone, channel, subChannel,
+                area, days, weeks, retailerId);
     }
 
     public List<String> getSelectedDays() {

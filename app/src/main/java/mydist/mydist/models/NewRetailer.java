@@ -140,7 +140,6 @@ public class NewRetailer {
                 visitDays.add(getVisitingDay(vDays[i]));
             }
         }
-
         return visitDays;
     }
 

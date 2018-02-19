@@ -68,7 +68,7 @@ public class RouteDbHelper extends SQLiteOpenHelper {
                     RetailerContract.PHONE + " TEXT," +
                     RetailerContract.CHANNEL_ID + " TEXT," +
                     RetailerContract.SUB_CHANNEL_ID + " TEXT," +
-                    RetailerContract.AREA_ID+ " TEXT," +
+                    RetailerContract.AREA_ID + " TEXT," +
                     RetailerContract.RETAILER_ID + " TEXT UNIQUE)";
 
     private static final String SQL_CREATE_VISITING_INFO =
@@ -77,7 +77,8 @@ public class RouteDbHelper extends SQLiteOpenHelper {
                     VisitingInfoContract.DATE_ADDED + " TEXT," +
                     VisitingInfoContract.RETAILER_ID + " TEXT," +
                     VisitingInfoContract.WEEK + " TEXT," +
-                    VisitingInfoContract.DAY + " TEXT)";
+                    VisitingInfoContract.DAY + " TEXT, UNIQUE(" + VisitingInfoContract.RETAILER_ID + "," + VisitingInfoContract.WEEK +
+                    "," + VisitingInfoContract.DAY + "))";
 
     private static final String SQL_CREATE_INVOICE =
             "CREATE TABLE " + InvoiceContract.TABLE_NAME + " (" +
@@ -112,6 +113,12 @@ public class RouteDbHelper extends SQLiteOpenHelper {
                     MerchandizingListVerificationContract.RETAILER_ID + " TEXT," +
                     MerchandizingListVerificationContract.AVAILABLE + " INTEGER)";
 
+    private static final String SQL_CREATE_HIGHEST_PURCHASE_VALUE =
+            "CREATE TABLE " + HighestPurchaseValueContract.TABLE_NAME + " (" +
+                    HighestPurchaseValueContract._ID + " INTEGER PRIMARY KEY," +
+                    HighestPurchaseValueContract.RETAILER_ID + " TEXT UNIQUE," +
+                    HighestPurchaseValueContract.VALUE + " TEXT )";
+
     private static final String SQL_DELETE_BRAND_ENTRIES =
             "DROP TABLE IF EXISTS " + BrandContract.TABLE_NAME;
 
@@ -145,6 +152,9 @@ public class RouteDbHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_MERCHANDIZING_VERIFICATION =
             "DROP TABLE IF EXISTS " + MerchandizingListVerificationContract.TABLE_NAME;
 
+    private static final String SQL_DELETE_HIGHEST_PURCHASING_VALUE =
+            "DROP TABLE IF EXISTS " + HighestPurchaseValueContract.TABLE_NAME;
+
 
     public RouteDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -163,6 +173,7 @@ public class RouteDbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_INVOICE);
         db.execSQL(SQL_CREATE_PRODUCT_ORDER);
         db.execSQL(SQL_CREATE_MERCHANDIZING_VERIFICATION);
+        db.execSQL(SQL_CREATE_HIGHEST_PURCHASE_VALUE);
     }
 
     @Override
@@ -178,6 +189,7 @@ public class RouteDbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_INVOICE);
         db.execSQL(SQL_DELETE_PRODUCT_ORDER);
         db.execSQL(SQL_DELETE_MERCHANDIZING_VERIFICATION);
+        db.execSQL(SQL_DELETE_HIGHEST_PURCHASING_VALUE);
         onCreate(db);
     }
 

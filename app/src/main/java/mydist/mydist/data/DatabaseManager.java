@@ -188,7 +188,25 @@ public class DatabaseManager {
         mDataBase.close();
     }
 
-    public boolean persistNewRetailer(NewRetailer newRetailer) {
+    public boolean updateHPV(String retailerId, String values) {
+        SQLiteDatabase mDatabase = mRouteDbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(HighestPurchaseValueContract.VALUE, values);
+        long noOfRowsAffected = mDatabase.update(HighestPurchaseValueContract.TABLE_NAME, cv, HighestPurchaseValueContract.RETAILER_ID + " = ?", new String[]{retailerId});
+        mDatabase.close();
+        return noOfRowsAffected > 0;
+    }
+
+    private boolean saveHPV(SQLiteDatabase mDataBase, String retailerId, String values) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(HighestPurchaseValueContract.RETAILER_ID, retailerId);
+        contentValues.put(HighestPurchaseValueContract.VALUE, values);
+        long rowId = mDataBase.insertWithOnConflict(HighestPurchaseValueContract.TABLE_NAME, null, contentValues, SQLiteDatabase.CONFLICT_IGNORE);
+        mDataBase.close();
+        return rowId > -1;
+    }
+
+    public boolean persistNewRetailer(NewRetailer newRetailer, String initialHPV) {
         ContentValues values = new ContentValues();
         SQLiteDatabase mDataBase = mRouteDbHelper.getWritableDatabase();
         values.put(RetailerContract.DATE_ADDED, newRetailer.getDateAdded());
@@ -218,7 +236,7 @@ public class DatabaseManager {
         } else {
             return false;
         }
-        return true;
+        return true && saveHPV(mDataBase, newRetailer.getRetailerId(), initialHPV);
     }
 
     public boolean changeRetailerVisitingDate(String id, String dateAdded, String day, String week) {
@@ -446,10 +464,14 @@ public class DatabaseManager {
                 RetailerContract.PHONE + "," +
                 RetailerContract.CHANNEL_ID + "," +
                 RetailerContract.SUB_CHANNEL_ID + "," +
-                RetailerContract.AREA_ID +
-                " FROM " + RetailerContract.TABLE_NAME;
+                RetailerContract.AREA_ID + ","+
+                HighestPurchaseValueContract.VALUE+
+                " FROM " + RetailerContract.TABLE_NAME+
+                " INNER JOIN " + HighestPurchaseValueContract.TABLE_NAME + " ON " +
+                RetailerContract.TABLE_NAME + "." + RetailerContract.RETAILER_ID + " = " +
+                HighestPurchaseValueContract.TABLE_NAME + "." + HighestPurchaseValueContract.RETAILER_ID;
         if (filter != null) {
-            QUERY += " WHERE " + RetailerContract.RETAILER_ID + " NOT IN " + filter;
+            QUERY += " WHERE " +RetailerContract.TABLE_NAME + "."+ RetailerContract.RETAILER_ID + " NOT IN " + filter;
         }
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(QUERY, new String[]{});
@@ -485,7 +507,8 @@ public class DatabaseManager {
                 RetailerContract.ADDRESS + "," +
                 RetailerContract.PHONE + "," +
                 ChannelContract.TABLE_NAME + "." + ChannelContract.COLUMN_NAME + "," +
-                SubChannelContract.TABLE_NAME + "." + SubChannelContract.COLUMN_NAME +
+                SubChannelContract.TABLE_NAME + "." + SubChannelContract.COLUMN_NAME + "," +
+                AreaContract.COLUMN_NAME +
                 " FROM " + RetailerContract.TABLE_NAME +
                 " INNER JOIN " + ChannelContract.TABLE_NAME + " ON " +
                 ChannelContract.TABLE_NAME + "." +
@@ -554,13 +577,17 @@ public class DatabaseManager {
                 RetailerContract.PHONE + "," +
                 RetailerContract.CHANNEL_ID + "," +
                 RetailerContract.SUB_CHANNEL_ID + "," +
-                RetailerContract.AREA_ID +
+                RetailerContract.AREA_ID + " , " +
+                HighestPurchaseValueContract.VALUE +
                 " FROM " + RetailerContract.TABLE_NAME +
                 " INNER JOIN " + VisitingInfoContract.TABLE_NAME + " ON " +
                 VisitingInfoContract.TABLE_NAME + "." +
                 VisitingInfoContract.RETAILER_ID + " = " +
                 RetailerContract.TABLE_NAME + "." +
                 RetailerContract.RETAILER_ID +
+                " INNER JOIN " + HighestPurchaseValueContract.TABLE_NAME + " ON " +
+                RetailerContract.TABLE_NAME + "." + RetailerContract.RETAILER_ID + " = " +
+                HighestPurchaseValueContract.TABLE_NAME + "." + HighestPurchaseValueContract.RETAILER_ID +
                 " WHERE " +
                 VisitingInfoContract.TABLE_NAME + "." + VisitingInfoContract.WEEK + " =? AND " +
                 VisitingInfoContract.TABLE_NAME + "." + VisitingInfoContract.DAY + " =? ";
@@ -782,5 +809,26 @@ public class DatabaseManager {
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(QUERY, new String[]{todayDate, String.valueOf(status)});
         return cursor;
+    }
+
+
+    public Cursor getHPV(String retailerId) {
+        String[] projection = new String[]{
+                HighestPurchaseValueContract.VALUE};
+        String selection = HighestPurchaseValueContract.RETAILER_ID + " = ?";
+        String selectionArgs[] = new String[]{retailerId};
+        String sortOrder = HighestPurchaseValueContract.RETAILER_ID + " ASC";
+        SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
+
+        Cursor HighestPurchaseValueCursor = db.query(
+                HighestPurchaseValueContract.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+        return HighestPurchaseValueCursor;
     }
 }

@@ -115,7 +115,7 @@
     <string name="network_error">Please check your Network connection</string>
     <string name="new_retailer_info">New Retailer Created</string>
     <string name="ppc">PPC</string>
-    <string name="ppq">PPQ</string>
+    <string name="ppq">PPP</string>
     <string name="product">Product</string>
     <string name="select">Select</string>
     <string name="oc">OC</string>
@@ -175,4 +175,5 @@
     <string name="re_print">RePrint</string>
     <string name="unable_to_process_request">Unable to process your request</string>
     <string name="edit_invoice">Edit Invoice</string>
+    <string name="retailer_not_for_today">Retailer is not part of Current Day Coverage. Please check the All Coverage Section to change the visiting Day for this Retailer</string>
 </resources>

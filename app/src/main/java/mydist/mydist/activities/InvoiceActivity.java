@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -33,6 +34,7 @@ import mydist.mydist.models.ProductOrder;
 import mydist.mydist.printing.PrintingActivity;
 import mydist.mydist.printing.PrintingModel;
 import mydist.mydist.utils.DataUtils;
+import mydist.mydist.utils.DatabaseLogicUtils;
 import mydist.mydist.utils.Days;
 import mydist.mydist.utils.FontManager;
 
@@ -41,6 +43,7 @@ import static android.view.Gravity.CENTER_HORIZONTAL;
 import static java.lang.String.valueOf;
 
 public class InvoiceActivity extends AuthenticatedActivity implements View.OnClickListener {
+    private static final String TAG = InvoiceActivity.class.getSimpleName();
     TableLayout mInvoiceTableLayout;
     HashMap<String, ProductLogic> selectedProducts;
     double totalAmountTobePaid;
@@ -102,8 +105,6 @@ public class InvoiceActivity extends AuthenticatedActivity implements View.OnCli
             productRow.setLayoutParams(layoutParams);
             mInvoiceTableLayout.addView(productRow);
         }
-
-
     }
 
     private void loadProductIntoRow(TableRow productRow, ProductLogic currentProductLogic) {
@@ -210,7 +211,7 @@ public class InvoiceActivity extends AuthenticatedActivity implements View.OnCli
                 break;
             case R.id.save:
                 if (!invoiceSaved) {
-                    invoiceSaved = saveInvoice(
+                    saveInvoice(
                             invoiceNumber == null ?
                                     generateInvoiceNumber(StoreOverviewActivity.retailerId)
                                     : invoiceNumber, StoreOverviewActivity.retailerId);
@@ -237,40 +238,24 @@ public class InvoiceActivity extends AuthenticatedActivity implements View.OnCli
         String retailerName = getRetailerName(retailerId);
         if (!invoiceSaved) {
             invoiceNumber = invoiceNumber == null ? generateInvoiceNumber(retailerId) : invoiceNumber;
-            invoiceSaved = saveInvoice(invoiceNumber, retailerId);
-
+            saveInvoice(invoiceNumber, retailerId);
         }
         PrintingModel printingModel = new PrintingModel(retailerName, salesRep,
                 invoiceNumber, dateFormat.format(new Date()));
         DataUtils.setPrintingModel(printingModel);
-
         Intent intent = new Intent(context, PrintingActivity.class);
         startActivity(intent);
     }
 
-    private boolean saveInvoice(String invoiceId, String retailerId) {
-        List<ProductOrder> productOrders = getProductOrders(Days.getTodayDate(), invoiceId);
-        Invoice invoice = new Invoice(invoiceId, retailerId, Days.getTodayDate()
-                , String.valueOf(DataUtils.getTotalAmountToBePaid()), Invoice.NO_AMOUNT,
-                Invoice.MODE_CASH, Invoice.CASH_DEFAULT_VALUE,
-                Invoice.KEY_STATUS_SUCCESS, productOrders);
-        boolean success = DataUtils.saveInvoice(invoice, this);
-        if (!success) {
-            UserPreference userPreference = UserPreference.getInstance(this);
-            userPreference.setInvoiceLastIndex(userPreference.lastInvoiceIndex() - 1);
-            makeToast(getString(R.string.invoice_not_saved));
-        } else {
-            mSaveAndPrint.setText(getString(R.string.print));
-            makeToast(getString(R.string.invoice_saved));
-        }
-        return success;
+    private void saveInvoice(String invoiceId, String retailerId) {
+        new InvoiceSaveTask().execute(invoiceId, retailerId);
     }
 
     private String generateInvoiceNumber(String retailerId) {
         String salesRepFullName = UserPreference.getInstance(this).getFullName();
         String names[] = salesRepFullName.split(" ");
         String initials = names[0].charAt(0) + String.valueOf(names[1].charAt(0));
-        String retailerInitials = "R" + initials ;
+        String retailerInitials = "R" + initials;
         SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyy");
         StringBuilder stringBuilder = new StringBuilder("INV");
         stringBuilder.append("/");
@@ -309,7 +294,7 @@ public class InvoiceActivity extends AuthenticatedActivity implements View.OnCli
             productOrder = new ProductOrder(
                     dateAdded,
                     invoiceId,
-                    String.format("%.2f",productLogic.getTotal()),
+                    String.format("%.2f", productLogic.getTotal()),
                     productLogic.getProduct().productName,
                     productLogic.getProduct().productId,
                     productLogic.getProduct().getBrandId(),
@@ -320,5 +305,41 @@ public class InvoiceActivity extends AuthenticatedActivity implements View.OnCli
         }
 
         return productOrders;
+    }
+
+    class InvoiceSaveTask extends AsyncTask<String, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            String invoiceId = strings[0];
+            String retailerId = strings[1];
+            Cursor cursor = DataUtils.getHPV(retailerId, context);
+            String newValue = DatabaseLogicUtils.getDefaultHpv();
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                newValue = cursor.getString(cursor.getColumnIndex(MasterContract.HighestPurchaseValueContract.VALUE));
+            }
+            newValue = String.format("%.2f", totalAmountTobePaid) + DatabaseLogicUtils.HPV_DELIMITER + newValue;
+            DataUtils.updateHPV(retailerId, newValue, context);
+            List<ProductOrder> productOrders = getProductOrders(Days.getTodayDate(), invoiceId);
+            Invoice invoice = new Invoice(invoiceId, retailerId, Days.getTodayDate()
+                    , String.valueOf(DataUtils.getTotalAmountToBePaid()), Invoice.NO_AMOUNT,
+                    Invoice.MODE_CASH, Invoice.CASH_DEFAULT_VALUE,
+                    Invoice.KEY_STATUS_SUCCESS, productOrders);
+            return DataUtils.saveInvoice(invoice, InvoiceActivity.this);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            invoiceSaved = success;
+            if (!success) {
+                UserPreference userPreference = UserPreference.getInstance(InvoiceActivity.this);
+                userPreference.setInvoiceLastIndex(userPreference.lastInvoiceIndex() - 1);
+                makeToast(getString(R.string.invoice_not_saved));
+            } else {
+                mSaveAndPrint.setText(getString(R.string.print));
+                makeToast(getString(R.string.invoice_saved));
+            }
+        }
     }
 }

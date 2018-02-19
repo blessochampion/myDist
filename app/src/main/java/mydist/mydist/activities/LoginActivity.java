@@ -1,5 +1,6 @@
 package mydist.mydist.activities;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -56,16 +57,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mLogin = (Button) findViewById(R.id.login_activity_login);
         setButtonOnClickListeners();
         setFont();
-        mLoadingIndicator = new ProgressDialog(this);
-        mLoadingIndicator.setCanceledOnTouchOutside(false);
 
     }
 
     private void setFont() {
         Typeface ralewayFont = FontManager.getTypeface(getApplicationContext(), FontManager.RALEWAY_REGULAR);
         FontManager.setFontsForView(findViewById(R.id.parent_layout), ralewayFont);
-
-
     }
 
     private void setButtonOnClickListeners() {
@@ -84,8 +81,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             doLogin();
             return;
         }
-
-        if (!NetworkUtils.isNetworkAvailable(this)) {
+        if (!NetworkUtils.isNetworkAvailable(this) && !(v.getId() == R.id.login_activity_login)) {
             launchDialog(getString(R.string.network_error));
         } else if (v.getId() == R.id.login_activity_download) {
             doDownload();
@@ -107,14 +103,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void doDownload() {
-
         if (!userHasClosedSalesToday()
                 || userPreference.getLastUserClosedForTheDayDate().isEmpty()) {
             if (!mastersDownloadedToday()) {
                 if (userInputIsValid()) {
-                    mLoadingIndicator.setMessage(getString(R.string.login_activity_download));
-                    mLoadingIndicator.setTitle(getString(R.string.login_dialog_title, mUsername.getText().toString().trim()));
-                    mLoadingIndicator.show();
                     makeNetworkCallForDownload();
                 }
             } else {
@@ -125,10 +117,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+
     private boolean mastersDownloadedToday() {
         return userPreference.getLastMastersDownloadDate().equalsIgnoreCase(getTodayDate());
     }
-
 
     private void makeNetworkCallForDownload() {
         DownloadMastersClient client = new DownloadMastersClient();
@@ -138,7 +130,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void doLogin() {
         if (mastersDownloadedToday()) {
             if (userInputIsValid()) {
-                if (userPreference.getPassword().equals(usernameValue + ":" + passwordValue)) {
+                String userBasicAuth = userPreference.getPassword();
+                if (userBasicAuth.equalsIgnoreCase(usernameValue + ":" + passwordValue)) {
                     launchHomeActivity();
                 } else {
                     loginFailed();
@@ -161,10 +154,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mDialog.show();
     }
 
-
     private void launchHomeActivity() {
         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        dismissDialog();
     }
 
     private boolean userInputIsValid() {
@@ -173,13 +171,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             mUsername.setError(getString(R.string.input_empty_error));
             return false;
         }
-
         passwordValue = mPassword.getText().toString().trim();
         if (passwordValue.isEmpty()) {
             mPassword.setError(getString(R.string.input_empty_error));
             return false;
         }
-
         return true;
     }
 
@@ -199,10 +195,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onStartDownload() {
-        mLoadingIndicator.setMessage(getString(R.string.login_activity_download));
-        mLoadingIndicator.setTitle(getString(R.string.login_dialog_title, mUsername.getText().toString().trim()));
-        mLoadingIndicator.show();
-
+                mLoadingIndicator = new ProgressDialog(LoginActivity.this);
+                mLoadingIndicator.setCanceledOnTouchOutside(false);
+                mLoadingIndicator.setMessage(getString(R.string.login_activity_download));
+                mLoadingIndicator.setTitle(getString(R.string.login_dialog_title, mUsername.getText().toString().trim()));
+                mLoadingIndicator.setCancelable(false);
+                mLoadingIndicator.setCanceledOnTouchOutside(false);
+                mLoadingIndicator.show();
     }
 
     @Override
@@ -235,25 +234,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private class SaveMastersTask extends AsyncTask<DownloadMastersResponse, Void, Void> {
-
         @Override
         protected Void doInBackground(DownloadMastersResponse... downloadMastersResponses) {
             DownloadMastersResponse response = downloadMastersResponses[0];
             Context context = LoginActivity.this;
             userPreference.setUserCloseForTheDayDate(EMPTY_STRING);
-            userPreference.setLasMastersDownloadDate(getTodayDate());
             DataUtils.saveUser(response.getUser(), UserPreference.getInstance(context));
             DataUtils.saveNewRetailers(response.getMaster().getRetailers(), context);
             DataUtils.saveMasters(response, context);
             userPreference.setRetailerCount(response.getMaster().getRetailers().size());
             userPreference.savePassword(usernameValue + ":" + passwordValue);
+            userPreference.setLasMastersDownloadDate(getTodayDate());
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            dismissDialog();
             launchHomeActivity();
         }
     }

@@ -29,12 +29,10 @@ public class AuthenticatedActivity extends AppCompatActivity
                             Intent newIntent = new Intent(AuthenticatedActivity.this,LoginActivity.class);
                             newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(newIntent);
-                            //overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
                             finish();
                         }
                     }).create();
-            if(!((Activity) context).isFinishing())
-            {
+            if(!((Activity) context).isFinishing()) {
                 mDialog.setCancelable(false);
                 mDialog.setCanceledOnTouchOutside(false);
                 mDialog.show();

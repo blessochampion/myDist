@@ -107,4 +107,10 @@ public class MasterContract {
         public static final String BRAND_ID = "brand_id";
         public static final String AVAILABLE = "available";
     }
+
+    public static class HighestPurchaseValueContract implements BaseColumns {
+        public static final String TABLE_NAME = "hpv";
+        public static final String RETAILER_ID = "retailer_id";
+        public static final String VALUE = "value";
+    }
 }

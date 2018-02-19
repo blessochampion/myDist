@@ -54,7 +54,7 @@ import mydist.mydist.utils.Days;
 import mydist.mydist.utils.FontManager;
 import mydist.mydist.utils.UIUtils;
 
-public class SynchronizationActivity extends AuthenticatedActivity implements View.OnClickListener, UploadMastersListener {
+public class SynchronizationActivity extends AuthenticatedActivity implements View.OnClickListener, UploadMastersListener, DialogInterface.OnClickListener {
 
     private static final String TAG = SynchronizationActivity.class.getSimpleName();
     Button mStartSyncButton;
@@ -160,11 +160,15 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
         }
     }
 
-    private void launchDialog(int stringResource) {
+    private void launchDialog(int stringResource, DialogInterface.OnClickListener listener) {
         AlertDialog mDialog = new AlertDialog.Builder(SynchronizationActivity.this).
                 setMessage(getString(stringResource)).
-                setPositiveButton(SynchronizationActivity.this.getText(R.string.ok), null).create();
+                setPositiveButton(SynchronizationActivity.this.getText(R.string.ok), listener).create();
         mDialog.show();
+    }
+
+    private void launchDialog(int stringResource) {
+        launchDialog(stringResource, null);
     }
 
     private MasterPush generatePushMasters() {
@@ -317,7 +321,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
             allInvoiceCursor.moveToFirst();
             for (int i = 0; i < count; i++) {
                 retailerId = allInvoiceCursor.getString(allInvoiceCursor.getColumnIndex(MasterContract.InvoiceContract.RETAILER_ID));
-                if(!retailerIds.contains(retailerId)){
+                if (!retailerIds.contains(retailerId)) {
                     retailerIds.add(retailerId);
                 }
                 allInvoiceCursor.moveToNext();
@@ -359,11 +363,11 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
                 cursor.moveToNext();
             }
 
-            for(String key: invoicePushMap.keySet()){
+            for (String key : invoicePushMap.keySet()) {
                 temporaryMapKey = key.split(DELIMITER)[0];
-                if(result.containsKey(temporaryMapKey)){
+                if (result.containsKey(temporaryMapKey)) {
                     result.get(temporaryMapKey).addAll(invoicePushMap.get(key));
-                }else {
+                } else {
                     result.put(key.split(DELIMITER)[0], invoicePushMap.get(key));
                 }
             }
@@ -405,7 +409,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
         mProgressDialog.cancel();
         if (response.getStatus().isSuccess()) {
             UserPreference.getInstance(this).setUserCloseForTheDayDate(Days.getTodayDate().toString());
-            launchDialog(R.string.upload_success);
+            launchDialog(R.string.upload_success, this);
         } else {
             launchDialog(R.string.upload_failed);
         }
@@ -414,5 +418,10 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
     @Override
     public void onFailure() {
         launchDialog(R.string.upload_failed);
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        onBackPressed();
     }
 }

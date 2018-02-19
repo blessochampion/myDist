@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
@@ -41,6 +42,7 @@ import static android.view.Gravity.CENTER_VERTICAL;
 public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickListener, StoreFilterDialogFragment.FilterItemListener {
 
     public static final int TOTAL_POSITION = 4;
+    public static final String FILTER_ALL = "ALL";
     TableLayout mTableLayout;
     TableLayout mPagination;
     List<Product> products;
@@ -88,8 +90,17 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
             storeFilterDialogFragment.setListener(this);
             storeFilterDialogFragment.show(getActivity().getSupportFragmentManager(), "");
             return true;
+        } else if (item.getItemId() == android.R.id.home && isInFilterMode) {
+            refreshProductsDisplayed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -100,7 +111,6 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
         mTotalAmount = (TextView) view.findViewById(R.id.total_amount);
         products = DataUtils.getAllProducts(getActivity());
         context = getActivity();
-        setHasOptionsMenu(true);
         initProducts();
         initPagination();
         loadProducts();
@@ -455,11 +465,8 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
 
     @Override
     public void onFilterItemListener(String brandId) {
-        if (brandId.equalsIgnoreCase("ALL")) {
-            isInFilterMode = false;
-            currentPage = 0;
-            loadProducts();
-            initPagination();
+        if (brandId.equalsIgnoreCase(FILTER_ALL)) {
+            refreshProductsDisplayed();
         } else {
             filteredProducts = DataUtils.getAllProductsByBrandId(getActivity(), String.valueOf((int) Double.parseDouble(brandId)));
             isInFilterMode = true;
@@ -468,4 +475,13 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
             initPagination();
         }
     }
+
+    private void refreshProductsDisplayed() {
+        isInFilterMode = false;
+        currentPage = 0;
+        loadProducts();
+        initPagination();
+    }
+
+
 }

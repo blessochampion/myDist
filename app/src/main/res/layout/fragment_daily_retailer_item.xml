@@ -14,8 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="Retailer 6"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium.Inverse"
-        android:textColor="@color/crispy_green" />
+        android:textColor="@color/crispy_green"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/hvp"
@@ -24,86 +24,86 @@
         android:layout_below="@id/tv_retailer_name"
         android:layout_marginTop="4dp"
         android:text="HVP4O"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="@color/primary_text" />
+        android:textColor="@color/primary_text"
+        android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/hvp_value"
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_hvp_value"
+        android:layout_width="72dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_retailer_name"
         android:layout_marginBottom="12dp"
-        android:layout_marginLeft="48dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="4dp"
         android:layout_toRightOf="@id/hvp"
-        android:text="26,534.70"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="@color/secondary_text" />
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text=""
+        android:textColor="@color/secondary_text"
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/stgt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_retailer_name"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="4dp"
-        android:layout_toRightOf="@id/hvp_value"
+        android:layout_toRightOf="@id/tv_hvp_value"
         android:text="Stgt"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="@color/primary_text" />
+        android:textColor="@color/primary_text"
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/stgt_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_retailer_name"
-        android:layout_marginLeft="40dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="4dp"
         android:layout_toRightOf="@id/stgt"
         android:background="@color/white_grey"
         android:paddingBottom="4dp"
-        android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:paddingTop="4dp"
         android:text="26,534.70"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="@color/secondary_text" />
+        android:textColor="@color/secondary_text"
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/dist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/hvp_value"
+        android:layout_below="@id/tv_hvp_value"
         android:layout_marginTop="4dp"
         android:text="Dist"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="@color/primary_text" />
+        android:textColor="@color/primary_text"
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/dst_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/hvp_value"
-        android:layout_alignRight="@id/hvp_value"
-        android:layout_below="@id/hvp_value"
+        android:layout_alignLeft="@id/tv_hvp_value"
+        android:layout_alignRight="@id/tv_hvp_value"
+        android:layout_below="@id/tv_hvp_value"
         android:layout_marginTop="4dp"
         android:layout_toRightOf="@id/hvp"
         android:gravity="left"
         android:text="3/5"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="@color/secondary_text" />
+        android:textColor="@color/secondary_text"
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/merch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/stgt"
-        android:layout_below="@id/hvp_value"
+        android:layout_below="@id/tv_hvp_value"
         android:layout_marginTop="4dp"
         android:layout_toRightOf="@id/dst_value"
         android:text="Merch"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="@color/primary_text" />
+        android:textColor="@color/primary_text"
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/merch_value"
@@ -111,21 +111,22 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/stgt_value"
         android:layout_alignRight="@id/stgt_value"
-        android:layout_below="@id/hvp_value"
+        android:layout_below="@id/tv_hvp_value"
         android:layout_marginTop="4dp"
         android:layout_toRightOf="@id/merch"
         android:gravity="left"
         android:text="3/5"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="@color/secondary_text" />
+        android:textColor="@color/secondary_text"
+        android:textSize="12sp" />
 
-    <ImageView
-        android:id="@+id/iv_info"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_alignBottom="@id/stgt_value"
+    <TextView
+        android:id="@+id/tv_info"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:textSize="32sp"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/info" />
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="@string/fa_icon_info_circle" />
 
 </RelativeLayout>
