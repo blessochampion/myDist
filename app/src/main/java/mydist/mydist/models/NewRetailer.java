@@ -193,7 +193,7 @@ public class NewRetailer {
             case "wednesday":
                 return Days.WED.toString();
             case "thursday":
-                return Days.WED.toString();
+                return Days.THUR.toString();
             case "friday":
                 return Days.FRI.toString();
             case "saturday":
@@ -202,6 +202,4 @@ public class NewRetailer {
                 return "";
         }
     }
-
-
 }

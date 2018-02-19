@@ -12,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,6 +63,7 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
         // Required empty public constructor
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.forward) {
@@ -93,6 +95,8 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
         } else if (item.getItemId() == android.R.id.home && isInFilterMode) {
             refreshProductsDisplayed();
             return true;
+        }else if(item.getItemId() == android.R.id.home){
+            getActivity().onBackPressed();
         }
         return super.onOptionsItemSelected(item);
     }
