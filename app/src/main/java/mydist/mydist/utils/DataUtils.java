@@ -224,6 +224,10 @@ public class DataUtils {
         return DatabaseManager.getInstance(context).queryAllOrderTotal(Days.getTodayDate(), status);
     }
 
+    public static final Cursor getAllOrderTotal(String retailerId, int status, Context context) {
+        return DatabaseManager.getInstance(context).queryAllOrderTotal(retailerId,Days.getTodayDate(), status);
+    }
+
     public static List<Product> getAllProductsByBrandId(Context context, String brandId) {
         List<Product> products = new ArrayList<>();
         Cursor productCursor = DatabaseManager.getInstance(context).queryAllProduct(brandId);
@@ -284,6 +288,10 @@ public class DataUtils {
 
     public static Cursor getCoverageCount(String todayDate, int status, Context context) {
         return DatabaseManager.getInstance(context).queryCoverageCount(todayDate, status);
+    }
+
+    public static Cursor getRetailerIdsForTodaysCoverage(String todayDate, int status, Context context) {
+        return DatabaseManager.getInstance(context).getRetailerIdsForTodaysCoverage(todayDate, status);
     }
 
     public static boolean updateHPV(String retailerId, String value, Context context) {

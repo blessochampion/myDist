@@ -137,7 +137,6 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
                                     mProgressDialog.setMessage(getString(R.string.generating_masters));
                                     MasterPush push = generatePushMasters();
                                     if (push != null) {
-
                                         try {
                                             ObjectMapper mapper = new ObjectMapper();
                                             JSONObject masters = new JSONObject(mapper.writeValueAsString(push));
@@ -147,7 +146,6 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
 
                                         } catch (JSONException e) {
                                         }
-
                                     } else {
                                         mProgressDialog.cancel();
                                         launchDialog(R.string.generating_masters_error);
@@ -252,15 +250,34 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
             } else {
                 merchandizingPushes = new ArrayList<>();
             }
-            double sumTotal = 0, collectionTotal = 0;
-            for (InvoicePush invoicePush : invoicePushes) {
-                sumTotal += invoicePush.getTotal();
-                collectionTotal += Double.valueOf(invoicePush.getAmountPaid());
-            }
+            Cursor cursor = DataUtils.getAllOrderTotal(retailerId, Invoice.KEY_STATUS_SUCCESS, this);;
+            double[] values = getValues(cursor);
             coverages.add(new Coverage(retailerId, date, invoicePushes, merchandizingPushes,
-                    new CallAnalysis(sumTotal, collectionTotal, 20)));
+                    new CallAnalysis(values[0], values[1], 20)));
         }
         return coverages;
+    }
+
+    private double[] getValues(Cursor cursor) {
+
+        float totalEarned = 0.00f;
+        float amountCollected = 0.00f;
+        try {
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                if (!cursor.isNull(cursor.getColumnIndex(MasterContract.InvoiceContract.TOTAL_ALIAS))) {
+                    totalEarned = cursor.
+                            getFloat(cursor.getColumnIndex(MasterContract.InvoiceContract.TOTAL_ALIAS));
+                }
+                if (!cursor.isNull(cursor.getColumnIndex(MasterContract.InvoiceContract.AMOUNT_PAID_ALIAS))) {
+                    amountCollected = cursor.
+                            getFloat(cursor.getColumnIndex(MasterContract.InvoiceContract.AMOUNT_PAID_ALIAS));
+                }
+            }
+        } catch (Exception e) {
+
+        }
+        return new double[]{totalEarned, amountCollected};
     }
 
     public HashMap<String, List<String>> getVisitingInfo(String retailerId, String keyDays, String keyWeeks) {
@@ -416,7 +433,8 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
     }
 
     @Override
-    public void onFailure() {
+    public void onFailure()
+    { mProgressDialog.cancel();
         launchDialog(R.string.upload_failed);
     }
 

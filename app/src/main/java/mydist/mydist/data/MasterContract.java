@@ -78,6 +78,7 @@ public class MasterContract {
         public static final String TOTAL = "total";
         public static final String TOTAL_ALIAS = "total_alias";
         public static final String AMOUNT_PAID = "amount_paid";
+        public static final String AMOUNT_PAID_ALIAS = "collectionTotal";
         public static final String PAYMENT_MODE = "payment_mode";
         public static final String PAYMENT_MODE_VALUE = "payment_mode_value";
         public static final String INVOICE_ID = "invoice_id";

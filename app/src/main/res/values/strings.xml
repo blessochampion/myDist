@@ -166,7 +166,7 @@
     <string name="date_changed">Visiting Date Changed</string>
     <string name="generating_masters">Generating Masters</string>
     <string name="generating_masters_error">Unable to generate Masters</string>
-    <string name="upload_failed">Upload Failed</string>
+    <string name="upload_failed">Upload Failed, please try again</string>
     <string name="upload_success">Masters Uploaded successfully</string>
     <string name="uploading_masters">Uploading Masters</string>
     <string name="close_for_the_day">You already closed for the day. You can only view Reports.</string>

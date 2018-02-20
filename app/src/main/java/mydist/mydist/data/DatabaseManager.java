@@ -699,6 +699,7 @@ public class DatabaseManager {
     public Cursor queryAllOrderTotal(String dateAdded, int status) {
         String QUERY = "SELECT " +
                 "SUM(CAST(" + InvoiceContract.TOTAL + " AS FLOAT))  AS " + InvoiceContract.TOTAL_ALIAS + ", " +
+                "SUM(CAST(" + InvoiceContract.AMOUNT_PAID + " AS FLOAT))  AS " + InvoiceContract.AMOUNT_PAID_ALIAS + ", "+
                 InvoiceContract.TABLE_NAME + "." + InvoiceContract.INVOICE_ID +
                 " FROM " + InvoiceContract.TABLE_NAME +
                 " WHERE " +
@@ -707,7 +708,21 @@ public class DatabaseManager {
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(QUERY, new String[]{dateAdded, String.valueOf(status)});
         return cursor;
+    }
 
+    public Cursor queryAllOrderTotal(String retailerId, String dateAdded, int status) {
+        String QUERY = "SELECT " +
+                "SUM(CAST(" + InvoiceContract.TOTAL + " AS FLOAT))  AS " + InvoiceContract.TOTAL_ALIAS + ", " +
+                "SUM(CAST(" + InvoiceContract.AMOUNT_PAID + " AS FLOAT))  AS " + InvoiceContract.AMOUNT_PAID_ALIAS + ", "+
+                InvoiceContract.TABLE_NAME + "." + InvoiceContract.INVOICE_ID +
+                " FROM " + InvoiceContract.TABLE_NAME +
+                " WHERE " +
+                InvoiceContract.TABLE_NAME + "." + InvoiceContract.RETAILER_ID + " = ? AND " +
+                InvoiceContract.TABLE_NAME + "." + InvoiceContract.DATE_ADDED + " = ? AND " +
+                InvoiceContract.STATUS + " = ?";
+        SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(QUERY, new String[]{retailerId, dateAdded, String.valueOf(status)});
+        return cursor;
     }
 
     public Cursor queryCollectionTotal(String dateAdded, int status) {
@@ -720,7 +735,6 @@ public class DatabaseManager {
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(QUERY, new String[]{dateAdded, String.valueOf(status)});
         return cursor;
-
     }
 
     public Cursor getMerchandisingVerification(String retailerId, String dateAdded) {
@@ -806,6 +820,16 @@ public class DatabaseManager {
                 InvoiceContract.DATE_ADDED + " = ?" + " AND "
                 + InvoiceContract.STATUS + " = ? " +
                 " GROUP BY " + InvoiceContract.RETAILER_ID;
+        SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(QUERY, new String[]{todayDate, String.valueOf(status)});
+        return cursor;
+    }
+
+    public  Cursor getRetailerIdsForTodaysCoverage(String todayDate, int status){
+        final String    QUERY = "SELECT " + InvoiceContract.RETAILER_ID +
+                " FROM " + InvoiceContract.TABLE_NAME + " WHERE " +
+                InvoiceContract.DATE_ADDED + " = ?" + " AND "
+                + InvoiceContract.STATUS + " = ? ";
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(QUERY, new String[]{todayDate, String.valueOf(status)});
         return cursor;

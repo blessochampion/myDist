@@ -487,5 +487,4 @@ public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickLi
         initPagination();
     }
 
-
 }

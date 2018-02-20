@@ -36,7 +36,6 @@ public class DayReportFragment extends Fragment implements LoaderManager.LoaderC
 
     private static final int LOADER_ID_TOTAL_EARNED_VALUE = 1;
     private static final int LOADER_ID_DISTRIBUTION_EXTENSION = 2;
-    private static final int LOADER_ID_SALES = 3;
     private static final int LOADER_ID_COVERAGE = 4;
     private static final String NO_INT_VALUE = "0";
     private static final double NO_DOUBLE_VALUE = 0.00;
@@ -56,7 +55,6 @@ public class DayReportFragment extends Fragment implements LoaderManager.LoaderC
         mProductiveCalls = (TextView) view.findViewById(R.id.tv_productive_call);
         getActivity().getSupportLoaderManager().initLoader(LOADER_ID_TOTAL_EARNED_VALUE, null, this);
         getActivity().getSupportLoaderManager().initLoader(LOADER_ID_DISTRIBUTION_EXTENSION, null, this);
-        getActivity().getSupportLoaderManager().initLoader(LOADER_ID_SALES, null, this);
         getActivity().getSupportLoaderManager().initLoader(LOADER_ID_COVERAGE, null, this);
         setFonts(view);
         return view;
@@ -72,6 +70,7 @@ public class DayReportFragment extends Fragment implements LoaderManager.LoaderC
         switch (id) {
             case LOADER_ID_TOTAL_EARNED_VALUE:
                 float totalEarned = 0.00f;
+                float collectionAmount = 0.00f;
                 try {
                     if (cursor.getCount() > 0) {
                         cursor.moveToFirst();
@@ -79,8 +78,14 @@ public class DayReportFragment extends Fragment implements LoaderManager.LoaderC
                             totalEarned = cursor.
                                     getFloat(cursor.getColumnIndex(MasterContract.InvoiceContract.TOTAL_ALIAS));
                         }
+                        if (!cursor.isNull(cursor.getColumnIndex(MasterContract.InvoiceContract.AMOUNT_PAID_ALIAS))) {
+                            collectionAmount = cursor.
+                                    getFloat(cursor.getColumnIndex(MasterContract.InvoiceContract.AMOUNT_PAID_ALIAS));
+                        }
                         value = getString(R.string.naira) + String.format("%,.2f", totalEarned);
                         mTotalEarnedValue.setText(value);
+                        value = getString(R.string.naira) + String.format("%,.2f", collectionAmount);
+                        mSales.setText(value);
                     } else {
                         mTotalEarnedValue.setText(getString(R.string.naira) + String.format("%,.2f", NO_DOUBLE_VALUE));
                     }
@@ -99,16 +104,6 @@ public class DayReportFragment extends Fragment implements LoaderManager.LoaderC
                 }
                 break;
 
-            case LOADER_ID_SALES:
-                if (cursor.getCount() > 0) {
-                    cursor.moveToFirst();
-                    value = getString(R.string.naira) + String.format("%,.2f", cursor.
-                            getFloat(cursor.getColumnIndex(MasterContract.InvoiceContract.TOTAL_ALIAS)));
-                    mSales.setText(value);
-                } else {
-                    mSales.setText((getString(R.string.naira) + String.format("%,.2f", NO_DOUBLE_VALUE)));
-                }
-                break;
             case LOADER_ID_COVERAGE:
                 value = String.valueOf(NO_INT_VALUE);
                 if (cursor.getCount() > 0) {
@@ -130,12 +125,9 @@ public class DayReportFragment extends Fragment implements LoaderManager.LoaderC
             public Cursor loadInBackground() {
                 switch (id) {
                     case LOADER_ID_TOTAL_EARNED_VALUE:
-                        // DatabaseManager.getInstance(getActivity()).queryCollectionTotal(Days.getTodayDate(), Invoice.KEY_STATUS_SUCCESS);
                         return DataUtils.getAllOrderTotal(Invoice.KEY_STATUS_SUCCESS, getActivity());
                     case LOADER_ID_DISTRIBUTION_EXTENSION:
                         return DatabaseManager.getInstance(getActivity()).getAllNewRetailers(Days.getRetailerDate());
-                    case LOADER_ID_SALES:
-                        return DataUtils.getAllOrderTotal(Invoice.KEY_STATUS_SUCCESS, getActivity());
                     case LOADER_ID_COVERAGE:
                         return DataUtils.getCoverageCount(Days.getTodayDate(), Invoice.KEY_STATUS_SUCCESS, getActivity());
                     default:

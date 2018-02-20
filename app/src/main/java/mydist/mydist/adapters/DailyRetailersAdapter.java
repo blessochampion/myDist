@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
 import mydist.mydist.R;
 import mydist.mydist.data.MasterContract;
 import mydist.mydist.utils.DatabaseLogicUtils;
@@ -23,17 +25,23 @@ public class DailyRetailersAdapter extends CursorAdapter {
 
     Context context;
     View.OnClickListener listener;
-
+    List<String> performingRetailerIds;
     public DailyRetailersAdapter(Context context, Cursor cursor, View.OnClickListener listener) {
         super(context, cursor, true);
         this.context = context;
         this.listener = listener;
     }
 
+    public DailyRetailersAdapter(Context context, Cursor cursor, View.OnClickListener listener, List<String> ids) {
+        super(context, cursor, true);
+        this.context = context;
+        this.listener = listener;
+        this.performingRetailerIds = ids;
+    }
+
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(context);
-
         return inflater.inflate(R.layout.fragment_daily_retailer_item, parent, false);
     }
 
@@ -56,6 +64,10 @@ public class DailyRetailersAdapter extends CursorAdapter {
         tvInfo.setTag(retailerId);
         tvInfo.setOnClickListener(listener);
         retailerNameTv.setText(retailerName);
+        retailerNameTv.setTextColor(context.getResources().getColor(R.color.crispy_green));
+        if(performingRetailerIds != null && performingRetailerIds.contains(retailerId)){
+            retailerNameTv.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+        }
     }
 
     @Override

@@ -1,35 +1,36 @@
 package mydist.mydist.fragments;
 
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import mydist.mydist.R;
-import mydist.mydist.activities.LoginActivity;
 import mydist.mydist.activities.StoreOverviewActivity;
 import mydist.mydist.adapters.DailyRetailersAdapter;
 import mydist.mydist.data.DatabaseManager;
 import mydist.mydist.data.MasterContract;
-import mydist.mydist.data.RouteDbHelper;
-import mydist.mydist.models.Retailer;
+import mydist.mydist.models.Invoice;
+import mydist.mydist.utils.DataUtils;
+import mydist.mydist.utils.Days;
 import mydist.mydist.utils.FontManager;
 import mydist.mydist.utils.UIUtils;
 
@@ -39,16 +40,21 @@ import static mydist.mydist.utils.Days.getThisWeek;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CoverageFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class CoverageFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener, LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String KEY_WEEK = "week";
     private static final String KEY_DAY = "day";
     private static final String DELIMITER = ":";
+    private static final int LOAD_RETAILERS_ID = 1;
     private String week;
     private String day;
     private DailyRetailersAdapter adapter;
     private ProgressBar mLoadingIndicator;
     private String weekDay;
+    private ListView mListView;
+    private TextView mMessage;
+    private View parentView;
+    List<String> retailerIds = new ArrayList<>();
 
     public CoverageFragment() {
     }
@@ -69,34 +75,43 @@ public class CoverageFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_coverage, container, false);
-        ListView listView = (ListView) view.findViewById(R.id.list_view);
-        TextView message = (TextView) view.findViewById(R.id.tv_message);
-        mLoadingIndicator = (ProgressBar) view.findViewById(R.id.pb_progress_loading_indicator);
+        parentView = inflater.inflate(R.layout.fragment_coverage, container, false);
+        mListView = (ListView) parentView.findViewById(R.id.list_view);
+        mMessage = (TextView) parentView.findViewById(R.id.tv_message);
+        mLoadingIndicator = (ProgressBar) parentView.findViewById(R.id.pb_progress_loading_indicator);
         Bundle bundle = getArguments();
         if (bundle != null) {
             week = bundle.getString(KEY_WEEK);
             day = bundle.getString(KEY_DAY);
             weekDay = week + DELIMITER + day;
-            Cursor cursor = DatabaseManager.getInstance(getActivity()).
-                    getRetailerByVisitingInfo(week, day);
-            if (cursor.getCount() < 1) {
-                message.setVisibility(View.VISIBLE);
-                listView.setVisibility(View.GONE);
-                mLoadingIndicator.setVisibility(View.GONE);
-            } else {
-                mLoadingIndicator.setVisibility(View.GONE);
-                adapter = new DailyRetailersAdapter(getActivity(), cursor, this);
-                message.setVisibility(View.GONE);
-                listView.setVisibility(View.VISIBLE);
-                listView.setAdapter(adapter);
-                listView.setOnItemClickListener(this);
-            }
+            getActivity().getSupportLoaderManager().initLoader(LOAD_RETAILERS_ID, null, this);
         } else {
             throw new RuntimeException("Unable to Create Fragment, pass DAY and Week");
         }
-        setFonts(view);
-        return view;
+        return parentView;
+    }
+
+    private void bindView(Cursor cursor) {
+        if (cursor.getCount() < 1) {
+            mMessage.setVisibility(View.VISIBLE);
+            mListView.setVisibility(View.GONE);
+            mLoadingIndicator.setVisibility(View.GONE);
+        } else {
+            String week = getThisWeek();
+            String day = getCurrentDay();
+            if ((week + DELIMITER + day).equals(weekDay)) {
+                adapter = new DailyRetailersAdapter(getActivity(), cursor, this, retailerIds);
+            }else{
+                adapter = new DailyRetailersAdapter(getActivity(), cursor, this);
+            }
+            mLoadingIndicator.setVisibility(View.GONE);
+            mMessage.setVisibility(View.GONE);
+            mListView.setVisibility(View.VISIBLE);
+            mListView.setAdapter(adapter);
+            mListView.setOnItemClickListener(this);
+        }
+
+        setFonts(parentView);
     }
 
     private void setFonts(View v) {
@@ -123,9 +138,59 @@ public class CoverageFragment extends Fragment implements View.OnClickListener, 
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+
+    }
+
     private void launchStoreDetailsActivity(String retailerId) {
         Intent intent = new Intent(getActivity(), StoreOverviewActivity.class);
         intent.putExtra(StoreOverviewActivity.KEY_RETAILER_ID, retailerId);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        getActivity().getSupportLoaderManager().restartLoader(LOAD_RETAILERS_ID, null, this);
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    @Override
+    public Loader<Cursor> onCreateLoader(final int id, Bundle args) {
+        return new CursorLoader(getActivity()) {
+            @Override
+            public Cursor loadInBackground() {
+                if (id == LOAD_RETAILERS_ID) {
+                    Cursor productiveRetailers = DataUtils.getRetailerIdsForTodaysCoverage(
+                            Days.getTodayDate(), Invoice.KEY_STATUS_SUCCESS, getActivity());
+                    int count = productiveRetailers.getCount();
+                    if (count > 0) {
+                        productiveRetailers.moveToFirst();
+                        for(int i = 0 ; i < count; i++){
+                            productiveRetailers.moveToPosition(i);
+                            retailerIds.add(productiveRetailers.getString(productiveRetailers.getColumnIndex(MasterContract.InvoiceContract.RETAILER_ID)));
+                            productiveRetailers.moveToNext();
+                        }
+                    }
+                    return DatabaseManager.getInstance(getActivity()).
+                            getRetailerByVisitingInfo(week, day);
+                }
+                return null;
+            }
+        };
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (loader.getId() == LOAD_RETAILERS_ID) {
+            bindView(data);
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }

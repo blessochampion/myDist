@@ -83,7 +83,7 @@
 
     <Button
         android:id="@+id/btn_print"
-        android:layout_width="48dp"
+        android:layout_width="64dp"
         android:layout_height="32dp"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"

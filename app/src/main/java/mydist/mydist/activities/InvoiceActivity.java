@@ -257,11 +257,13 @@ public class InvoiceActivity extends AuthenticatedActivity implements View.OnCli
         String initials = names[0].charAt(0) + String.valueOf(names[1].charAt(0));
         String retailerInitials = "R" + initials;
         SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyy");
-        StringBuilder stringBuilder = new StringBuilder("INV");
-        stringBuilder.append("/");
+        SimpleDateFormat hourMinute = new SimpleDateFormat("HHmm");
+        StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(retailerInitials);
         stringBuilder.append("/");
         stringBuilder.append(dateFormat.format(new Date()));
+        stringBuilder.append("/");
+        stringBuilder.append(hourMinute.format(new Date()));
         stringBuilder.append("/");
         UserPreference userPreference = UserPreference.getInstance(this);
         int lastInvoiceIndex = userPreference.lastInvoiceIndex();
