@@ -267,7 +267,6 @@ public class DatabaseManager {
             response = mDataBase.insertWithOnConflict(MerchandizingListVerificationContract.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
             result = result && response > -1;
         }
-
         return result;
 
     }
@@ -453,7 +452,7 @@ public class DatabaseManager {
         return cursor;
     }
 
-    public Cursor getAllRetailerExceptTheCurrentDate(String filter) {
+    public Cursor getAllRetailerExceptTheCurrentDate(String filter, String nameFilter) {
         String QUERY = "SELECT " +
                 RetailerContract.TABLE_NAME + "." + RetailerContract._ID + "," +
                 RetailerContract.TABLE_NAME + "." + RetailerContract.DATE_ADDED + "," +
@@ -464,18 +463,28 @@ public class DatabaseManager {
                 RetailerContract.PHONE + "," +
                 RetailerContract.CHANNEL_ID + "," +
                 RetailerContract.SUB_CHANNEL_ID + "," +
-                RetailerContract.AREA_ID + ","+
-                HighestPurchaseValueContract.VALUE+
-                " FROM " + RetailerContract.TABLE_NAME+
+                RetailerContract.AREA_ID + "," +
+                HighestPurchaseValueContract.VALUE +
+                " FROM " + RetailerContract.TABLE_NAME +
                 " INNER JOIN " + HighestPurchaseValueContract.TABLE_NAME + " ON " +
                 RetailerContract.TABLE_NAME + "." + RetailerContract.RETAILER_ID + " = " +
                 HighestPurchaseValueContract.TABLE_NAME + "." + HighestPurchaseValueContract.RETAILER_ID;
         if (filter != null) {
-            QUERY += " WHERE " +RetailerContract.TABLE_NAME + "."+ RetailerContract.RETAILER_ID + " NOT IN " + filter;
+            QUERY += " WHERE " + RetailerContract.TABLE_NAME + "." + RetailerContract.RETAILER_ID + " NOT IN " + filter;
+        }
+        if(nameFilter != null){
+            if(filter !=null){
+                QUERY += " AND " + RetailerContract.RETAILER_NAME + " LIKE \"%" +nameFilter  + "%\"";
+            }else{
+                QUERY += " WHERE " + RetailerContract.RETAILER_NAME + " LIKE \"%" +nameFilter  + "%\"";
+            }
         }
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(QUERY, new String[]{});
         return cursor;
+    }
+    public Cursor getAllRetailerExceptTheCurrentDate(String filter) {
+        return getAllRetailerExceptTheCurrentDate(filter, null);
     }
 
     public Cursor getAllNewRetailers(String date) {
@@ -566,8 +575,8 @@ public class DatabaseManager {
         return retailer;
     }
 
-    public Cursor getRetailerByVisitingInfo(String week, String day) {
-        final String QUERY = "SELECT " +
+    public Cursor getRetailerByVisitingInfo(String week, String day, String filter) {
+        String QUERY = "SELECT " +
                 RetailerContract.TABLE_NAME + "." + RetailerContract._ID + "," +
                 RetailerContract.TABLE_NAME + "." + RetailerContract.DATE_ADDED + "," +
                 RetailerContract.TABLE_NAME + "." + RetailerContract.RETAILER_ID + "," +
@@ -591,10 +600,18 @@ public class DatabaseManager {
                 " WHERE " +
                 VisitingInfoContract.TABLE_NAME + "." + VisitingInfoContract.WEEK + " =? AND " +
                 VisitingInfoContract.TABLE_NAME + "." + VisitingInfoContract.DAY + " =? ";
-        SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(QUERY, new String[]{week, day});
-        return cursor;
+        if (filter != null) {
+            QUERY += " AND " + RetailerContract.RETAILER_NAME + " LIKE \"%" +filter  + "%\"";
 
+        }
+        SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(QUERY,  new String[]{week, day});
+        Log.e("ddd",cursor.getCount()+"");
+        return cursor;
+    }
+
+    public Cursor getRetailerByVisitingInfo(String week, String day) {
+        return getRetailerByVisitingInfo(week, day, null);
     }
 
     public Cursor getInvoicePush(String day) {
@@ -699,7 +716,7 @@ public class DatabaseManager {
     public Cursor queryAllOrderTotal(String dateAdded, int status) {
         String QUERY = "SELECT " +
                 "SUM(CAST(" + InvoiceContract.TOTAL + " AS FLOAT))  AS " + InvoiceContract.TOTAL_ALIAS + ", " +
-                "SUM(CAST(" + InvoiceContract.AMOUNT_PAID + " AS FLOAT))  AS " + InvoiceContract.AMOUNT_PAID_ALIAS + ", "+
+                "SUM(CAST(" + InvoiceContract.AMOUNT_PAID + " AS FLOAT))  AS " + InvoiceContract.AMOUNT_PAID_ALIAS + ", " +
                 InvoiceContract.TABLE_NAME + "." + InvoiceContract.INVOICE_ID +
                 " FROM " + InvoiceContract.TABLE_NAME +
                 " WHERE " +
@@ -713,7 +730,7 @@ public class DatabaseManager {
     public Cursor queryAllOrderTotal(String retailerId, String dateAdded, int status) {
         String QUERY = "SELECT " +
                 "SUM(CAST(" + InvoiceContract.TOTAL + " AS FLOAT))  AS " + InvoiceContract.TOTAL_ALIAS + ", " +
-                "SUM(CAST(" + InvoiceContract.AMOUNT_PAID + " AS FLOAT))  AS " + InvoiceContract.AMOUNT_PAID_ALIAS + ", "+
+                "SUM(CAST(" + InvoiceContract.AMOUNT_PAID + " AS FLOAT))  AS " + InvoiceContract.AMOUNT_PAID_ALIAS + ", " +
                 InvoiceContract.TABLE_NAME + "." + InvoiceContract.INVOICE_ID +
                 " FROM " + InvoiceContract.TABLE_NAME +
                 " WHERE " +
@@ -825,11 +842,26 @@ public class DatabaseManager {
         return cursor;
     }
 
-    public  Cursor getRetailerIdsForTodaysCoverage(String todayDate, int status){
-        final String    QUERY = "SELECT " + InvoiceContract.RETAILER_ID +
+    public Cursor getRetailerIdsForTodaysCoverage(String todayDate, int status) {
+        final String QUERY = "SELECT " + InvoiceContract.RETAILER_ID +
                 " FROM " + InvoiceContract.TABLE_NAME + " WHERE " +
                 InvoiceContract.DATE_ADDED + " = ?" + " AND "
                 + InvoiceContract.STATUS + " = ? ";
+        SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(QUERY, new String[]{todayDate, String.valueOf(status)});
+        return cursor;
+    }
+
+    public Cursor getRetailerIdsForTodaysCoverage(String todayDate, int status, String filter) {
+        final String QUERY = "SELECT " + InvoiceContract.TABLE_NAME + "." + InvoiceContract.RETAILER_ID +
+                " FROM " + InvoiceContract.TABLE_NAME +
+                " INNER JOIN " + RetailerContract.TABLE_NAME +
+                " ON " + InvoiceContract.TABLE_NAME + "." + InvoiceContract.RETAILER_ID + " = " +
+                RetailerContract.TABLE_NAME + "." + RetailerContract.RETAILER_ID +
+                " WHERE " +
+                InvoiceContract.TABLE_NAME + "." + InvoiceContract.DATE_ADDED + " = ?" + " AND "
+                + InvoiceContract.STATUS + " = ? " +
+                " AND " + RetailerContract.RETAILER_NAME + " LIKE '%" + filter + "%'";
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(QUERY, new String[]{todayDate, String.valueOf(status)});
         return cursor;

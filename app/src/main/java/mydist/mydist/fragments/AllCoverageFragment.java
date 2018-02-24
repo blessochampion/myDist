@@ -1,11 +1,15 @@
 package mydist.mydist.fragments;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +33,7 @@ import mydist.mydist.models.Retailer;
 import mydist.mydist.utils.Days;
 import mydist.mydist.utils.FontManager;
 
+import static mydist.mydist.fragments.CoverageFragment.QUERY_ALL;
 import static mydist.mydist.utils.Days.getCurrentDay;
 import static mydist.mydist.utils.Days.getDay;
 import static mydist.mydist.utils.Days.getThisWeek;
@@ -36,14 +41,22 @@ import static mydist.mydist.utils.Days.getThisWeek;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AllCoverageFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener, StoreDeviateDialogFragment.RetailerDateChangeListener {
+public class AllCoverageFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener,
+        StoreDeviateDialogFragment.RetailerDateChangeListener,
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     DailyRetailersAdapter adapter;
     Cursor cursor;
     View view;
     ListView listView;
     TextView message;
+    private static String searchFilter;
     private ProgressBar mLoadingIndicator;
+    private static final int LOAD_RETAILERS_ID = 20001;
+    private static final int FILTER_RETAILERS_ID = 30001;
+    private static final int CHANGE_REQUESTED_RETAILERS_ID = 40001;
+    private static final String KEY_ID = "id";
+    String filter = null;
 
     public AllCoverageFragment() {
         // Required empty public constructor
@@ -55,20 +68,12 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
         listView = (ListView) view.findViewById(R.id.list_view);
         message = (TextView) view.findViewById(R.id.tv_message);
         mLoadingIndicator = (ProgressBar) view.findViewById(R.id.pb_progress_loading_indicator);
-        bindView();
+        getActivity().getSupportLoaderManager().restartLoader(LOAD_RETAILERS_ID, null, this);
         return view;
     }
 
-    private void bindView() {
-        String week = getThisWeek();
-        String day = getCurrentDay();
-        Cursor todaysRetailerscursor = DatabaseManager.getInstance(getActivity()).
-                getRetailerByVisitingInfo(week, day);
-        String filter = null;
-        if (todaysRetailerscursor.getCount() > 0) {
-            filter = getRetailers(todaysRetailerscursor);
-        }
-        cursor = DatabaseManager.getInstance(getActivity()).getAllRetailerExceptTheCurrentDate(filter);
+    private void bindView(Cursor cursor) {
+
         if (cursor.getCount() < 1) {
             message.setVisibility(View.VISIBLE);
             listView.setVisibility(View.GONE);
@@ -127,11 +132,65 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onDateChangeRequested(String id) {
-        String week = getThisWeek();
-        String day = getCurrentDay();
-        if (DatabaseManager.getInstance(getActivity()).changeRetailerVisitingDate(id, Days.getTodayDate(), day, week)) {
-            Toast.makeText(getActivity(), getString(R.string.date_changed), Toast.LENGTH_LONG).show();
-            bindView();
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY_ID, id);
+        getActivity().getSupportLoaderManager().restartLoader(CHANGE_REQUESTED_RETAILERS_ID, bundle, this);
+    }
+
+    public void filter(String query) {
+        if (query.equals(QUERY_ALL)) {
+            getActivity().getSupportLoaderManager().restartLoader(LOAD_RETAILERS_ID, null, this);
+        } else {
+            searchFilter = query;
+            getActivity().getSupportLoaderManager().restartLoader(FILTER_RETAILERS_ID, null, this);
         }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    @Override
+    public Loader<Cursor> onCreateLoader(final int id, final Bundle args) {
+        return new CursorLoader(getActivity()) {
+            @Override
+            public Cursor loadInBackground() {
+                String week = getThisWeek();
+                String day = getCurrentDay();
+                Cursor todaysRetailerscursor = DatabaseManager.getInstance(getActivity()).
+                        getRetailerByVisitingInfo(week, day);
+
+                if (todaysRetailerscursor.getCount() > 0) {
+                    filter = getRetailers(todaysRetailerscursor);
+                }
+                if (id == LOAD_RETAILERS_ID) {
+                    return DatabaseManager.getInstance(getActivity()).getAllRetailerExceptTheCurrentDate(filter);
+                } else if (id == FILTER_RETAILERS_ID) {
+                    return DatabaseManager.getInstance(getActivity()).getAllRetailerExceptTheCurrentDate(filter, searchFilter);
+                } else if (id == CHANGE_REQUESTED_RETAILERS_ID) {
+                    if (DatabaseManager.getInstance(getActivity()).changeRetailerVisitingDate(args.getString(KEY_ID), Days.getTodayDate(), day, week)) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            public void run() {
+                                Toast.makeText(getActivity(), getString(R.string.date_changed), Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+                    todaysRetailerscursor = DatabaseManager.getInstance(getActivity()).
+                            getRetailerByVisitingInfo(week, day);
+                    filter = getRetailers(todaysRetailerscursor);
+                    return DatabaseManager.getInstance(getActivity()).getAllRetailerExceptTheCurrentDate(filter);
+                }
+                return null;
+            }
+        };
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (loader.getId() == LOAD_RETAILERS_ID || loader.getId() == CHANGE_REQUESTED_RETAILERS_ID || loader.getId() == FILTER_RETAILERS_ID) {
+            bindView(data);
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }

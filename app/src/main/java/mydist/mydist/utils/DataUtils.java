@@ -294,6 +294,10 @@ public class DataUtils {
         return DatabaseManager.getInstance(context).getRetailerIdsForTodaysCoverage(todayDate, status);
     }
 
+    public static Cursor getRetailerIdsForTodaysCoverage(String todayDate, int status, Context context, String filter) {
+        return DatabaseManager.getInstance(context).getRetailerIdsForTodaysCoverage(todayDate, status, filter);
+    }
+
     public static boolean updateHPV(String retailerId, String value, Context context) {
         return DatabaseManager.getInstance(context).updateHPV(retailerId, value);
     }

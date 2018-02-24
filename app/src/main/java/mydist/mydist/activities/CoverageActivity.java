@@ -5,13 +5,18 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,11 +28,14 @@ import mydist.mydist.fragments.AllCoverageFragment;
 import mydist.mydist.fragments.CoverageFragment;
 import mydist.mydist.utils.Days;
 import mydist.mydist.utils.FontManager;
+import mydist.mydist.utils.UIUtils;
 
 public class CoverageActivity extends AuthenticatedActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    SearchView searchView;
+    private ViewPagerAdapter adapter;
     private AllCoverageFragment ALL_COVERAGE = new AllCoverageFragment();
     private CoverageFragment SUNDAY_COVERAGE;
     private CoverageFragment MONDAY_COVERAGE;
@@ -36,6 +44,7 @@ public class CoverageActivity extends AuthenticatedActivity {
     private CoverageFragment THURSDAY_COVERAGE;
     private CoverageFragment FRIDAY_COVERAGE;
     private CoverageFragment SATURDAY_COVERAGE;
+    private boolean isSearchActive = false;
 
 
     @Override
@@ -84,14 +93,40 @@ public class CoverageActivity extends AuthenticatedActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_coverage, menu);
-/*
-        // Associate searchable configuration with the SearchView
-        // SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.merchantId.action_search));
-        // searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));*/
+        searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                isSearchActive = hasFocus;
+            }
+        });
+        searchView.setOnQueryTextListener(new OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Toast.makeText(CoverageActivity.this, query, Toast.LENGTH_SHORT).show();
+                return true;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                queryRetailers(newText);
 
+                return false;
+            }
+        });
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private void queryRetailers(String newText) {
+        if (newText.isEmpty()) {
+            newText = CoverageFragment.QUERY_ALL;
+        }
+        Fragment fragment = adapter.getItem(viewPager.getCurrentItem());
+        if (fragment instanceof CoverageFragment) {
+            ((CoverageFragment) fragment).filter(newText);
+        }else {
+            ((AllCoverageFragment) fragment).filter(newText);
+        }
     }
 
     public void getReferencesToViews() {
@@ -103,8 +138,7 @@ public class CoverageActivity extends AuthenticatedActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
         Calendar calendar = Calendar.getInstance();
         Date today = new Date();
         calendar.setTime(today);
@@ -243,7 +277,13 @@ public class CoverageActivity extends AuthenticatedActivity {
 
     @Override
     public void onBackPressed() {
+
+        if (isSearchActive) {
+            queryRetailers(CoverageFragment.QUERY_ALL);
+            UIUtils.hideKeyboard(this);
+            searchView.setIconified(true);
+            return;
+        }
         super.onBackPressed();
-       // overridePendingTransition(R.anim.transition_right_to_left, R.anim.transition_left_to_right);
     }
 }
