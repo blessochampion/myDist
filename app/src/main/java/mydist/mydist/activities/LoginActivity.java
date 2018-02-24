@@ -242,7 +242,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             DataUtils.saveUser(response.getUser(), UserPreference.getInstance(context));
             DataUtils.saveNewRetailers(response.getMaster().getRetailers(), context);
             DataUtils.saveMasters(response, context);
-            userPreference.setRetailerCount(response.getMaster().getRetailers().size());
             userPreference.savePassword(usernameValue + ":" + passwordValue);
             userPreference.setLasMastersDownloadDate(getTodayDate());
             return null;

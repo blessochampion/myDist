@@ -63,15 +63,7 @@ public class UserPreference {
         editor.commit();
     }
 
-    public int getRetailerCount() {
-        return sharedPreferences.getInt(KEY_NO_RETAILER_SCHECULED_FOR_TODAY, 0);
-    }
 
-    public void setRetailerCount(int count) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(KEY_NO_RETAILER_SCHECULED_FOR_TODAY, count);
-        editor.commit();
-    }
 
     public String getLastUserClosedForTheDayDate() {
         return sharedPreferences.getString(KEY_CLOSED_FOR_THE_DAY, "");

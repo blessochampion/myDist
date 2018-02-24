@@ -54,7 +54,6 @@ public class CoverageActivity extends AuthenticatedActivity {
         setupToolBar();
         getReferencesToViews();
         setFonts();
-
     }
 
     private void loadDailyRetailers() {
@@ -110,7 +109,6 @@ public class CoverageActivity extends AuthenticatedActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 queryRetailers(newText);
-
                 return false;
             }
         });
@@ -277,7 +275,6 @@ public class CoverageActivity extends AuthenticatedActivity {
 
     @Override
     public void onBackPressed() {
-
         if (isSearchActive) {
             queryRetailers(CoverageFragment.QUERY_ALL);
             UIUtils.hideKeyboard(this);

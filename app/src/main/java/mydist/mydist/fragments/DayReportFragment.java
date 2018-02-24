@@ -23,6 +23,8 @@ import mydist.mydist.utils.DataUtils;
 import mydist.mydist.utils.Days;
 import mydist.mydist.utils.FontManager;
 
+import static mydist.mydist.utils.Days.getCurrentDay;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -40,6 +42,7 @@ public class DayReportFragment extends Fragment implements LoaderManager.LoaderC
     private static final String NO_INT_VALUE = "0";
     private static final double NO_DOUBLE_VALUE = 0.00;
     private static final String DEMARCATION = "/";
+    private static int coverageCount = 0;
 
     public DayReportFragment() {
     }
@@ -111,8 +114,8 @@ public class DayReportFragment extends Fragment implements LoaderManager.LoaderC
                     value = cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.TOTAL_ALIAS));
                 }
                 mCoverage.setText(value);
-                String coverageCount = String.valueOf(UserPreference.getInstance(getActivity()).getRetailerCount());
                 mProductiveCalls.setText(value + DEMARCATION + coverageCount);
+                break;
         }
     }
 
@@ -129,6 +132,11 @@ public class DayReportFragment extends Fragment implements LoaderManager.LoaderC
                     case LOADER_ID_DISTRIBUTION_EXTENSION:
                         return DatabaseManager.getInstance(getActivity()).getAllNewRetailers(Days.getRetailerDate());
                     case LOADER_ID_COVERAGE:
+                        String week = Days.getThisWeek();
+                        String day = getCurrentDay();
+                        Cursor cursor = DatabaseManager.getInstance(getActivity()).
+                                getRetailerByVisitingInfo(week, day);
+                        coverageCount = cursor.getCount();
                         return DataUtils.getCoverageCount(Days.getTodayDate(), Invoice.KEY_STATUS_SUCCESS, getActivity());
                     default:
                         return null;
