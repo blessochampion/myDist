@@ -45,7 +45,7 @@ public class CoverageActivity extends AuthenticatedActivity {
     private CoverageFragment FRIDAY_COVERAGE;
     private CoverageFragment SATURDAY_COVERAGE;
     private boolean isSearchActive = false;
-
+    private static final int SUN =0, MON=1,TUE=2,WED=3,THUR=4,FRI=5,SAT=6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +58,13 @@ public class CoverageActivity extends AuthenticatedActivity {
 
     private void loadDailyRetailers() {
         String week = Days.getThisWeek();
-        SUNDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.SUN.toString());
-        MONDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.MON.toString());
-        TUESDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.TUE.toString());
-        WEDNESDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.WED.toString());
-        THURSDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.THUR.toString());
-        FRIDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.FRI.toString());
-        SATURDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.SAT.toString());
+        SUNDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.SUN.toString(), SUN);
+        MONDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.MON.toString(), MON);
+        TUESDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.TUE.toString(), TUE);
+        WEDNESDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.WED.toString(), WED);
+        THURSDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.THUR.toString(), THUR);
+        FRIDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.FRI.toString(), FRI);
+        SATURDAY_COVERAGE = CoverageFragment.getNewInstance(week, Days.SAT.toString(), SAT);
     }
 
     private void setFonts() {
@@ -130,36 +130,36 @@ public class CoverageActivity extends AuthenticatedActivity {
     public void getReferencesToViews() {
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         loadDailyRetailers();
-        setupViewPager(viewPager);
+        setupViewPager();
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+    private void setupViewPager() {
         Calendar calendar = Calendar.getInstance();
         Date today = new Date();
         calendar.setTime(today);
         switch (calendar.get(Calendar.DAY_OF_WEEK)) {
             case Calendar.SUNDAY:
-                loadAdapterForSunday(adapter);
+                loadAdapterForSunday();
+                break;
             case Calendar.MONDAY:
-                loadAdapterForMonday(adapter);
+                loadAdapterForMonday();
                 break;
             case Calendar.TUESDAY:
-                loadAdapterForTuesday(adapter);
+                loadAdapterForTuesday();
                 break;
             case Calendar.WEDNESDAY:
-                loadAdapterForWednesday(adapter);
+                loadAdapterForWednesday();
                 break;
             case Calendar.THURSDAY:
-                loadAdapterForThursday(adapter);
+                loadAdapterForThursday();
                 break;
             case Calendar.FRIDAY:
-                loadAdapterForFriday(adapter);
+                loadAdapterForFriday();
                 break;
             case Calendar.SATURDAY:
-                loadAdapterForSaturday(adapter);
+                loadAdapterForSaturday();
                 break;
             default:
                 break;
@@ -167,7 +167,8 @@ public class CoverageActivity extends AuthenticatedActivity {
         viewPager.setAdapter(adapter);
     }
 
-    private void loadAdapterForSaturday(ViewPagerAdapter adapter) {
+    private void loadAdapterForSaturday() {
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(SATURDAY_COVERAGE, Days.SATURDAY.toString());
         adapter.addFragment(ALL_COVERAGE, Days.ALL.toString());
         adapter.addFragment(SUNDAY_COVERAGE, Days.SUNDAY.toString());
@@ -178,7 +179,8 @@ public class CoverageActivity extends AuthenticatedActivity {
         adapter.addFragment(FRIDAY_COVERAGE, Days.FRIDAY.toString());
     }
 
-    private void loadAdapterForFriday(ViewPagerAdapter adapter) {
+    private void loadAdapterForFriday() {
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(FRIDAY_COVERAGE, Days.FRIDAY.toString());
         adapter.addFragment(ALL_COVERAGE, Days.ALL.toString());
         adapter.addFragment(SATURDAY_COVERAGE, Days.SATURDAY.toString());
@@ -189,7 +191,8 @@ public class CoverageActivity extends AuthenticatedActivity {
         adapter.addFragment(THURSDAY_COVERAGE, Days.THURSDAY.toString());
     }
 
-    private void loadAdapterForThursday(ViewPagerAdapter adapter) {
+    private void loadAdapterForThursday() {
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(THURSDAY_COVERAGE, Days.THURSDAY.toString());
         adapter.addFragment(ALL_COVERAGE, Days.ALL.toString());
         adapter.addFragment(FRIDAY_COVERAGE, Days.FRIDAY.toString());
@@ -200,7 +203,8 @@ public class CoverageActivity extends AuthenticatedActivity {
         adapter.addFragment(WEDNESDAY_COVERAGE, Days.WEDNESDAY.toString());
     }
 
-    private void loadAdapterForWednesday(ViewPagerAdapter adapter) {
+    private void loadAdapterForWednesday() {
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(WEDNESDAY_COVERAGE, Days.WEDNESDAY.toString());
         adapter.addFragment(ALL_COVERAGE, Days.ALL.toString());
         adapter.addFragment(THURSDAY_COVERAGE, Days.THURSDAY.toString());
@@ -211,7 +215,8 @@ public class CoverageActivity extends AuthenticatedActivity {
         adapter.addFragment(TUESDAY_COVERAGE, Days.TUESDAY.toString());
     }
 
-    private void loadAdapterForTuesday(ViewPagerAdapter adapter) {
+    private void loadAdapterForTuesday() {
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(TUESDAY_COVERAGE, Days.TUESDAY.toString());
         adapter.addFragment(ALL_COVERAGE, Days.ALL.toString());
         adapter.addFragment(WEDNESDAY_COVERAGE, Days.WEDNESDAY.toString());
@@ -222,7 +227,8 @@ public class CoverageActivity extends AuthenticatedActivity {
         adapter.addFragment(MONDAY_COVERAGE, Days.MONDAY.toString());
     }
 
-    private void loadAdapterForSunday(ViewPagerAdapter adapter) {
+    private void loadAdapterForSunday() {
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(SUNDAY_COVERAGE, Days.SUNDAY.toString());
         adapter.addFragment(ALL_COVERAGE, Days.ALL.toString());
         adapter.addFragment(MONDAY_COVERAGE, Days.MONDAY.toString());
@@ -233,7 +239,8 @@ public class CoverageActivity extends AuthenticatedActivity {
         adapter.addFragment(SATURDAY_COVERAGE, Days.SATURDAY.toString());
     }
 
-    private void loadAdapterForMonday(ViewPagerAdapter adapter) {
+    private void loadAdapterForMonday() {
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(MONDAY_COVERAGE, Days.MONDAY.toString());
         adapter.addFragment(ALL_COVERAGE, Days.ALL.toString());
         adapter.addFragment(TUESDAY_COVERAGE, Days.TUESDAY.toString());

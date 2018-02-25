@@ -43,9 +43,10 @@ public class CoverageFragment extends Fragment implements View.OnClickListener, 
 
     private static final String KEY_WEEK = "week";
     private static final String KEY_DAY = "day";
+    private static final String KEY_DAY_POSITION = "position";
     private static final String DELIMITER = ":";
-    private static final int LOAD_RETAILERS_ID = 1;
-    private static final int FILTER_RETAILERS_ID = 2;
+    private static  int LOAD_RETAILERS_ID = 1;
+    private static  int FILTER_RETAILERS_ID = 2;
     public static final String QUERY_ALL = "all";
     private String week;
     private String day;
@@ -61,11 +62,12 @@ public class CoverageFragment extends Fragment implements View.OnClickListener, 
     public CoverageFragment() {
     }
 
-    public static CoverageFragment getNewInstance(String week, String day) {
+    public static CoverageFragment getNewInstance(String week, String day, int position) {
         CoverageFragment fragment = new CoverageFragment();
         Bundle arguments = new Bundle();
         arguments.putString(KEY_WEEK, week);
         arguments.putString(KEY_DAY, day);
+        arguments.putInt(KEY_DAY_POSITION,position);
         fragment.setArguments(arguments);
         return fragment;
     }
@@ -86,6 +88,8 @@ public class CoverageFragment extends Fragment implements View.OnClickListener, 
             week = bundle.getString(KEY_WEEK);
             day = bundle.getString(KEY_DAY);
             weekDay = week + DELIMITER + day;
+            LOAD_RETAILERS_ID += bundle.getInt(KEY_DAY_POSITION);
+            FILTER_RETAILERS_ID += bundle.getInt(KEY_DAY_POSITION);
             getActivity().getSupportLoaderManager().initLoader(LOAD_RETAILERS_ID, null, this);
         } else {
             throw new RuntimeException("Unable to Create Fragment, pass DAY and Week");
