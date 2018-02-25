@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import mydist.mydist.R;
@@ -28,6 +30,8 @@ import mydist.mydist.adapters.DailyRetailersAdapter;
 import mydist.mydist.data.DatabaseManager;
 import mydist.mydist.data.MasterContract;
 import mydist.mydist.models.Invoice;
+import mydist.mydist.models.Merchandize;
+import mydist.mydist.models.MerchandizingVerification;
 import mydist.mydist.utils.DataUtils;
 import mydist.mydist.utils.Days;
 import mydist.mydist.utils.FontManager;
@@ -45,8 +49,8 @@ public class CoverageFragment extends Fragment implements View.OnClickListener, 
     private static final String KEY_DAY = "day";
     private static final String KEY_DAY_POSITION = "position";
     private static final String DELIMITER = ":";
-    private static  int LOAD_RETAILERS_ID = 1;
-    private static  int FILTER_RETAILERS_ID = 2;
+    private static int LOAD_RETAILERS_ID = 1;
+    private static int FILTER_RETAILERS_ID = 2;
     public static final String QUERY_ALL = "all";
     private String week;
     private String day;
@@ -58,6 +62,10 @@ public class CoverageFragment extends Fragment implements View.OnClickListener, 
     private View parentView;
     private static String searchFilter;
     List<String> retailerIds = new ArrayList<>();
+    String merchandizingCount;
+    HashMap<String, String> retailersMerchandizing = new HashMap<>();
+    HashMap<String, String> pskuTargetMap = new HashMap<>();
+    HashMap<String, String> todayPskuTargetMap = new HashMap<>();
 
     public CoverageFragment() {
     }
@@ -67,7 +75,7 @@ public class CoverageFragment extends Fragment implements View.OnClickListener, 
         Bundle arguments = new Bundle();
         arguments.putString(KEY_WEEK, week);
         arguments.putString(KEY_DAY, day);
-        arguments.putInt(KEY_DAY_POSITION,position);
+        arguments.putInt(KEY_DAY_POSITION, position);
         fragment.setArguments(arguments);
         return fragment;
     }
@@ -106,9 +114,11 @@ public class CoverageFragment extends Fragment implements View.OnClickListener, 
             String week = getThisWeek();
             String day = getCurrentDay();
             if ((week + DELIMITER + day).equals(weekDay)) {
-                adapter = new DailyRetailersAdapter(getActivity(), cursor, this, retailerIds);
-            }else{
-                adapter = new DailyRetailersAdapter(getActivity(), cursor, this);
+                adapter = new DailyRetailersAdapter(getActivity(), cursor, this, retailerIds, retailersMerchandizing, merchandizingCount,
+                        pskuTargetMap, todayPskuTargetMap);
+            } else {
+                adapter = new DailyRetailersAdapter(getActivity(), cursor, this, retailersMerchandizing, merchandizingCount,
+                        pskuTargetMap, todayPskuTargetMap);
             }
             mLoadingIndicator.setVisibility(View.GONE);
             mMessage.setVisibility(View.GONE);
@@ -149,10 +159,10 @@ public class CoverageFragment extends Fragment implements View.OnClickListener, 
 
     }
 
-    public void filter(String query){
-        if(query.equals(QUERY_ALL)){
+    public void filter(String query) {
+        if (query.equals(QUERY_ALL)) {
             getActivity().getSupportLoaderManager().restartLoader(LOAD_RETAILERS_ID, null, this);
-        }else {
+        } else {
             searchFilter = query;
             getActivity().getSupportLoaderManager().restartLoader(FILTER_RETAILERS_ID, null, this);
         }
@@ -176,13 +186,17 @@ public class CoverageFragment extends Fragment implements View.OnClickListener, 
         return new CursorLoader(getActivity()) {
             @Override
             public Cursor loadInBackground() {
+                merchandizingCount = DatabaseManager.getInstance(getActivity()).getMerchandizingCount(Days.getTodayDate());
+                getMerchandizingVerificationMap();
+                getPSKUMap(null);
+                getPSKUMap(Days.getTodayDate());
                 if (id == LOAD_RETAILERS_ID) {
                     Cursor productiveRetailers = DataUtils.getRetailerIdsForTodaysCoverage(
                             Days.getTodayDate(), Invoice.KEY_STATUS_SUCCESS, getActivity());
                     int count = productiveRetailers.getCount();
                     if (count > 0) {
                         productiveRetailers.moveToFirst();
-                        for(int i = 0 ; i < count; i++){
+                        for (int i = 0; i < count; i++) {
                             productiveRetailers.moveToPosition(i);
                             retailerIds.add(productiveRetailers.getString(productiveRetailers.getColumnIndex(MasterContract.InvoiceContract.RETAILER_ID)));
                             productiveRetailers.moveToNext();
@@ -190,13 +204,13 @@ public class CoverageFragment extends Fragment implements View.OnClickListener, 
                     }
                     return DatabaseManager.getInstance(getActivity()).
                             getRetailerByVisitingInfo(week, day);
-                }else if(id == FILTER_RETAILERS_ID){
+                } else if (id == FILTER_RETAILERS_ID) {
                     Cursor productiveRetailers = DataUtils.getRetailerIdsForTodaysCoverage(
                             Days.getTodayDate(), Invoice.KEY_STATUS_SUCCESS, getActivity(), searchFilter);
                     int count = productiveRetailers.getCount();
                     if (count > 0) {
                         productiveRetailers.moveToFirst();
-                        for(int i = 0 ; i < count; i++){
+                        for (int i = 0; i < count; i++) {
                             productiveRetailers.moveToPosition(i);
                             retailerIds.add(productiveRetailers.getString(productiveRetailers.getColumnIndex(MasterContract.InvoiceContract.RETAILER_ID)));
                             productiveRetailers.moveToNext();
@@ -207,12 +221,44 @@ public class CoverageFragment extends Fragment implements View.OnClickListener, 
                 }
                 return null;
             }
+
+            private void getMerchandizingVerificationMap() {
+                Cursor cursor = DatabaseManager.getInstance(getActivity()).getMerchandisingVerificationGroupByRetailerId(Days.getTodayDate(),
+                        MerchandizingVerification.STATUS_AVAILABLE);
+                if (cursor != null && cursor.getCount() > 0) {
+                    cursor.moveToFirst();
+                    for (int i = 0; i < cursor.getCount(); i++) {
+                        retailersMerchandizing.put(cursor.getString(
+                                cursor.getColumnIndex(MasterContract.MerchandizingListVerificationContract.RETAILER_ID)),
+                                cursor.getString(cursor.getColumnIndex(MasterContract.MerchandizingListVerificationContract.COUNT)));
+                        cursor.moveToNext();
+                    }
+                }
+            }
+
+            private void getPSKUMap(String date) {
+                HashMap<String , String> container;
+                if(date!= null){
+                    container = todayPskuTargetMap;
+                }else {
+                    container = pskuTargetMap;
+                }
+                Cursor cursor = DatabaseManager.getInstance(getActivity()).getDistributionRate(null);
+                if (cursor != null && cursor.getCount() > 0) {
+                    cursor.moveToFirst();
+                    for (int i = 0; i < cursor.getCount(); i++) {
+                        container.put(cursor.getString(
+                                cursor.getColumnIndex(MasterContract.InvoiceContract.RETAILER_ID)), cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.TOTAL_ALIAS)));
+                        cursor.moveToNext();
+                    }
+                }
+            }
         };
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (loader.getId() == LOAD_RETAILERS_ID || loader.getId() ==  FILTER_RETAILERS_ID) {
+        if (loader.getId() == LOAD_RETAILERS_ID || loader.getId() == FILTER_RETAILERS_ID) {
             bindView(data);
         }
     }

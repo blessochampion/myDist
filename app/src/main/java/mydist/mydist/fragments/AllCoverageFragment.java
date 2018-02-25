@@ -23,12 +23,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.HashMap;
 
 import mydist.mydist.R;
 import mydist.mydist.activities.StoreOverviewActivity;
 import mydist.mydist.adapters.DailyRetailersAdapter;
 import mydist.mydist.data.DatabaseManager;
 import mydist.mydist.data.MasterContract;
+import mydist.mydist.models.MerchandizingVerification;
 import mydist.mydist.models.Retailer;
 import mydist.mydist.utils.Days;
 import mydist.mydist.utils.FontManager;
@@ -44,7 +46,6 @@ import static mydist.mydist.utils.Days.getThisWeek;
 public class AllCoverageFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener,
         StoreDeviateDialogFragment.RetailerDateChangeListener,
         LoaderManager.LoaderCallbacks<Cursor> {
-
     DailyRetailersAdapter adapter;
     Cursor cursor;
     View view;
@@ -57,6 +58,10 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
     private static final int CHANGE_REQUESTED_RETAILERS_ID = 40001;
     private static final String KEY_ID = "id";
     String filter = null;
+    String merchandizingCount;
+    HashMap<String, String> retailersMerchandizing = new HashMap<>();
+    HashMap<String,String> pskuTargetMap = new HashMap<>();
+    HashMap<String, String> todayPskuTargetMap = new HashMap<>();
 
     public AllCoverageFragment() {
         // Required empty public constructor
@@ -79,7 +84,8 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
             listView.setVisibility(View.GONE);
             mLoadingIndicator.setVisibility(View.GONE);
         } else {
-            adapter = new DailyRetailersAdapter(getActivity(), cursor, this);
+            adapter = new DailyRetailersAdapter(getActivity(), cursor, this, retailersMerchandizing, merchandizingCount,
+                    pskuTargetMap, todayPskuTargetMap);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(this);
             message.setVisibility(View.GONE);
@@ -160,6 +166,10 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
                 if (todaysRetailerscursor.getCount() > 0) {
                     filter = getRetailers(todaysRetailerscursor);
                 }
+                getMerchandizingVerificationMap();
+                getPSKUMap(null);
+                getPSKUMap(Days.getTodayDate());
+                merchandizingCount = DatabaseManager.getInstance(getActivity()).getMerchandizingCount(Days.getTodayDate());
                 if (id == LOAD_RETAILERS_ID) {
                     return DatabaseManager.getInstance(getActivity()).getAllRetailerExceptTheCurrentDate(filter);
                 } else if (id == FILTER_RETAILERS_ID) {
@@ -178,6 +188,36 @@ public class AllCoverageFragment extends Fragment implements View.OnClickListene
                     return DatabaseManager.getInstance(getActivity()).getAllRetailerExceptTheCurrentDate(filter);
                 }
                 return null;
+            }
+            private void getMerchandizingVerificationMap() {
+                Cursor cursor = DatabaseManager.getInstance(getActivity()).getMerchandisingVerificationGroupByRetailerId(Days.getTodayDate(),
+                        MerchandizingVerification.STATUS_AVAILABLE);
+                if (cursor != null && cursor.getCount() > 0) {
+                    cursor.moveToFirst();
+                    for (int i = 0; i < cursor.getCount(); i++) {
+                        retailersMerchandizing.put(cursor.getString(
+                                cursor.getColumnIndex(MasterContract.MerchandizingListVerificationContract.RETAILER_ID)),
+                                cursor.getString(cursor.getColumnIndex(MasterContract.MerchandizingListVerificationContract.COUNT)));
+                        cursor.moveToNext();
+                    }
+                }
+            }
+            private void getPSKUMap(String date) {
+                HashMap<String , String> container;
+                if(date!= null){
+                    container = todayPskuTargetMap;
+                }else {
+                    container = pskuTargetMap;
+                }
+                Cursor cursor = DatabaseManager.getInstance(getActivity()).getDistributionRate(null);
+                if (cursor != null && cursor.getCount() > 0) {
+                    cursor.moveToFirst();
+                    for (int i = 0; i < cursor.getCount(); i++) {
+                        container.put(cursor.getString(
+                                cursor.getColumnIndex(MasterContract.InvoiceContract.RETAILER_ID)), cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.TOTAL_ALIAS)));
+                        cursor.moveToNext();
+                    }
+                }
             }
         };
     }

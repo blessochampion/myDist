@@ -79,7 +79,7 @@
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/dst_value"
+        android:id="@+id/tv_dst_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/tv_hvp_value"
@@ -99,13 +99,13 @@
         android:layout_alignLeft="@id/stgt"
         android:layout_below="@id/tv_hvp_value"
         android:layout_marginTop="4dp"
-        android:layout_toRightOf="@id/dst_value"
+        android:layout_toRightOf="@id/tv_dst_value"
         android:text="Merch"
         android:textColor="@color/primary_text"
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/merch_value"
+        android:id="@+id/tv_merch_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/stgt_value"

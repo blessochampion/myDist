@@ -135,7 +135,7 @@ public class DatabaseManager {
         mDataBase.close();
     }
 
-    public void persistAllMerchandize(List<Merchandize> merchandizeList) {
+    public void persistAllMerchandize(List<Merchandize> merchandizeList, String dateAdded) {
         ContentValues values;
         SQLiteDatabase mDataBase = mRouteDbHelper.getWritableDatabase();
         for (Merchandize merchandize : merchandizeList) {
@@ -144,7 +144,8 @@ public class DatabaseManager {
             values.put(MerchandizeContract.COLUMN_MERCHANDIZE_ITEM, merchandize.getMerchandizeItem());
             values.put(MerchandizeContract.MERCHANDIZE_ID, merchandize.getMerchantId());
             values.put(MerchandizeContract.BRAND_ID, merchandize.getBrandId());
-            mDataBase.insertWithOnConflict(MerchandizeContract.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+            values.put(MerchandizeContract.DATE_ADDED, dateAdded);
+            mDataBase.insertWithOnConflict(MerchandizeContract.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
         }
         mDataBase.close();
     }
@@ -516,8 +517,8 @@ public class DatabaseManager {
                 RetailerContract.CONTACT_PERSON_NAME + "," +
                 RetailerContract.ADDRESS + "," +
                 RetailerContract.PHONE + "," +
-                 ChannelContract.COLUMN_NAME + "," +
-                 SubChannelContract.COLUMN_NAME + "," +
+                ChannelContract.COLUMN_NAME + "," +
+                SubChannelContract.COLUMN_NAME + "," +
                 AreaContract.COLUMN_NAME +
                 " FROM " + RetailerContract.TABLE_NAME +
                 " INNER JOIN " + ChannelContract.TABLE_NAME + " ON " +
@@ -607,7 +608,6 @@ public class DatabaseManager {
         }
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(QUERY, new String[]{week, day});
-        Log.e("ddd", cursor.getCount() + "");
         return cursor;
     }
 
@@ -707,9 +707,9 @@ public class DatabaseManager {
                 InvoiceContract.PAYMENT_MODE_VALUE,
                 InvoiceContract.STATUS};
 
-        String selection = InvoiceContract.RETAILER_ID + " = ? " ;
+        String selection = InvoiceContract.RETAILER_ID + " = ? ";
         String[] selectionArgs = new String[]{retailerId};
-                String sortOrder = InvoiceContract.DATE_ADDED + " DESC";
+        String sortOrder = InvoiceContract.DATE_ADDED + " DESC";
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor invoice = db.query(
                 InvoiceContract.TABLE_NAME,
@@ -804,6 +804,63 @@ public class DatabaseManager {
                 null,
                 sortOrder);
         return merchandizingVerification;
+    }
+
+    public Cursor getMerchandisingVerificationGroupByRetailerId(String dateAdded, int available) {
+        final String QUERY = "SELECT " +
+                MerchandizingListVerificationContract.RETAILER_ID + "," +
+                "COUNT( " + MerchandizingListVerificationContract.RETAILER_ID + ") AS " +
+                MerchandizingListVerificationContract.COUNT +
+                " FROM " + MerchandizingListVerificationContract.TABLE_NAME + " WHERE " +
+                MerchandizingListVerificationContract.DATE_ADDED + " = ? AND " +
+                MerchandizingListVerificationContract.AVAILABLE + " = ? GROUP BY " + MerchandizingListVerificationContract.RETAILER_ID;
+        SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
+        return db.rawQuery(QUERY, new String[]{dateAdded, String.valueOf(available)});
+    }
+
+    public Cursor getDistributionRate(String dateAdded, String retailerId) {
+        String QUERY = "SELECT " +
+                InvoiceContract.RETAILER_ID + "," +
+                "COUNT(" + ProductOrderContract.PRODUCT_ID + ") AS " +
+                InvoiceContract.TOTAL_ALIAS +
+                " FROM " + InvoiceContract.TABLE_NAME + " INNER JOIN " +
+                ProductOrderContract.TABLE_NAME + " ON " +
+                InvoiceContract.TABLE_NAME + "." + InvoiceContract.INVOICE_ID + " == " +
+                ProductOrderContract.TABLE_NAME + "." + ProductOrderContract.INVOICE_ID;
+        if (dateAdded != null) {
+            QUERY += " WHERE " + InvoiceContract.TABLE_NAME + "." + InvoiceContract.DATE_ADDED + " == " + dateAdded;
+            if (retailerId != null) {
+                QUERY += " AND " + InvoiceContract.RETAILER_ID + " == '" + retailerId + "'";
+            }
+        } else {
+            if (retailerId != null) {
+                QUERY += " WHERE " + InvoiceContract.RETAILER_ID + " == \'" + retailerId+"'";
+            }
+        }
+        QUERY += " GROUP BY " + InvoiceContract.RETAILER_ID;
+        SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
+        return db.rawQuery(QUERY, null);
+    }
+
+    public Cursor getDistributionRate(String dateAdded) {
+        return  getDistributionRate(dateAdded, null);
+    }
+
+    public String getMerchandizingCount(String dateAdded) {
+        String count = "count";
+        final String QUERY = "SELECT " +
+                "COUNT( " + MerchandizeContract.DATE_ADDED + ") AS " +
+                count +
+                " FROM " + MerchandizeContract.TABLE_NAME + " WHERE " +
+                MerchandizeContract.DATE_ADDED + " = ?";
+        SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(QUERY, new String[]{dateAdded});
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            return cursor.getString(cursor.getColumnIndex(count));
+        } else {
+            return String.valueOf(0);
+        }
     }
 
     public Cursor getAllMerchandising(String dateAdded) {

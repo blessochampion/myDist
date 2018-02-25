@@ -47,6 +47,7 @@ public class MasterContract {
         public static final String COLUMN_MERCHANDIZE_ITEM = "merchandize_item";
         public static final String MERCHANDIZE_ID = "merchId";
         public static final String BRAND_ID = "brandId";
+        public static final String DATE_ADDED = "date_added";
     }
 
     public static class RetailerContract implements BaseColumns {
@@ -107,6 +108,7 @@ public class MasterContract {
         public static final String RETAILER_ID = "retailer_id";
         public static final String BRAND_ID = "brand_id";
         public static final String AVAILABLE = "available";
+        public static final String COUNT  = "count";
     }
 
     public static class HighestPurchaseValueContract implements BaseColumns {

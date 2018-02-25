@@ -38,7 +38,7 @@
             android:textColor="@color/primary_text" />
 
         <TextView
-            android:id="@+id/psku_target_value"
+            android:id="@+id/tv_psku_target_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_store_target_value"
@@ -55,7 +55,7 @@
             android:id="@+id/mechandising_list_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/psku_target_value"
+            android:layout_below="@id/tv_psku_target_value"
             android:layout_marginTop="24dp"
             android:text="MechandisingList"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"

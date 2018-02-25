@@ -176,4 +176,5 @@
     <string name="unable_to_process_request">Unable to process your request</string>
     <string name="edit_invoice">Edit Invoice</string>
     <string name="retailer_not_for_today">Retailer is not part of Current Day Coverage. Please check the All Coverage Section to change the visiting Day for this Retailer</string>
+    <string name="slashFormat">%s/%s</string>
 </resources>

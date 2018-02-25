@@ -99,7 +99,7 @@ public class DataUtils {
         DownloadMastersResponse.Master master = downloadMastersResponse.getMaster();
         manager.persistAllBrand(master.getBrands());
         manager.persistAllChannel(master.getChannels());
-        manager.persistAllMerchandize(master.getMerchandizingList());
+        manager.persistAllMerchandize(master.getMerchandizingList(), Days.getTodayDate());
         manager.persistAllProduct(master.getProducts());
         manager.persistAllSubChannel(master.getSubChannels());
         manager.persistAllArea(master.getAreas());

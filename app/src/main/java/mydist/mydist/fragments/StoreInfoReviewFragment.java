@@ -32,6 +32,7 @@ public class StoreInfoReviewFragment extends Fragment {
 
     ListView mMerchandisingList;
     TextView mStoreTarget;
+    TextView mSKUTarget;
 
     public StoreInfoReviewFragment() {
         // Required empty public constructor
@@ -45,6 +46,7 @@ public class StoreInfoReviewFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_store_info_review, container, false);
         mMerchandisingList = (ListView) view.findViewById(R.id.lv_merchandisingList);
         mStoreTarget = (TextView) view.findViewById(R.id.tv_store_target_value);
+        mSKUTarget = (TextView) view.findViewById(R.id.tv_psku_target_value);
         new LoadDetailsTask().execute();
         setFonts(view);
         return view;
@@ -58,6 +60,7 @@ public class StoreInfoReviewFragment extends Fragment {
     class LoadDetailsTask extends AsyncTask<Void, Void, Void> {
         List<Merchandize> merchandizes = new ArrayList<>();
         String storeTarget = DatabaseLogicUtils.DEFAULT_HPV;
+        String pskuTarget = "0";
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -68,6 +71,11 @@ public class StoreInfoReviewFragment extends Fragment {
                 storeTarget = cursor.getString(cursor.getColumnIndex(MasterContract.HighestPurchaseValueContract.VALUE));
                 storeTarget = DatabaseLogicUtils.getHighestPurchaseEver(storeTarget);
             }
+            cursor = DatabaseManager.getInstance(getActivity()).getDistributionRate(null, StoreOverviewActivity.retailerId);
+            if(cursor.getCount() > 0){
+                cursor.moveToFirst();
+                pskuTarget = cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.TOTAL_ALIAS));
+            }
             return null;
         }
 
@@ -76,6 +84,7 @@ public class StoreInfoReviewFragment extends Fragment {
             super.onPostExecute(aVoid);
             mMerchandisingList.setAdapter(new MerchandizingAdapter(getActivity(), merchandizes));
             mStoreTarget.setText(getActivity().getText(R.string.naira) + String.format("%,.2f", Double.valueOf(storeTarget)));
+            mSKUTarget.setText(pskuTarget);
         }
     }
 }
