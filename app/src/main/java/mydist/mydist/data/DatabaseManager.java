@@ -611,6 +611,26 @@ public class DatabaseManager {
         return cursor;
     }
 
+    public String getHighestPurchaseValue(String retailerId){
+        String[] projection = {
+                HighestPurchaseValueContract.VALUE};
+        String selection = null;
+        String selectionArgs[] = null;
+        String sortOrder = null;
+        SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
+        Cursor retailerCursor = db.query(
+                HighestPurchaseValueContract.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+        retailerCursor.moveToFirst();
+        return retailerCursor.getString(retailerCursor.getColumnIndex(HighestPurchaseValueContract.VALUE));
+    }
+
     public Cursor getRetailerByVisitingInfo(String week, String day) {
         return getRetailerByVisitingInfo(week, day, null);
     }
@@ -806,16 +826,24 @@ public class DatabaseManager {
         return merchandizingVerification;
     }
 
-    public Cursor getMerchandisingVerificationGroupByRetailerId(String dateAdded, int available) {
-        final String QUERY = "SELECT " +
+    public Cursor getMerchandisingVerificationGroupByRetailerId(String dateAdded, int available, String retailerId) {
+        String QUERY = "SELECT " +
                 MerchandizingListVerificationContract.RETAILER_ID + "," +
                 "COUNT( " + MerchandizingListVerificationContract.RETAILER_ID + ") AS " +
                 MerchandizingListVerificationContract.COUNT +
                 " FROM " + MerchandizingListVerificationContract.TABLE_NAME + " WHERE " +
-                MerchandizingListVerificationContract.DATE_ADDED + " = ? AND " +
+                MerchandizingListVerificationContract.DATE_ADDED + " = ? ";
+        if (retailerId != null) {
+            QUERY += " AND " + MerchandizingListVerificationContract.RETAILER_ID + " == '" + retailerId + "'";
+        }
+        QUERY += " AND " +
                 MerchandizingListVerificationContract.AVAILABLE + " = ? GROUP BY " + MerchandizingListVerificationContract.RETAILER_ID;
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         return db.rawQuery(QUERY, new String[]{dateAdded, String.valueOf(available)});
+    }
+
+    public Cursor getMerchandisingVerificationGroupByRetailerId(String dateAdded, int available) {
+        return getMerchandisingVerificationGroupByRetailerId(dateAdded, available, null);
     }
 
     public Cursor getDistributionRate(String dateAdded, String retailerId) {
@@ -828,13 +856,13 @@ public class DatabaseManager {
                 InvoiceContract.TABLE_NAME + "." + InvoiceContract.INVOICE_ID + " == " +
                 ProductOrderContract.TABLE_NAME + "." + ProductOrderContract.INVOICE_ID;
         if (dateAdded != null) {
-            QUERY += " WHERE " + InvoiceContract.TABLE_NAME + "." + InvoiceContract.DATE_ADDED + " == " + dateAdded;
+            QUERY += " WHERE " + InvoiceContract.TABLE_NAME + "." + InvoiceContract.DATE_ADDED + " == '" + dateAdded + "'";
             if (retailerId != null) {
                 QUERY += " AND " + InvoiceContract.RETAILER_ID + " == '" + retailerId + "'";
             }
         } else {
             if (retailerId != null) {
-                QUERY += " WHERE " + InvoiceContract.RETAILER_ID + " == \'" + retailerId+"'";
+                QUERY += " WHERE " + InvoiceContract.RETAILER_ID + " == '" + retailerId + "'";
             }
         }
         QUERY += " GROUP BY " + InvoiceContract.RETAILER_ID;
@@ -843,7 +871,7 @@ public class DatabaseManager {
     }
 
     public Cursor getDistributionRate(String dateAdded) {
-        return  getDistributionRate(dateAdded, null);
+        return getDistributionRate(dateAdded, null);
     }
 
     public String getMerchandizingCount(String dateAdded) {
@@ -885,9 +913,7 @@ public class DatabaseManager {
                 null,
                 sortOrder
         );
-
         return merchandizingVerification;
-
     }
 
     private void deleteMerchandizingVerification(String retailerId, String date) {

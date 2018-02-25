@@ -17,24 +17,29 @@ public class Coverage {
     @JsonProperty("callDuration")
     String callDuration = "01:02:44";
     @JsonProperty("storeTarget")
-    double storeTarget = 23434.89;
+    double storeTarget;
     @JsonProperty("pskuCountTarget")
-    int pskuCountTarget = 7;
+    int pskuCountTarget;
     @JsonProperty("pskuCount")
-    int pskuCount = 8;
+    int pskuCount;
     @JsonProperty("merchandisingTarget")
-    int merchandisingTarget = 5;
+    String merchandisingTarget;
     @JsonProperty("merchandisingList")
     List<MerchandizingPush> merchandizingList;
     @JsonProperty("callAnalysis")
     CallAnalysis callAnalysis;
 
-    public Coverage(String retailerId, String date, List<InvoicePush> invoices, List<MerchandizingPush> merchandizingList, CallAnalysis callAnalysis) {
+    public Coverage(String retailerId, String date, List<InvoicePush> invoices, List<MerchandizingPush> merchandizingList, CallAnalysis callAnalysis,
+                    double storeTarget,int pskuCount,  int pskuCountTarget, String merchandisingTarget) {
         this.retailerId = retailerId;
         this.date = date;
         this.invoices = invoices;
         this.merchandizingList = merchandizingList;
         this.callAnalysis = callAnalysis;
+        this.storeTarget = storeTarget;
+        this.pskuCount = pskuCount;
+        this.pskuCountTarget = pskuCountTarget;
+        this.merchandisingTarget = merchandisingTarget;
     }
 
     public String getRetailerId() {
@@ -93,11 +98,11 @@ public class Coverage {
         this.pskuCount = pskuCount;
     }
 
-    public int getMerchandisingTarget() {
+    public String getMerchandisingTarget() {
         return merchandisingTarget;
     }
 
-    public void setMerchandisingTarget(int merchandisingTarget) {
+    public void setMerchandisingTarget(String merchandisingTarget) {
         this.merchandisingTarget = merchandisingTarget;
     }
 

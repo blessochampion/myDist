@@ -38,6 +38,7 @@ import mydist.mydist.data.MasterContract;
 import mydist.mydist.data.UserPreference;
 import mydist.mydist.listeners.UploadMastersListener;
 import mydist.mydist.models.Invoice;
+import mydist.mydist.models.MerchandizingVerification;
 import mydist.mydist.models.NewRetailer;
 import mydist.mydist.models.UploadMastersResponse;
 import mydist.mydist.models.push.CallAnalysis;
@@ -50,6 +51,7 @@ import mydist.mydist.models.push.NewRetailerPush;
 import mydist.mydist.network.NetworkUtils;
 import mydist.mydist.network.UploadMastersClient;
 import mydist.mydist.utils.DataUtils;
+import mydist.mydist.utils.DatabaseLogicUtils;
 import mydist.mydist.utils.Days;
 import mydist.mydist.utils.FontManager;
 import mydist.mydist.utils.UIUtils;
@@ -250,12 +252,38 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
             } else {
                 merchandizingPushes = new ArrayList<>();
             }
-            Cursor cursor = DataUtils.getAllOrderTotal(retailerId, Invoice.KEY_STATUS_SUCCESS, this);;
+            Cursor cursor = DataUtils.getAllOrderTotal(retailerId, Invoice.KEY_STATUS_SUCCESS, this);
+            String storeTarget = DatabaseManager.getInstance(this).getHighestPurchaseValue(retailerId);
+            storeTarget = DatabaseLogicUtils.getHighestPurchaseEver(storeTarget);
+            String pskuTarget =  getPSKUM(null, retailerId);
+            String pskuCount = getPSKUM(Days.getTodayDate(), retailerId);
+            String merchandizingTarget = getMerchandizingVerification(Days.getTodayDate(), retailerId);
             double[] values = getValues(cursor);
             coverages.add(new Coverage(retailerId, date, invoicePushes, merchandizingPushes,
-                    new CallAnalysis(values[0], values[1], 20)));
+                    new CallAnalysis(values[0], values[1], 20), Double.valueOf(storeTarget), Integer.valueOf(pskuCount), Integer.valueOf(pskuTarget)
+            , merchandizingTarget));
         }
         return coverages;
+    }
+    private String getMerchandizingVerification(String date, String retailerId) {
+        String result = "0";
+        Cursor cursor = DatabaseManager.getInstance(this).getMerchandisingVerificationGroupByRetailerId(date,
+                MerchandizingVerification.STATUS_AVAILABLE, retailerId);
+        String merch =  DatabaseManager.getInstance(this).getMerchandizingCount(date);
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            result = cursor.getString(cursor.getColumnIndex(MasterContract.MerchandizingListVerificationContract.COUNT));
+        }
+        return getString(R.string.slashFormat, result,merch);
+    }
+    private String  getPSKUM(String date, String retailerId) {
+        String result = "0";
+        Cursor cursor = DatabaseManager.getInstance(this).getDistributionRate(date, retailerId);
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            result = cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.TOTAL_ALIAS));
+        }
+       return result;
     }
 
     private double[] getValues(Cursor cursor) {

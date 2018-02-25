@@ -89,37 +89,12 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_initiative_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_collection_amount_value"
-                android:layout_marginTop="4dp"
-                android:gravity="center"
-                android:minHeight="32dp"
-                android:text="@string/initiative_rate"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tv_initiative_rate_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/tv_collection_amount_value"
-                android:layout_marginTop="4dp"
-                android:layout_toRightOf="@id/tv_initiative_label"
-                android:gravity="right|center_vertical"
-                android:minHeight="32dp"
-                android:text="153,900.00"
-                android:textColor="@color/primary_text"
-                android:textSize="14sp"
-                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_sbd_distribution_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_initiative_label"
+                android:layout_below="@id/tv_collection_amount_label"
                 android:layout_marginTop="4dp"
                 android:gravity="center"
                 android:minHeight="32dp"
@@ -136,42 +111,17 @@
                 android:layout_alignParentRight="true"
                 android:gravity="right|center_vertical"
                 android:minHeight="32dp"
-                android:text="3/5 60%"
+                android:text=""
                 android:textColor="@color/primary_text"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_monthly_obj"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_sbd_distribution_label"
-                android:layout_marginTop="4dp"
-                android:gravity="center"
-                android:minHeight="32dp"
-                android:text="@string/monthly_obj"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tv_monthly_obj_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/tv_sbd_distribution_rate_value"
-                android:layout_marginTop="4dp"
-                android:layout_toRightOf="@id/tv_monthly_obj"
-                android:gravity="right|center_vertical"
-                android:minHeight="32dp"
-                android:text="3/5 60%"
-                android:textColor="@color/primary_text"
-                android:textSize="14sp"
-                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_initiative_merch_rate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_monthly_obj"
+                android:layout_below="@id/tv_sbd_distribution_label"
                 android:layout_marginTop="4dp"
                 android:gravity="center"
                 android:minHeight="32dp"
@@ -183,12 +133,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@id/tv_monthly_obj_value"
+                android:layout_below="@id/tv_sbd_distribution_rate_value"
                 android:layout_marginTop="4dp"
                 android:layout_toRightOf="@id/tv_initiative_merch_rate"
                 android:gravity="right|center_vertical"
                 android:minHeight="32dp"
-                android:text="0/0 0%"
                 android:textColor="@color/primary_text"
                 android:textSize="14sp"
                 android:textStyle="bold" />
