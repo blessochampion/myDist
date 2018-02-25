@@ -1,11 +1,15 @@
 package mydist.mydist.fragments;
 
 
+import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +23,12 @@ import mydist.mydist.data.RouteDbHelper;
 import mydist.mydist.models.Retailer;
 import mydist.mydist.models.SubChannel;
 import mydist.mydist.utils.FontManager;
+import mydist.mydist.utils.UIUtils;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StoreProfileFragment extends Fragment {
-
+public class StoreProfileFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     TextView mName;
     TextView mContactPerson;
     TextView mAddress;
@@ -34,7 +38,9 @@ public class StoreProfileFragment extends Fragment {
     TextView mAreaName;
     Button mButton;
     DialogFragment parent;
+    View parentView;
     public static final String KEY_ID = "merchantId";
+    public static final int KEY_LOAD_PROFILE = 90000;
 
     public StoreProfileFragment() {
         // Required empty public constructor
@@ -61,24 +67,34 @@ public class StoreProfileFragment extends Fragment {
                 parent.getDialog().cancel();
             }
         });
-        bindView();
-        setFonts(view);
+        parentView = view;
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            getActivity().getSupportLoaderManager().initLoader(KEY_LOAD_PROFILE, bundle, this);
+        } else {
+            throw new RuntimeException("Unable to Create Fragment, pass DAY and Week");
+        }
+
         return view;
     }
 
-    private void bindView() {
-        Bundle bundle = getArguments();
-        String id = bundle.getString(KEY_ID);
-        Cursor cursor = DatabaseManager.getInstance(getActivity()).getRetailerProfileById(id);
+    private void bindView(Cursor cursor) {
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             String name = cursor.getString(cursor.getColumnIndex(RetailerContract.RETAILER_NAME));
+            name = UIUtils.capitalizefirstLetter(name);
             String contactPerson = cursor.getString(cursor.getColumnIndex(RetailerContract.CONTACT_PERSON_NAME));
+            contactPerson = UIUtils.capitalizefirstLetter(contactPerson);
             String address = cursor.getString(cursor.getColumnIndex(RetailerContract.ADDRESS));
+            address = UIUtils.capitalizefirstLetter(address);
             String phone = cursor.getString(cursor.getColumnIndex(RetailerContract.PHONE));
-            String channelName = cursor.getString(cursor.getColumnIndex(ChannelContract.TABLE_NAME + "." + ChannelContract.COLUMN_NAME));
-            String subChannelName = cursor.getString(cursor.getColumnIndex(SubChannelContract.TABLE_NAME + "." + SubChannelContract.COLUMN_NAME));
+            phone = UIUtils.capitalizefirstLetter(phone);
+            String channelName = cursor.getString(cursor.getColumnIndex(  ChannelContract.COLUMN_NAME));
+            channelName = UIUtils.capitalizefirstLetter(channelName);
+            String subChannelName = cursor.getString(cursor.getColumnIndex(SubChannelContract.COLUMN_NAME));
+            subChannelName = UIUtils.capitalizefirstLetter(subChannelName);
             String areaName = cursor.getString(cursor.getColumnIndex(AreaContract.COLUMN_NAME));
+            areaName = UIUtils.capitalizefirstLetter(areaName);
             mName.setText(name);
             mContactPerson.setText(contactPerson);
             mAddress.setText(address);
@@ -86,6 +102,7 @@ public class StoreProfileFragment extends Fragment {
             mChannel.setText(channelName);
             mSubChannel.setText(subChannelName);
             mAreaName.setText(areaName);
+            setFonts(parentView);
         }
     }
 
@@ -102,5 +119,29 @@ public class StoreProfileFragment extends Fragment {
         FontManager.setFontsForView(v.findViewById(R.id.parent_layout), ralewayFont);
     }
 
+    @SuppressLint("StaticFieldLeak")
+    @Override
+    public Loader<Cursor> onCreateLoader(final int id, final Bundle args) {
+        return new CursorLoader(getActivity()){
+            @Override
+            public Cursor loadInBackground() {
+                if(id == KEY_LOAD_PROFILE){
+                    return DatabaseManager.getInstance(getActivity()).getRetailerProfileById(args.getString(KEY_ID));
+                }
+                return super.loadInBackground();
+            }
+        };
+    }
 
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if(loader.getId() == KEY_LOAD_PROFILE){
+            bindView(data);
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
 }

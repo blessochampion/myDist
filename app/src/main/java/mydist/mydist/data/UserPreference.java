@@ -52,7 +52,6 @@ public class UserPreference {
         return sharedPreferences.getString(KEY_PASSWORD, "");
     }
 
-
     public int lastInvoiceIndex() {
         return sharedPreferences.getInt(KEY_LAST_INVOICE_INDEX, 0);
     }
@@ -62,8 +61,6 @@ public class UserPreference {
         editor.putInt(KEY_LAST_INVOICE_INDEX, lastIndex);
         editor.commit();
     }
-
-
 
     public String getLastUserClosedForTheDayDate() {
         return sharedPreferences.getString(KEY_CLOSED_FOR_THE_DAY, "");

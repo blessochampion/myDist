@@ -57,7 +57,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mLogin = (Button) findViewById(R.id.login_activity_login);
         setButtonOnClickListeners();
         setFont();
-
     }
 
     private void setFont() {

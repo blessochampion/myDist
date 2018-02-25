@@ -16,6 +16,7 @@ import mydist.mydist.R;
 import mydist.mydist.data.MasterContract;
 import mydist.mydist.utils.DatabaseLogicUtils;
 import mydist.mydist.utils.FontManager;
+import mydist.mydist.utils.UIUtils;
 
 /**
  * Created by Blessing.Ekundayo on 1/9/2018.
@@ -48,6 +49,7 @@ public class DailyRetailersAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         String retailerName = cursor.getString(cursor.getColumnIndex(MasterContract.RetailerContract.RETAILER_NAME));
+        retailerName = UIUtils.capitalizefirstLetter(retailerName);
         String retailerId = cursor.getString(cursor.getColumnIndex(MasterContract.RetailerContract.RETAILER_ID));
         String hpvValue = cursor.getString(cursor.getColumnIndex(MasterContract.HighestPurchaseValueContract.VALUE));
         hpvValue = DatabaseLogicUtils.getHighestPurchase(hpvValue);

@@ -1,14 +1,13 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:fillViewport="true"
     android:isScrollContainer="true">
 
     <LinearLayout
         android:id="@+id/parent_layout"
         android:layout_width="match_parent"
-
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context="mydist.mydist.fragments.StoreProfileFragment">
@@ -21,8 +20,7 @@
             android:divider="@drawable/profile_divider"
             android:dividerPadding="3dp"
             android:padding="8dp"
-            android:showDividers="middle"
-            >
+            android:showDividers="middle">
 
             <TableRow
                 android:layout_width="wrap_content"
@@ -35,6 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:textSize="16sp"
                     android:text="@string/name"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/primary_text" />
@@ -44,6 +43,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
+                    android:textSize="14sp"
+                    android:gravity="right"
+                    android:paddingRight="16dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             </TableRow>
@@ -59,6 +61,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:textSize="16sp"
                     android:text="@string/contact_person"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/primary_text" />
@@ -68,6 +71,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
+                    android:textSize="14sp"
+                    android:gravity="right"
+                    android:paddingRight="16dp"
                     android:text=""
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
@@ -84,6 +90,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:textSize="16sp"
                     android:text="@string/address"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/primary_text" />
@@ -93,6 +100,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
+                    android:textSize="14sp"
+                    android:gravity="right"
+                    android:paddingRight="16dp"
                     android:text=""
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
@@ -109,6 +119,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:textSize="16sp"
                     android:text="@string/phone"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/primary_text" />
@@ -118,6 +129,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
+                    android:textSize="14sp"
+                    android:gravity="right"
+                    android:paddingRight="16dp"
                     android:text=""
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
@@ -134,6 +148,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:textSize="16sp"
                     android:text="@string/channel"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/primary_text" />
@@ -143,6 +158,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
+                    android:textSize="14sp"
+                    android:gravity="right"
+                    android:paddingRight="16dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             </TableRow>
@@ -158,6 +176,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:textSize="16sp"
                     android:text="@string/subchannel"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/primary_text" />
@@ -167,6 +186,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
+                    android:textSize="14sp"
+                    android:gravity="right"
+                    android:paddingRight="16dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             </TableRow>
@@ -182,116 +204,120 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:textSize="16sp"
                     android:text="@string/area_name"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/primary_text" />
 
                 <TextView
+                    android:textSize="14sp"
                     android:id="@+id/tv_area_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
+                    android:gravity="right"
+                    android:paddingRight="16dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             </TableRow>
-<!--
+            <!--
 
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:gravity="center"
-                android:minHeight="36dp">
+                        <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:gravity="center"
+                            android:minHeight="36dp">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="@string/credit_limit"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="@color/primary_text" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="@string/credit_limit"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textColor="@color/primary_text" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:text="0"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:text="0"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-            </TableRow>
+                        </TableRow>
 
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:gravity="center"
-                android:minHeight="36dp">
+                        <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:gravity="center"
+                            android:minHeight="36dp">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="@string/credit_balance"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="@color/primary_text" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="@string/credit_balance"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textColor="@color/primary_text" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:text="0"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:text="0"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-            </TableRow>
+                        </TableRow>
 
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:gravity="center"
-                android:minHeight="36dp">
+                        <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:gravity="center"
+                            android:minHeight="36dp">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="@string/credit_days"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="@color/primary_text" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="@string/credit_days"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textColor="@color/primary_text" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:text="0"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:text="0"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-            </TableRow>
+                        </TableRow>
 
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:gravity="center"
-                android:minHeight="36dp">
+                        <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:gravity="center"
+                            android:minHeight="36dp">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="@string/max_os_invoice"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="@color/primary_text" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="@string/max_os_invoice"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textColor="@color/primary_text" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:text="0"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:text="0"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-            </TableRow>
--->
+                        </TableRow>
+            -->
 
 
         </TableLayout>

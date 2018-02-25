@@ -85,4 +85,8 @@ public class UIUtils {
                 setPositiveButton(context.getText(R.string.ok), null).create();
         mDialog.show();
     }
+
+    public static String capitalizefirstLetter(String s){
+        return s.substring(0,1).toUpperCase() + (s.substring(1).toLowerCase());
+    }
 }

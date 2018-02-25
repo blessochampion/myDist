@@ -472,17 +472,18 @@ public class DatabaseManager {
         if (filter != null) {
             QUERY += " WHERE " + RetailerContract.TABLE_NAME + "." + RetailerContract.RETAILER_ID + " NOT IN " + filter;
         }
-        if(nameFilter != null){
-            if(filter !=null){
-                QUERY += " AND " + RetailerContract.RETAILER_NAME + " LIKE \"%" +nameFilter  + "%\"";
-            }else{
-                QUERY += " WHERE " + RetailerContract.RETAILER_NAME + " LIKE \"%" +nameFilter  + "%\"";
+        if (nameFilter != null) {
+            if (filter != null) {
+                QUERY += " AND " + RetailerContract.RETAILER_NAME + " LIKE \"%" + nameFilter + "%\"";
+            } else {
+                QUERY += " WHERE " + RetailerContract.RETAILER_NAME + " LIKE \"%" + nameFilter + "%\"";
             }
         }
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(QUERY, new String[]{});
         return cursor;
     }
+
     public Cursor getAllRetailerExceptTheCurrentDate(String filter) {
         return getAllRetailerExceptTheCurrentDate(filter, null);
     }
@@ -515,8 +516,8 @@ public class DatabaseManager {
                 RetailerContract.CONTACT_PERSON_NAME + "," +
                 RetailerContract.ADDRESS + "," +
                 RetailerContract.PHONE + "," +
-                ChannelContract.TABLE_NAME + "." + ChannelContract.COLUMN_NAME + "," +
-                SubChannelContract.TABLE_NAME + "." + SubChannelContract.COLUMN_NAME + "," +
+                 ChannelContract.COLUMN_NAME + "," +
+                 SubChannelContract.COLUMN_NAME + "," +
                 AreaContract.COLUMN_NAME +
                 " FROM " + RetailerContract.TABLE_NAME +
                 " INNER JOIN " + ChannelContract.TABLE_NAME + " ON " +
@@ -601,12 +602,12 @@ public class DatabaseManager {
                 VisitingInfoContract.TABLE_NAME + "." + VisitingInfoContract.WEEK + " =? AND " +
                 VisitingInfoContract.TABLE_NAME + "." + VisitingInfoContract.DAY + " =? ";
         if (filter != null) {
-            QUERY += " AND " + RetailerContract.RETAILER_NAME + " LIKE \"%" +filter  + "%\"";
+            QUERY += " AND " + RetailerContract.RETAILER_NAME + " LIKE \"%" + filter + "%\"";
 
         }
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(QUERY,  new String[]{week, day});
-        Log.e("ddd",cursor.getCount()+"");
+        Cursor cursor = db.rawQuery(QUERY, new String[]{week, day});
+        Log.e("ddd", cursor.getCount() + "");
         return cursor;
     }
 
@@ -691,6 +692,34 @@ public class DatabaseManager {
                 sortOrder
         );
 
+        return invoice;
+    }
+
+    public Cursor queryAllInvoiceByRetailerId(String retailerId) {
+        String[] projection = new String[]{
+                InvoiceContract._ID,
+                InvoiceContract.INVOICE_ID,
+                InvoiceContract.RETAILER_ID,
+                InvoiceContract.DATE_ADDED,
+                InvoiceContract.TOTAL,
+                InvoiceContract.AMOUNT_PAID,
+                InvoiceContract.PAYMENT_MODE,
+                InvoiceContract.PAYMENT_MODE_VALUE,
+                InvoiceContract.STATUS};
+
+        String selection = InvoiceContract.RETAILER_ID + " = ? " ;
+        String[] selectionArgs = new String[]{retailerId};
+                String sortOrder = InvoiceContract.DATE_ADDED + " DESC";
+        SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
+        Cursor invoice = db.query(
+                InvoiceContract.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
         return invoice;
     }
 

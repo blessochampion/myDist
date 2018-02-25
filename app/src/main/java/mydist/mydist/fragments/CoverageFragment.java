@@ -112,7 +112,6 @@ public class CoverageFragment extends Fragment implements View.OnClickListener, 
             mListView.setAdapter(adapter);
             mListView.setOnItemClickListener(this);
         }
-
         setFonts(parentView);
     }
 

@@ -1,216 +1,197 @@
-<LinearLayout
-    android:background="@color/crispy_white"
-    android:id="@+id/parent_layout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/crispy_white"
     android:orientation="vertical">
 
 
-       <!-- <TextView
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="16dp"
-            android:textColor="@color/primary_text"
-            android:layout_gravity="right"
-            android:text="Call duration 01:02:44"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />-->
+    <!-- <TextView
+         android:textSize="18sp"
+         android:textStyle="bold"
+         android:layout_marginBottom="16dp"
+         android:textColor="@color/primary_text"
+         android:layout_gravity="right"
+         android:text="Call duration 01:02:44"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content" />-->
 
-    <android.support.v7.widget.CardView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        app:cardElevation="4dp"
+    <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:cardElevation="4dp">
+
         <RelativeLayout
-            android:padding="16dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
             <ImageView
-                android:layout_marginBottom="16dp"
                 android:id="@+id/iv_star"
-                android:src="@mipmap/route"
-                android:layout_marginTop="4dp"
-                android:layout_centerHorizontal="true"
                 android:layout_width="64dp"
-                android:layout_height="64dp" />
+                android:layout_height="64dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="4dp"
+                android:src="@mipmap/route" />
 
 
             <TextView
-                android:gravity="center"
-                android:minHeight="32dp"
-                android:layout_marginTop="4dp"
                 android:id="@+id/tv_sales_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/iv_star"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:minHeight="32dp"
                 android:text="@string/sales"
-                android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textSize="14sp" />
+
             <TextView
-                android:minHeight="32dp"
                 android:id="@+id/tv_sales_value"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/primary_text"
-                android:textStyle="bold"
-                android:gravity="right|center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_toRightOf="@id/tv_sales_label"
                 android:layout_below="@id/iv_star"
+                android:layout_marginTop="4dp"
+                android:layout_toRightOf="@id/tv_sales_label"
+                android:gravity="right|center_vertical"
+                android:minHeight="32dp"
                 android:text="153,952 / 250,456, 3300%"
+                android:textColor="@color/primary_text"
                 android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textStyle="bold" />
 
             <TextView
-                android:gravity="center"
-                android:minHeight="32dp"
-                android:layout_marginTop="4dp"
                 android:id="@+id/tv_collection_amount_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/tv_sales_value"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:minHeight="32dp"
                 android:text="@string/collection_amount"
-                android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textSize="14sp" />
+
             <TextView
-                android:minHeight="32dp"
                 android:id="@+id/tv_collection_amount_value"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/primary_text"
-                android:textStyle="bold"
-                android:gravity="right|center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_toRightOf="@id/tv_collection_amount_label"
                 android:layout_below="@id/tv_sales_value"
+                android:layout_marginTop="4dp"
+                android:layout_toRightOf="@id/tv_collection_amount_label"
+                android:gravity="right|center_vertical"
+                android:minHeight="32dp"
                 android:text="153,900.00"
+                android:textColor="@color/primary_text"
                 android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textStyle="bold" />
 
             <TextView
-                android:gravity="center"
-                android:minHeight="32dp"
-                android:layout_marginTop="4dp"
                 android:id="@+id/tv_initiative_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/tv_collection_amount_value"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:minHeight="32dp"
                 android:text="@string/initiative_rate"
-                android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textSize="14sp" />
+
             <TextView
-                android:minHeight="32dp"
                 android:id="@+id/tv_initiative_rate_value"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/primary_text"
-                android:textStyle="bold"
-                android:gravity="right|center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_toRightOf="@id/tv_initiative_label"
                 android:layout_below="@id/tv_collection_amount_value"
+                android:layout_marginTop="4dp"
+                android:layout_toRightOf="@id/tv_initiative_label"
+                android:gravity="right|center_vertical"
+                android:minHeight="32dp"
                 android:text="153,900.00"
+                android:textColor="@color/primary_text"
                 android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textStyle="bold" />
 
             <TextView
-                android:gravity="center"
-                android:minHeight="32dp"
-                android:layout_marginTop="4dp"
                 android:id="@+id/tv_sbd_distribution_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/tv_initiative_label"
-                android:text="@string/sbd_distribution_rate"
-                android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
+                android:layout_marginTop="4dp"
+                android:gravity="center"
                 android:minHeight="32dp"
+                android:text="@string/sbd_distribution_rate"
+                android:textSize="14sp" />
+
+            <TextView
                 android:id="@+id/tv_sbd_distribution_rate_value"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/primary_text"
-                android:textStyle="bold"
-                android:gravity="right|center_vertical"
-                android:layout_alignParentRight="true"
-                android:layout_toRightOf="@id/tv_sbd_distribution_label"
-                android:layout_below="@id/tv_initiative_rate_value"
-                android:text="3/5 60%"
-                android:textSize="14sp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/tv_sbd_distribution_label"
+                android:layout_alignBottom="@+id/tv_sbd_distribution_label"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:gravity="right|center_vertical"
+                android:minHeight="32dp"
+                android:text="3/5 60%"
+                android:textColor="@color/primary_text"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <TextView
-                android:gravity="center"
-                android:minHeight="32dp"
-                android:layout_marginTop="4dp"
                 android:id="@+id/tv_monthly_obj"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/tv_sbd_distribution_label"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:minHeight="32dp"
                 android:text="@string/monthly_obj"
-                android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textSize="14sp" />
+
             <TextView
-                android:minHeight="32dp"
                 android:id="@+id/tv_monthly_obj_value"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/primary_text"
-                android:textStyle="bold"
-                android:gravity="right|center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_toRightOf="@id/tv_monthly_obj"
                 android:layout_below="@id/tv_sbd_distribution_rate_value"
+                android:layout_marginTop="4dp"
+                android:layout_toRightOf="@id/tv_monthly_obj"
+                android:gravity="right|center_vertical"
+                android:minHeight="32dp"
                 android:text="3/5 60%"
+                android:textColor="@color/primary_text"
                 android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textStyle="bold" />
 
             <TextView
-                android:gravity="center"
-                android:minHeight="32dp"
-                android:layout_marginTop="4dp"
                 android:id="@+id/tv_initiative_merch_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/tv_monthly_obj"
-                android:text="@string/initiative_merch"
-                android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:minHeight="32dp"
-                android:id="@+id/tv_initiative_merch_rate_value"
                 android:layout_marginTop="4dp"
-                android:textColor="@color/primary_text"
-                android:textStyle="bold"
-                android:gravity="right|center_vertical"
-                android:layout_alignParentRight="true"
-                android:layout_toRightOf="@id/tv_initiative_merch_rate"
-                android:layout_below="@id/tv_monthly_obj_value"
-                android:text="0/0 0%"
-                android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
                 android:gravity="center"
                 android:minHeight="32dp"
-                android:layout_marginTop="4dp"
-                android:id="@+id/tv_sbd_merch_rate"
-                android:layout_below="@id/tv_initiative_merch_rate"
-                android:text="@string/sbd_distribution_rate"
-                android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:text="@string/initiative_merch"
+                android:textSize="14sp" />
+
             <TextView
-                android:minHeight="32dp"
-                android:id="@+id/tv_sbd_merch_rate_value"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/primary_text"
-                android:textStyle="bold"
-                android:gravity="right|center_vertical"
-                android:layout_alignParentRight="true"
-                android:layout_toRightOf="@id/tv_sbd_merch_rate"
-                android:layout_below="@id/tv_initiative_merch_rate_value"
-                android:text="0/0 0%"
-                android:textSize="14sp"
+                android:id="@+id/tv_initiative_merch_rate_value"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/tv_monthly_obj_value"
+                android:layout_marginTop="4dp"
+                android:layout_toRightOf="@id/tv_initiative_merch_rate"
+                android:gravity="right|center_vertical"
+                android:minHeight="32dp"
+                android:text="0/0 0%"
+                android:textColor="@color/primary_text"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
         </RelativeLayout>
 

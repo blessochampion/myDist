@@ -67,7 +67,7 @@ public class StoreProfileHistoryDialogFragment extends DialogFragment {
         StoreProfileFragment storeProfileFragment = StoreProfileFragment.getNewInstance(id);
         storeProfileFragment.setParent(this);
         fragments.add(storeProfileFragment);
-        fragments.add(new HistoryFragment());
+        fragments.add(HistoryFragment.getNewInstance(id));
         return fragments;
     }
 
