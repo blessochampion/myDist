@@ -97,7 +97,7 @@
     <string name="store">Store</string>
     <string name="collection_amount">Collection Amount</string>
     <string name="initiative_rate">Initiative Rate</string>
-    <string name="monthly_obj">Monthly(Act/Obj)</string>
+    <string name="monthly_achieved">Monthly Achieved</string>
     <string name="initiative_merch">Initiative Merch Rate (actual/target)</string>
     <string name="saved_successfully">Saved Successfully</string>
     <string name="store_target">Store Target</string>
@@ -177,4 +177,6 @@
     <string name="edit_invoice">Edit Invoice</string>
     <string name="retailer_not_for_today">Retailer is not part of Current Day Coverage. Please check the All Coverage Section to change the visiting Day for this Retailer</string>
     <string name="slashFormat">%s/%s</string>
+    <string name="total_collection">Total Collection</string>
+    <string name="total_calls">Total Calls</string>
 </resources>

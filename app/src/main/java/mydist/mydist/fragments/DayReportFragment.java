@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,6 @@ import android.widget.TextView;
 import mydist.mydist.R;
 import mydist.mydist.data.DatabaseManager;
 import mydist.mydist.data.MasterContract;
-import mydist.mydist.data.UserPreference;
 import mydist.mydist.models.Invoice;
 import mydist.mydist.utils.DataUtils;
 import mydist.mydist.utils.Days;
@@ -33,12 +33,14 @@ public class DayReportFragment extends Fragment implements LoaderManager.LoaderC
     TextView mTotalEarnedValue;
     TextView mDistributionExtension;
     TextView mSales;
-    TextView mCoverage;
+    TextView mTotalCalls;
     TextView mProductiveCalls;
+    TextView mMonthlyAchieved;
 
     private static final int LOADER_ID_TOTAL_EARNED_VALUE = 1;
     private static final int LOADER_ID_DISTRIBUTION_EXTENSION = 2;
-    private static final int LOADER_ID_COVERAGE = 4;
+    private static final int LOADER_ID_COVERAGE = 3;
+    private static final int LOADER_ID_MONTHLY_ACHIEVED = 4;
     private static final String NO_INT_VALUE = "0";
     private static final double NO_DOUBLE_VALUE = 0.00;
     private static final String DEMARCATION = "/";
@@ -54,11 +56,13 @@ public class DayReportFragment extends Fragment implements LoaderManager.LoaderC
         mTotalEarnedValue = (TextView) view.findViewById(R.id.tv_total_earned_value);
         mDistributionExtension = (TextView) view.findViewById(R.id.tv_distribution_extension);
         mSales = (TextView) view.findViewById(R.id.tv_sales);
-        mCoverage = (TextView) view.findViewById(R.id.tv_coverage);
+        mTotalCalls = (TextView) view.findViewById(R.id.tv_total_calls);
         mProductiveCalls = (TextView) view.findViewById(R.id.tv_productive_call);
+        mMonthlyAchieved = (TextView)view.findViewById(R.id.month_achieved);
         getActivity().getSupportLoaderManager().initLoader(LOADER_ID_TOTAL_EARNED_VALUE, null, this);
         getActivity().getSupportLoaderManager().initLoader(LOADER_ID_DISTRIBUTION_EXTENSION, null, this);
         getActivity().getSupportLoaderManager().initLoader(LOADER_ID_COVERAGE, null, this);
+        getActivity().getSupportLoaderManager().initLoader(LOADER_ID_MONTHLY_ACHIEVED, null, this);
         setFonts(view);
         return view;
     }
@@ -113,9 +117,28 @@ public class DayReportFragment extends Fragment implements LoaderManager.LoaderC
                     cursor.moveToFirst();
                     value = cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.TOTAL_ALIAS));
                 }
-                mCoverage.setText(value);
+                mTotalCalls.setText(String.valueOf(coverageCount));
                 mProductiveCalls.setText(value + DEMARCATION + coverageCount);
                 break;
+            case LOADER_ID_MONTHLY_ACHIEVED:
+                float monthlyAchieved = 0.00f;
+                try {
+                    if (cursor.getCount() > 0) {
+                        cursor.moveToFirst();
+                        if (!cursor.isNull(cursor.getColumnIndex(MasterContract.InvoiceContract.TOTAL_ALIAS))) {
+                            monthlyAchieved = cursor.
+                                    getFloat(cursor.getColumnIndex(MasterContract.InvoiceContract.TOTAL_ALIAS));
+                        }
+                        value = getString(R.string.naira) + String.format("%,.2f", monthlyAchieved);
+                        mMonthlyAchieved.setText(value);
+
+                    } else {
+                        mMonthlyAchieved.setText(getString(R.string.naira) + String.format("%,.2f", NO_DOUBLE_VALUE));
+                    }
+
+                } catch (Exception e) {
+
+                }
         }
     }
 
@@ -138,6 +161,12 @@ public class DayReportFragment extends Fragment implements LoaderManager.LoaderC
                                 getRetailerByVisitingInfo(week, day);
                         coverageCount = cursor.getCount();
                         return DataUtils.getCoverageCount(Days.getTodayDate(), Invoice.KEY_STATUS_SUCCESS, getActivity());
+                    case LOADER_ID_MONTHLY_ACHIEVED:
+                        String[] firstDay = Days.getFirstDateOfTheMonth();
+                        Log.e("ddd", firstDay[0]);
+                        Log.e("ddd", firstDay[1]);
+                        Log.e("ddd", firstDay[2]);
+                       return DatabaseManager.getInstance(getActivity()).queryAchievedThisMonth(firstDay[0], firstDay[1], firstDay[2]);
                     default:
                         return null;
                 }

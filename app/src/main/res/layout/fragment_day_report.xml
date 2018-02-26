@@ -63,7 +63,7 @@
             android:textColor="@color/secondary_text"
             android:paddingLeft="8dp"
             android:gravity="center_vertical"
-            android:text="@string/sales"
+            android:text="@string/total_collection"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent" />
@@ -86,12 +86,12 @@
             android:textColor="@color/secondary_text"
             android:paddingLeft="8dp"
             android:gravity="center_vertical"
-            android:text="@string/trade_coverage"
+            android:text="@string/total_calls"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent" />
         <TextView
-            android:id="@+id/tv_coverage"
+            android:id="@+id/tv_total_calls"
             android:paddingRight="8dp"
             android:textColor="@color/secondary_text"
             android:gravity="right|center_vertical"
@@ -150,29 +150,7 @@
 
     </LinearLayout>
 
-  <!--  <LinearLayout
-        android:padding="1dp"
-        android:layout_width="match_parent"
-        android:layout_height="36dp">
-        <TextView
-            android:textColor="@color/secondary_text"
-            android:paddingLeft="8dp"
-            android:gravity="center_vertical"
-            android:text="@string/average_line"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent" />
-        <TextView
-            android:text="6.00"
-            android:paddingRight="8dp"
-            android:textColor="@color/secondary_text"
-            android:gravity="right|center_vertical"
-            android:layout_marginLeft="1dp"
-            android:layout_weight="0.5"
-            android:layout_width="0dp"
-            android:layout_height="match_parent" />
 
-    </LinearLayout>
 
     <LinearLayout
         android:padding="1dp"
@@ -182,36 +160,12 @@
             android:textColor="@color/secondary_text"
             android:paddingLeft="8dp"
             android:gravity="center_vertical"
-            android:text="@string/sbd_distribution_rate"
+            android:text="@string/monthly_achieved"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent" />
         <TextView
-            android:text="0/5"
-            android:paddingRight="8dp"
-            android:textColor="@color/secondary_text"
-            android:gravity="right|center_vertical"
-            android:layout_marginLeft="1dp"
-            android:layout_weight="0.5"
-            android:layout_width="0dp"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:padding="1dp"
-        android:layout_width="match_parent"
-        android:layout_height="36dp">
-        <TextView
-            android:textColor="@color/secondary_text"
-            android:paddingLeft="8dp"
-            android:gravity="center_vertical"
-            android:text="@string/sbd_merchandising_rate"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent" />
-        <TextView
-            android:text="3/5"
+            android:id="@+id/month_achieved"
             android:paddingRight="8dp"
             android:textColor="@color/secondary_text"
             android:gravity="right|center_vertical"

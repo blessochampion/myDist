@@ -611,7 +611,7 @@ public class DatabaseManager {
         return cursor;
     }
 
-    public String getHighestPurchaseValue(String retailerId){
+    public String getHighestPurchaseValue(String retailerId) {
         String[] projection = {
                 HighestPurchaseValueContract.VALUE};
         String selection = null;
@@ -791,6 +791,17 @@ public class DatabaseManager {
         return cursor;
     }
 
+    public Cursor queryAchievedThisMonth(String year, String month, String day) {
+        String QUERY = "SELECT " +
+                "SUM(CAST(" + InvoiceContract.TOTAL + " AS FLOAT)) AS " + InvoiceContract.TOTAL_ALIAS+ " FROM " +
+                InvoiceContract.TABLE_NAME + " WHERE SUBSTR(" + InvoiceContract.DATE_ADDED + ", 7, 4)" +
+                "==? AND " + "SUBSTR(" + InvoiceContract.DATE_ADDED + ", 4, 2)" + "==? AND " +
+                "SUBSTR(" + InvoiceContract.DATE_ADDED + ", 1, 2)" +
+                ">=?";
+        SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
+        return db.rawQuery(QUERY, new String[]{year, month, day});
+    }
+
     public Cursor queryCollectionTotal(String dateAdded, int status) {
         String QUERY = "SELECT  * "
                /* "SUM(CAST(" + InvoiceContract.AMOUNT_PAID + " AS FLOAT))  AS " + InvoiceContract.TOTAL_ALIAS */ +
@@ -947,11 +958,9 @@ public class DatabaseManager {
                 InvoiceContract.TOTAL_ALIAS +
                 " FROM " + InvoiceContract.TABLE_NAME + " WHERE " +
                 InvoiceContract.DATE_ADDED + " = ?" + " AND "
-                + InvoiceContract.STATUS + " = ? " +
-                " GROUP BY " + InvoiceContract.RETAILER_ID;
+                + InvoiceContract.STATUS + " = ? ";
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(QUERY, new String[]{todayDate, String.valueOf(status)});
-        return cursor;
+        return db.rawQuery(QUERY, new String[]{todayDate, String.valueOf(status)});
     }
 
     public Cursor getRetailerIdsForTodaysCoverage(String todayDate, int status) {

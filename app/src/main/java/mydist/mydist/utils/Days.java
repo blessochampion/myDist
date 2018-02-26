@@ -41,6 +41,13 @@ public enum Days {
         String todayDate = dateFormat.format(new Date());
         return todayDate;
     }
+    public static String[] getFirstDateOfTheMonth(){
+        Calendar firstDaYOfMonth = Calendar.getInstance();   // this takes current date
+        firstDaYOfMonth.set(Calendar.DAY_OF_MONTH, 1);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        String firstDate = dateFormat.format(firstDaYOfMonth.getTime());
+        return  firstDate.split("/");
+    }
 
     public static String getRetailerDate() {
         return "R" + getTodayDate();
