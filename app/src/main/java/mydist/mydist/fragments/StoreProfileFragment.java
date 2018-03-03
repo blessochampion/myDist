@@ -70,7 +70,7 @@ public class StoreProfileFragment extends Fragment implements LoaderManager.Load
         parentView = view;
         Bundle bundle = getArguments();
         if (bundle != null) {
-            getActivity().getSupportLoaderManager().initLoader(KEY_LOAD_PROFILE, bundle, this);
+            getActivity().getSupportLoaderManager().restartLoader(KEY_LOAD_PROFILE, bundle, this);
         } else {
             throw new RuntimeException("Unable to Create Fragment, pass DAY and Week");
         }

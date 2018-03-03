@@ -243,7 +243,7 @@ public class CoverageFragment extends Fragment implements View.OnClickListener, 
                 }else {
                     container = pskuTargetMap;
                 }
-                Cursor cursor = DatabaseManager.getInstance(getActivity()).getDistributionRate(null);
+                Cursor cursor = DatabaseManager.getInstance(getActivity()).getDistributionRate(date);
                 if (cursor != null && cursor.getCount() > 0) {
                     cursor.moveToFirst();
                     for (int i = 0; i < cursor.getCount(); i++) {

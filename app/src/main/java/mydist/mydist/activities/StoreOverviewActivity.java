@@ -27,7 +27,9 @@ public class StoreOverviewActivity extends AuthenticatedActivity implements View
     LinearLayout mCollection;
     LinearLayout mInvoiceCancel;
     LinearLayout mSBDMerchandising;
+    LinearLayout mCaptureMerchandize;
     LinearLayout mCallAnalysis;
+    LinearLayout mStockCount;
     public static String retailerId;
 
     @Override
@@ -61,6 +63,8 @@ public class StoreOverviewActivity extends AuthenticatedActivity implements View
         FontManager.setFontsForView(findViewById(R.id.icon_invoice_edit), fontAwesome);
         FontManager.setFontsForView(findViewById(R.id.icon_sbd_merchandising), fontAwesome);
         FontManager.setFontsForView(findViewById(R.id.icon_call_analysis), fontAwesome);
+        FontManager.setFontsForView(findViewById(R.id.icon_stock_count), fontAwesome);
+        FontManager.setFontsForView(findViewById(R.id.icon_capture_merchandize), fontAwesome);
     }
 
     private void setOnClickListeners() {
@@ -69,7 +73,9 @@ public class StoreOverviewActivity extends AuthenticatedActivity implements View
         mCollection.setOnClickListener(this);
         mInvoiceCancel.setOnClickListener(this);
         mSBDMerchandising.setOnClickListener(this);
+        mCaptureMerchandize.setOnClickListener(this);
         mCallAnalysis.setOnClickListener(this);
+        mStockCount.setOnClickListener(this);
     }
 
     private void setupToolBar() {
@@ -96,7 +102,9 @@ public class StoreOverviewActivity extends AuthenticatedActivity implements View
         mCollection = (LinearLayout) findViewById(R.id.ll_collection);
         mInvoiceCancel = (LinearLayout) findViewById(R.id.ll_invoice_edit);
         mSBDMerchandising = (LinearLayout) findViewById(R.id.ll_sbd_merchandising);
+        mCaptureMerchandize = (LinearLayout) findViewById(R.id.ll_capture_merchandize);
         mCallAnalysis = (LinearLayout) findViewById(R.id.ll_call_analysis);
+        mStockCount = (LinearLayout) findViewById(R.id.ll_stock_count);
     }
 
     @Override

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:background="@color/crispy_white"
-    android:layout_height="match_parent"
     android:id="@+id/parent_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/crispy_white"
     android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
@@ -21,313 +21,355 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v7.widget.CardView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        app:cardBackgroundColor="@color/crispy_white"
-        app:cardElevation="10dp">
+        android:fillViewport="true">
 
-
-        <LinearLayout
-            android:id="@+id/ll_collection"
-            android:layout_marginTop="32dp"
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="12"
-            android:orientation="vertical"
-            android:paddingLeft="40dp"
-            android:paddingRight="40dp">
+            android:layout_gravity="center"
+            app:cardBackgroundColor="@color/crispy_white"
+            app:cardElevation="10dp">
 
-            <!--Day Report-->
 
             <LinearLayout
-                android:id="@+id/ll_review"
-                android:elevation="2dp"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/item_background"
-                android:orientation="horizontal"
-                android:padding="0.5dp">
-
-                <FrameLayout
-                    android:layout_width="56dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/item_background_image">
-                    <TextView
-                        android:textSize="32sp"
-                        android:text="@string/fa_icon_check"
-                        android:textColor="@color/icons_color"
-                        android:id="@+id/icon_review"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        />
-                </FrameLayout>
-
-                <TextView
-                    android:paddingRight="32dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/gradient"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="40dp"
-                    android:text="@string/review"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="@color/white_grey" />
-
-            </LinearLayout>
-
-
-            <!--Order Report-->
-            <LinearLayout
-                android:elevation="2dp"
-                android:id="@+id/ll_invoice"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/item_background"
-                android:orientation="horizontal"
-                android:padding="0.5dp">
-
-                <FrameLayout
-                    android:layout_width="56dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/item_background_image">
-
-                    <TextView
-                        android:textSize="32sp"
-                        android:text="@string/fa_icon_invoice"
-                        android:textColor="@color/icons_color"
-                        android:id="@+id/icon_invoice"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        />
-
-                </FrameLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/gradient"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="40dp"
-                    android:text="@string/invoice"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="@color/white_grey" />
-
-            </LinearLayout>
-
-            <!--SKU Report-->
-            <LinearLayout
-                android:id="@+id/ll_sku"
-                android:elevation="2dp"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/item_background"
-                android:orientation="horizontal"
-                android:padding="0.5dp">
-
-                <FrameLayout
-                    android:layout_width="56dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/item_background_image">
-
-                    <TextView
-                        android:textSize="32sp"
-                        android:text="@string/fa_icon_money"
-                        android:textColor="@color/icons_color"
-                        android:id="@+id/icon_collection"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        />
-                </FrameLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/gradient"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="40dp"
-                    android:text="@string/collection"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="@color/white_grey" />
-
-            </LinearLayout>
-
-            <!--Stock Report-->
-            <LinearLayout
-                android:id="@+id/ll_invoice_edit"
-                android:elevation="2dp"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/item_background"
-                android:orientation="horizontal"
-                android:padding="0.5dp">
-
-                <FrameLayout
-                    android:layout_width="56dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/item_background_image">
-
-
-                    <TextView
-                        android:textSize="32sp"
-                        android:text="@string/fa_icon_invoice_edit"
-                        android:textColor="@color/icons_color"
-                        android:id="@+id/icon_invoice_edit"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        />
-                </FrameLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/gradient"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="40dp"
-                    android:text="@string/invoice_manage"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="@color/white_grey" />
-
-            </LinearLayout>
-
-            <!--Invoice Report-->
-            <LinearLayout
-                android:id="@+id/ll_sbd_merchandising"
-                android:elevation="2dp"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/item_background"
-                android:orientation="horizontal"
-                android:padding="0.5dp">
-
-                <FrameLayout
-                    android:layout_width="56dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/item_background_image">
-
-                    <TextView
-                        android:textSize="32sp"
-                        android:text="@string/fa_icon_inr"
-                        android:textColor="@color/icons_color"
-                        android:id="@+id/icon_sbd_merchandising"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        />
-                </FrameLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/gradient"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="40dp"
-                    android:text="@string/sbd_merchandising"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="@color/white_grey" />
-
-            </LinearLayout>
-
-            <!--Close-->
-            <LinearLayout
-                android:id="@+id/ll_call_analysis"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
-                android:background="@drawable/item_background"
-                android:orientation="horizontal"
-                android:padding="0.5dp">
-
-                <FrameLayout
-                    android:layout_width="56dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/item_background_image">
-
-                    <TextView
-                        android:textSize="32sp"
-                        android:text="@string/fa_icon_phone"
-                        android:textColor="@color/icons_color"
-                        android:id="@+id/icon_call_analysis"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        />
-                </FrameLayout>
-
-                <TextView
-                    android:elevation="2dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/gradient"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="40dp"
-                    android:text="@string/call_analysis"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="@color/white_grey" />
-
-            </LinearLayout>
-            <FrameLayout
-                android:paddingBottom="16dp"
+                android:id="@+id/ll_collection"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                >
+                android:layout_marginTop="32dp"
+                android:layout_weight="12"
+                android:orientation="vertical"
+                android:paddingLeft="40dp"
+                android:paddingRight="40dp">
+
+                <!--Day Report-->
 
                 <LinearLayout
+                    android:id="@+id/ll_review"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom">
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/item_background"
+                    android:elevation="2dp"
+                    android:orientation="horizontal"
+                    android:padding="0.5dp">
 
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1.5"
-                        android:background="@color/primary_text" />
+                    <FrameLayout
+                        android:layout_width="56dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/item_background_image">
+
+                        <TextView
+                            android:id="@+id/icon_review"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/fa_icon_check"
+                            android:textColor="@color/icons_color"
+                            android:textSize="32sp" />
+                    </FrameLayout>
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:gravity="center"
-                        android:textColor="@color/primary_text"
-                        android:text="@string/app_name"
-                        android:textSize="14sp" />
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/gradient"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="33dp"
+                        android:paddingRight="32dp"
+                        android:text="@string/review"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/white_grey" />
 
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1.5"
-                        android:background="@color/primary_text" />
                 </LinearLayout>
 
-            </FrameLayout>
 
-        </LinearLayout>
+                <!--Order Report-->
+                <LinearLayout
+                    android:id="@+id/ll_invoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/item_background"
+                    android:elevation="2dp"
+                    android:orientation="horizontal"
+                    android:padding="0.5dp">
+
+                    <FrameLayout
+                        android:layout_width="56dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/item_background_image">
+
+                        <TextView
+                            android:id="@+id/icon_invoice"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/fa_icon_invoice"
+                            android:textColor="@color/icons_color"
+                            android:textSize="32sp" />
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/gradient"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="33dp"
+                        android:text="@string/invoice"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/white_grey" />
+
+                </LinearLayout>
+
+                <!--SKU Report-->
+                <LinearLayout
+                    android:id="@+id/ll_sku"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/item_background"
+                    android:elevation="2dp"
+                    android:orientation="horizontal"
+                    android:padding="0.5dp">
+
+                    <FrameLayout
+                        android:layout_width="56dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/item_background_image">
+
+                        <TextView
+                            android:id="@+id/icon_collection"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/fa_icon_money"
+                            android:textColor="@color/icons_color"
+                            android:textSize="32sp" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/gradient"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="33dp"
+                        android:text="@string/collection"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/white_grey" />
+
+                </LinearLayout>
+
+                <!--Stock Report-->
+                <LinearLayout
+                    android:id="@+id/ll_invoice_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/item_background"
+                    android:elevation="2dp"
+                    android:orientation="horizontal"
+                    android:padding="0.5dp">
+
+                    <FrameLayout
+                        android:layout_width="56dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/item_background_image">
 
 
-    </android.support.v7.widget.CardView>
+                        <TextView
+                            android:id="@+id/icon_invoice_edit"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/fa_icon_invoice_edit"
+                            android:textColor="@color/icons_color"
+                            android:textSize="32sp" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/gradient"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="33dp"
+                        android:text="@string/invoice_manage"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/white_grey" />
+
+                </LinearLayout>
+
+                <!--SBD Merchandize-->
+                <LinearLayout
+                    android:id="@+id/ll_sbd_merchandising"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/item_background"
+                    android:elevation="2dp"
+                    android:orientation="horizontal"
+                    android:padding="0.5dp">
+
+                    <FrameLayout
+                        android:layout_width="56dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/item_background_image">
+
+                        <TextView
+                            android:id="@+id/icon_sbd_merchandising"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/fa_icon_inr"
+                            android:textColor="@color/icons_color"
+                            android:textSize="32sp" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/gradient"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="33dp"
+                        android:text="@string/sbd_merchandising"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/white_grey" />
+
+                </LinearLayout>
+
+                <!--Invoice Report-->
+                <LinearLayout
+                    android:id="@+id/ll_capture_merchandize"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/item_background"
+                    android:elevation="2dp"
+                    android:orientation="horizontal"
+                    android:padding="0.5dp">
+
+                    <FrameLayout
+                        android:layout_width="56dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/item_background_image">
+
+                        <TextView
+                            android:id="@+id/icon_capture_merchandize"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/fa_icon_capture_merchandize"
+                            android:textColor="@color/icons_color"
+                            android:textSize="32sp" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/gradient"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="33dp"
+                        android:text="@string/capture_merhandize"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/white_grey" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_call_analysis"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/item_background"
+                    android:orientation="horizontal"
+                    android:padding="0.5dp">
+
+                    <FrameLayout
+                        android:layout_width="56dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/item_background_image">
+
+                        <TextView
+                            android:id="@+id/icon_call_analysis"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/fa_icon_phone"
+                            android:textColor="@color/icons_color"
+                            android:textSize="32sp" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/gradient"
+                        android:elevation="2dp"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="33dp"
+                        android:text="@string/call_analysis"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/white_grey" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_stock_count"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/item_background"
+                    android:orientation="horizontal"
+                    android:padding="0.5dp">
+
+                    <FrameLayout
+                        android:layout_width="56dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/item_background_image">
+
+                        <TextView
+                            android:id="@+id/icon_stock_count"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/fa_icon_stock_count"
+                            android:textColor="@color/icons_color"
+                            android:textSize="32sp" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/gradient"
+                        android:elevation="2dp"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="33dp"
+                        android:text="@string/stock_count"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/white_grey" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </android.support.v7.widget.CardView>
+    </ScrollView>
 
 </LinearLayout>

@@ -19,4 +19,6 @@
     <string name="fa_icon_invoice_delete" translatable="false">&#xf014;</string>
     <string name="fa_icon_upload" translatable="false">&#xf093;</string>
     <string name="fa_icon_info_circle" translatable="false">&#xf05a;</string>
+    <string name="fa_icon_stock_count" translatable="false">&#xf214;</string>
+    <string name="fa_icon_capture_merchandize" translatable="false">&#xf083;</string>
 </resources>

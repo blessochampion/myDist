@@ -179,4 +179,6 @@
     <string name="slashFormat">%s/%s</string>
     <string name="total_collection">Total Collection</string>
     <string name="total_calls">Total Calls</string>
+    <string name="stock_count">Stock Count</string>
+    <string name="capture_merhandize">Capture Merchandize</string>
 </resources>

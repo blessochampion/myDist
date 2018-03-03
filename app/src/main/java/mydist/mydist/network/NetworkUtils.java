@@ -13,7 +13,8 @@ import android.util.Log;
 public class NetworkUtils
 {
    // private static final String BASE_URL = "http://35.189.215.9/webservices";
-    private static final String BASE_URL = "http://35.187.59.36/webservices";
+   // private static final String BASE_URL = "http://35.187.59.36/webservices";
+    private static final String BASE_URL = "http://139.162.249.130/webservices";
 
     public static String getAuthenticationURL(String username, String password){
         String usernameKey = "username";
