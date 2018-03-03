@@ -181,4 +181,5 @@
     <string name="total_calls">Total Calls</string>
     <string name="stock_count">Stock Count</string>
     <string name="capture_merhandize">Capture Merchandize</string>
+    <string name="no_products_for_today">No products order for today</string>
 </resources>

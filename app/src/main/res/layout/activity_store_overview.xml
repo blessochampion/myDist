@@ -44,7 +44,7 @@
                 android:paddingLeft="40dp"
                 android:paddingRight="40dp">
 
-                <!--Day Report-->
+                <!--Review -->
 
                 <LinearLayout
                     android:id="@+id/ll_review"
@@ -86,8 +86,47 @@
 
                 </LinearLayout>
 
+                <!--Stock count-->
+                <LinearLayout
+                    android:id="@+id/ll_stock_count"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/item_background"
+                    android:orientation="horizontal"
+                    android:padding="0.5dp">
 
-                <!--Order Report-->
+                    <FrameLayout
+                        android:layout_width="56dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/item_background_image">
+
+                        <TextView
+                            android:id="@+id/icon_stock_count"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/fa_icon_stock_count"
+                            android:textColor="@color/icons_color"
+                            android:textSize="32sp" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/gradient"
+                        android:elevation="2dp"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="33dp"
+                        android:text="@string/stock_count"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/white_grey" />
+
+                </LinearLayout>
+
+                <!--Invoice -->
                 <LinearLayout
                     android:id="@+id/ll_invoice"
                     android:layout_width="match_parent"
@@ -328,43 +367,7 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/ll_stock_count"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/item_background"
-                    android:orientation="horizontal"
-                    android:padding="0.5dp">
 
-                    <FrameLayout
-                        android:layout_width="56dp"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/item_background_image">
-
-                        <TextView
-                            android:id="@+id/icon_stock_count"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:text="@string/fa_icon_stock_count"
-                            android:textColor="@color/icons_color"
-                            android:textSize="32sp" />
-                    </FrameLayout>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/gradient"
-                        android:elevation="2dp"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="33dp"
-                        android:text="@string/stock_count"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:textColor="@color/white_grey" />
-
-                </LinearLayout>
 
             </LinearLayout>
 

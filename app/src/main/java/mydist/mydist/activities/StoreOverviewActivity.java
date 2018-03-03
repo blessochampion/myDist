@@ -113,6 +113,9 @@ public class StoreOverviewActivity extends AuthenticatedActivity implements View
             case R.id.ll_review:
                 launchStoreInfoDetails(KEY_REVIEW);
                 break;
+            case R.id.ll_stock_count:
+                launchStoreInfoDetails(KEY_STOCK_COUNT);
+                break;
             case R.id.ll_invoice:
                 launchStoreInfoDetails(KEY_INVOICE);
                 break;

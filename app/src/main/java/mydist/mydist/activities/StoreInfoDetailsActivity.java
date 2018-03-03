@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import mydist.mydist.R;
+import mydist.mydist.fragments.StockCountFragment;
 import mydist.mydist.fragments.StoreFilterDialogFragment;
 import mydist.mydist.fragments.StoreInfoCallAnalysisFragment;
 import mydist.mydist.fragments.StoreInfoCollectionFragment;
@@ -22,10 +23,11 @@ import mydist.mydist.utils.FontManager;
 public class StoreInfoDetailsActivity extends AuthenticatedActivity {
     public static final int KEY_REVIEW =  0;
     public static final int KEY_INVOICE = 1;
-    public static final int KEY_COLLECTION   =  2;
-    public static final int KEY_INVOICE_EDIT = 3;
-    public static final int KEY_SBD_MERCHANDISING = 4;
-    public static final int KEY_CALL_ANALYSIS = 5;
+    public static final int KEY_STOCK_COUNT = 2;
+    public static final int KEY_COLLECTION   =  3;
+    public static final int KEY_INVOICE_EDIT = 4;
+    public static final int KEY_SBD_MERCHANDISING = 5;
+    public static final int KEY_CALL_ANALYSIS = 6;
     public static final String KEY_STORE_INFO = "storeinfo";
     private static int DEFAULT_REPORT_KEY_VALUE = -1;
     String title = "";
@@ -67,6 +69,9 @@ public class StoreInfoDetailsActivity extends AuthenticatedActivity {
             case KEY_REVIEW :
                 title = getString(R.string.review);
                 return new StoreInfoReviewFragment();
+            case KEY_STOCK_COUNT:
+                title = getString(R.string.stock_count);
+                return StockCountFragment.getNewInstance(StoreOverviewActivity.retailerId);
             case KEY_INVOICE:
                 title = getString(R.string.invoice);
                 return new StoreInfoInvoiceFragment();

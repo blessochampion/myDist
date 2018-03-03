@@ -793,7 +793,7 @@ public class DatabaseManager {
 
     public Cursor queryAchievedThisMonth(String year, String month, String day) {
         String QUERY = "SELECT " +
-                "SUM(CAST(" + InvoiceContract.TOTAL + " AS FLOAT)) AS " + InvoiceContract.TOTAL_ALIAS+ " FROM " +
+                "SUM(CAST(" + InvoiceContract.TOTAL + " AS FLOAT)) AS " + InvoiceContract.TOTAL_ALIAS + " FROM " +
                 InvoiceContract.TABLE_NAME + " WHERE SUBSTR(" + InvoiceContract.DATE_ADDED + ", 7, 4)" +
                 "==? AND " + "SUBSTR(" + InvoiceContract.DATE_ADDED + ", 4, 2)" + "==? AND " +
                 "SUBSTR(" + InvoiceContract.DATE_ADDED + ", 1, 2)" +
@@ -1007,5 +1007,19 @@ public class DatabaseManager {
                 sortOrder
         );
         return HighestPurchaseValueCursor;
+    }
+
+    public Cursor getStockCount(String retailerId) {
+        final String QUERY = "SELECT  DISTINCT " +
+                ProductOrderContract.TABLE_NAME + "." + ProductOrderContract._ID +", "+
+                ProductOrderContract.PRODUCT_NAME + ", SUM(" + ProductOrderContract.OC + ") AS " + ProductOrderContract.PRODUCT_COUNT +
+                " FROM " + ProductOrderContract.TABLE_NAME +
+                " INNER JOIN " + InvoiceContract.TABLE_NAME + " ON "
+                + ProductOrderContract.TABLE_NAME + "." + ProductOrderContract.INVOICE_ID + " = " +
+                InvoiceContract.TABLE_NAME + "." + InvoiceContract.INVOICE_ID +
+                " WHERE " + InvoiceContract.RETAILER_ID + "=?" +
+                " GROUP BY " + ProductOrderContract.PRODUCT_ID + " ORDER BY " + ProductOrderContract.PRODUCT_NAME + " ASC";
+        SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
+        return db.rawQuery(QUERY, new String[]{retailerId});
     }
 }

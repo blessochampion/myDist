@@ -15,21 +15,23 @@
         android:roundIcon="@drawable/route_144"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
+       <!-- <activity
             android:name=".activities.SplashActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity>-->
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.HomeActivity">
-           <!-- <intent-filter>
+
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
         <activity android:name=".activities.NewRetailerActivity" />
         <activity android:name=".activities.SynchronizationActivity" />
@@ -48,7 +50,7 @@
         <activity android:name=".activities.StoreInfoDetailsActivity" />
         <activity android:name=".activities.InvoiceActivity" />
         <activity android:name=".activities.AuthenticatedActivity" />
-        <activity android:name=".activities.InvoiceEditActivity"></activity>
+        <activity android:name=".activities.InvoiceEditActivity" />
     </application>
 
 </manifest>
