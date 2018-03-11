@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import mydist.mydist.R;
+import mydist.mydist.fragments.MerchandizeCaptureFragment;
 import mydist.mydist.fragments.StockCountFragment;
 import mydist.mydist.fragments.StoreFilterDialogFragment;
 import mydist.mydist.fragments.StoreInfoCallAnalysisFragment;
@@ -21,13 +22,14 @@ import mydist.mydist.fragments.StoreInfoReviewFragment;
 import mydist.mydist.utils.FontManager;
 
 public class StoreInfoDetailsActivity extends AuthenticatedActivity {
-    public static final int KEY_REVIEW =  0;
+    public static final int KEY_REVIEW = 0;
     public static final int KEY_INVOICE = 1;
     public static final int KEY_STOCK_COUNT = 2;
-    public static final int KEY_COLLECTION   =  3;
+    public static final int KEY_COLLECTION = 3;
     public static final int KEY_INVOICE_EDIT = 4;
     public static final int KEY_SBD_MERCHANDISING = 5;
-    public static final int KEY_CALL_ANALYSIS = 6;
+    public static final int KEY_MERCHANDISE_CAPTURE = 6;
+    public static final int KEY_CALL_ANALYSIS = 7;
     public static final String KEY_STORE_INFO = "storeinfo";
     private static int DEFAULT_REPORT_KEY_VALUE = -1;
     String title = "";
@@ -38,9 +40,9 @@ public class StoreInfoDetailsActivity extends AuthenticatedActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_info_details);
-         storeKey = getIntent().getIntExtra(KEY_STORE_INFO, DEFAULT_REPORT_KEY_VALUE);
+        storeKey = getIntent().getIntExtra(KEY_STORE_INFO, DEFAULT_REPORT_KEY_VALUE);
         if (storeKey == DEFAULT_REPORT_KEY_VALUE || storeKey < DEFAULT_REPORT_KEY_VALUE
-                || storeKey > KEY_CALL_ANALYSIS) {
+                || storeKey > KEY_MERCHANDISE_CAPTURE) {
             finish();
         } else {
             displayStoreDetails(storeKey);
@@ -54,19 +56,15 @@ public class StoreInfoDetailsActivity extends AuthenticatedActivity {
         FontManager.setFontsForView(findViewById(R.id.parent_layout), ralewayFont);
     }
 
-    private void displayStoreDetails(int storeKey)
-    {
+    private void displayStoreDetails(int storeKey) {
         Fragment report = getStoreWithKey(storeKey);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, report).commitAllowingStateLoss();
-
     }
 
-    private Fragment getStoreWithKey(int storeKey)
-    {
-        switch (storeKey)
-        {
-            case KEY_REVIEW :
+    private Fragment getStoreWithKey(int storeKey) {
+        switch (storeKey) {
+            case KEY_REVIEW:
                 title = getString(R.string.review);
                 return new StoreInfoReviewFragment();
             case KEY_STOCK_COUNT:
@@ -76,17 +74,22 @@ public class StoreInfoDetailsActivity extends AuthenticatedActivity {
                 title = getString(R.string.invoice);
                 return new StoreInfoInvoiceFragment();
             case KEY_COLLECTION:
-                title  = getString(R.string.collection);
+                title = getString(R.string.collection);
                 return new StoreInfoCollectionFragment();
             case KEY_INVOICE_EDIT:
                 title = getString(R.string.invoice_manage);
-                return  StoreInfoInvoiceEditFragment.getNewInstance(StoreOverviewActivity.retailerId);
+                return StoreInfoInvoiceEditFragment.getNewInstance(StoreOverviewActivity.retailerId);
             case KEY_SBD_MERCHANDISING:
                 title = getString(R.string.sbd_merchandising);
                 return new StoreInfoMerchandisingFragment();
-            default:
+            case KEY_MERCHANDISE_CAPTURE:
+                title = getString(R.string.capture_merchandize);
+                return MerchandizeCaptureFragment.getNewInstance(StoreOverviewActivity.retailerId);
+            case KEY_CALL_ANALYSIS:
                 title = getString(R.string.call_analysis);
                 return new StoreInfoCallAnalysisFragment();
+            default:
+                return null;
 
         }
     }
@@ -101,7 +104,7 @@ public class StoreInfoDetailsActivity extends AuthenticatedActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(storeKey != KEY_INVOICE) {
+        if (storeKey != KEY_INVOICE) {
             if (item.getItemId() == android.R.id.home) {
                 onBackPressed();
                 return true;
@@ -111,20 +114,24 @@ public class StoreInfoDetailsActivity extends AuthenticatedActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void dismiss(View v){
-        if(storeFilterDialogFragment !=  null){
+    public void dismiss(View v) {
+        if (storeFilterDialogFragment != null) {
             storeFilterDialogFragment.dismiss();
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(storeKey == KEY_COLLECTION){
+        if (storeKey == KEY_COLLECTION) {
             getMenuInflater().inflate(R.menu.menu_store_info_collection, menu);
             return true;
         }
-        if(storeKey == KEY_INVOICE){
+        if (storeKey == KEY_INVOICE) {
             getMenuInflater().inflate(R.menu.menu_fragment_store_info, menu);
+            return true;
+        }
+        if(storeKey == KEY_STOCK_COUNT){
+            getMenuInflater().inflate(R.menu.menu_fragment_stock_count, menu);
             return true;
         }
         return super.onCreateOptionsMenu(menu);

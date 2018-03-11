@@ -132,7 +132,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
             } else {
                 if (mCloseForTheDay.isChecked()) {
                     AlertDialog dialog = new AlertDialog.Builder(SynchronizationActivity.this).
-                            setMessage(this.getString(R.string.closing_message, Days.getTodayDate())).
+                            setMessage(this.getString(R.string.closing_message,Days.getTodaysDay(),  Days.getTodayDate())).
                             setPositiveButton(this.getString(R.string.ok), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -154,6 +154,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
                                     }
                                 }
                             }).create();
+                    dialog.setCanceledOnTouchOutside(false);
                     dialog.show();
                 }
             }

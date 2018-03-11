@@ -17,4 +17,5 @@
     <dimen name="textSizeLarge">22sp</dimen>
 
     <dimen name="loading">48dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

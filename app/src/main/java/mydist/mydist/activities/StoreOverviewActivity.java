@@ -23,13 +23,15 @@ import static mydist.mydist.activities.StoreInfoDetailsActivity.KEY_STORE_INFO;
 public class StoreOverviewActivity extends AuthenticatedActivity implements View.OnClickListener {
     public static final String KEY_RETAILER_ID = "retailerId";
     LinearLayout mReview;
+    LinearLayout mStockCount;
     LinearLayout mInvoice;
     LinearLayout mCollection;
     LinearLayout mInvoiceCancel;
     LinearLayout mSBDMerchandising;
     LinearLayout mCaptureMerchandize;
     LinearLayout mCallAnalysis;
-    LinearLayout mStockCount;
+    LinearLayout mMerchandiseCapture;
+
     public static String retailerId;
 
     @Override
@@ -69,13 +71,14 @@ public class StoreOverviewActivity extends AuthenticatedActivity implements View
 
     private void setOnClickListeners() {
         mReview.setOnClickListener(this);
+        mStockCount.setOnClickListener(this);
         mInvoice.setOnClickListener(this);
         mCollection.setOnClickListener(this);
         mInvoiceCancel.setOnClickListener(this);
         mSBDMerchandising.setOnClickListener(this);
         mCaptureMerchandize.setOnClickListener(this);
         mCallAnalysis.setOnClickListener(this);
-        mStockCount.setOnClickListener(this);
+        mCaptureMerchandize.setOnClickListener(this);
     }
 
     private void setupToolBar() {
@@ -98,13 +101,14 @@ public class StoreOverviewActivity extends AuthenticatedActivity implements View
 
     public void getReferencesToWidget() {
         mReview = (LinearLayout) findViewById(R.id.ll_review);
+        mStockCount = (LinearLayout) findViewById(R.id.ll_stock_count);
         mInvoice = (LinearLayout) findViewById(R.id.ll_invoice);
         mCollection = (LinearLayout) findViewById(R.id.ll_collection);
         mInvoiceCancel = (LinearLayout) findViewById(R.id.ll_invoice_edit);
         mSBDMerchandising = (LinearLayout) findViewById(R.id.ll_sbd_merchandising);
         mCaptureMerchandize = (LinearLayout) findViewById(R.id.ll_capture_merchandize);
         mCallAnalysis = (LinearLayout) findViewById(R.id.ll_call_analysis);
-        mStockCount = (LinearLayout) findViewById(R.id.ll_stock_count);
+        mCaptureMerchandize = (LinearLayout) findViewById(R.id.ll_capture_merchandize);
     }
 
     @Override
@@ -127,6 +131,9 @@ public class StoreOverviewActivity extends AuthenticatedActivity implements View
                 break;
             case R.id.ll_sbd_merchandising:
                 launchStoreInfoDetails(KEY_SBD_MERCHANDISING);
+                break;
+            case R.id.ll_capture_merchandize:
+                launchStoreInfoDetails(KEY_MERCHANDISE_CAPTURE);
                 break;
             default:
                 launchStoreInfoDetails(KEY_CALL_ANALYSIS);

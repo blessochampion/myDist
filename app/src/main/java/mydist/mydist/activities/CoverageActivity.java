@@ -45,7 +45,7 @@ public class CoverageActivity extends AuthenticatedActivity {
     private CoverageFragment FRIDAY_COVERAGE;
     private CoverageFragment SATURDAY_COVERAGE;
     private boolean isSearchActive = false;
-    private static final int SUN =0, MON=1,TUE=2,WED=3,THUR=4,FRI=5,SAT=6;
+    private static final int SUN =500, MON=1,TUE=2,WED=3,THUR=4,FRI=5,SAT=6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

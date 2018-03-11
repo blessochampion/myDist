@@ -41,7 +41,7 @@ import static android.view.Gravity.CENTER_VERTICAL;
  * A simple {@link Fragment} subclass.
  */
 public class StoreInfoInvoiceFragment extends Fragment implements View.OnClickListener, StoreFilterDialogFragment.FilterItemListener {
-
+    private static final String TAG = StoreInfoInvoiceFragment.class.getSimpleName();
     public static final int TOTAL_POSITION = 4;
     public static final String FILTER_ALL = "ALL";
     TableLayout mTableLayout;

@@ -34,6 +34,7 @@ public class DataUtils {
     private static double totalAmountToBePaid;
     public static PrintingModel printingModel;
     private static HashMap<String, ProductLogic> selectedProducts = new HashMap<>();
+    private static HashMap<String, ProductLogic> selectedStockProducts = new HashMap<>();
 
     public static HashMap<String, ProductLogic> getSelectedProducts() {
         return selectedProducts;
@@ -303,5 +304,13 @@ public class DataUtils {
     }
     public static Cursor getHPV(String retailerId,Context context){
         return DatabaseManager.getInstance(context).getHPV(retailerId);
+    }
+
+    public static HashMap<String, ProductLogic> getSelectedStockProducts() {
+        return selectedStockProducts;
+    }
+
+    public static void setSelectedStockProducts(HashMap<String, ProductLogic> selectedStockProducts) {
+        DataUtils.selectedStockProducts = selectedStockProducts;
     }
 }

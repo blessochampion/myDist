@@ -30,7 +30,7 @@ public class NewRetailer {
     @JsonProperty("subChannelId")
     String subChannel;
     @JsonProperty("areaId")
-    String areaId = "2";
+    String areaId;
     List<String> visitDays;
     List<String> weekNos;
     @JsonProperty("visitdays")

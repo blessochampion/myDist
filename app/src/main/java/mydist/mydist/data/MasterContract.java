@@ -116,4 +116,12 @@ public class MasterContract {
         public static final String RETAILER_ID = "retailer_id";
         public static final String VALUE = "value";
     }
+
+    public static class StockCountContract implements BaseColumns{
+        public static final String TABLE_NAME = "stock_count";
+        public static final String DATE_ADDED = "date_added";
+        public static final String RETAILER_ID = "retailer_id";
+        public static final String PRODUCT_ID = "product_id";
+        public static final String OC = "oc";
+    }
 }

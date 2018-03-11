@@ -17,10 +17,21 @@ import mydist.mydist.models.MerchandizingVerification;
 import mydist.mydist.models.NewRetailer;
 import mydist.mydist.models.Product;
 import mydist.mydist.models.ProductOrder;
-import mydist.mydist.models.Retailer;
 import mydist.mydist.models.SubChannel;
 
-import static mydist.mydist.data.MasterContract.*;
+import static mydist.mydist.data.MasterContract.AreaContract;
+import static mydist.mydist.data.MasterContract.BrandContract;
+import static mydist.mydist.data.MasterContract.ChannelContract;
+import static mydist.mydist.data.MasterContract.HighestPurchaseValueContract;
+import static mydist.mydist.data.MasterContract.InvoiceContract;
+import static mydist.mydist.data.MasterContract.MerchandizeContract;
+import static mydist.mydist.data.MasterContract.MerchandizingListVerificationContract;
+import static mydist.mydist.data.MasterContract.ProductContract;
+import static mydist.mydist.data.MasterContract.ProductOrderContract;
+import static mydist.mydist.data.MasterContract.RetailerContract;
+import static mydist.mydist.data.MasterContract.StockCountContract;
+import static mydist.mydist.data.MasterContract.SubChannelContract;
+import static mydist.mydist.data.MasterContract.VisitingInfoContract;
 
 /**
  * Singleton that controls access to the SQLiteDatabase instance
@@ -237,7 +248,7 @@ public class DatabaseManager {
         } else {
             return false;
         }
-        return true && saveHPV(mDataBase, newRetailer.getRetailerId(), initialHPV);
+        return saveHPV(mDataBase, newRetailer.getRetailerId(), initialHPV);
     }
 
     public boolean changeRetailerVisitingDate(String id, String dateAdded, String day, String week) {
@@ -984,8 +995,7 @@ public class DatabaseManager {
                 + InvoiceContract.STATUS + " = ? " +
                 " AND " + RetailerContract.RETAILER_NAME + " LIKE '%" + filter + "%'";
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(QUERY, new String[]{todayDate, String.valueOf(status)});
-        return cursor;
+        return db.rawQuery(QUERY, new String[]{todayDate, String.valueOf(status)});
     }
 
 
@@ -1009,17 +1019,19 @@ public class DatabaseManager {
         return HighestPurchaseValueCursor;
     }
 
-    public Cursor getStockCount(String retailerId) {
-        final String QUERY = "SELECT  DISTINCT " +
-                ProductOrderContract.TABLE_NAME + "." + ProductOrderContract._ID +", "+
-                ProductOrderContract.PRODUCT_NAME + ", SUM(" + ProductOrderContract.OC + ") AS " + ProductOrderContract.PRODUCT_COUNT +
-                " FROM " + ProductOrderContract.TABLE_NAME +
-                " INNER JOIN " + InvoiceContract.TABLE_NAME + " ON "
-                + ProductOrderContract.TABLE_NAME + "." + ProductOrderContract.INVOICE_ID + " = " +
-                InvoiceContract.TABLE_NAME + "." + InvoiceContract.INVOICE_ID +
-                " WHERE " + InvoiceContract.RETAILER_ID + "=?" +
-                " GROUP BY " + ProductOrderContract.PRODUCT_ID + " ORDER BY " + ProductOrderContract.PRODUCT_NAME + " ASC";
+    public Cursor getStockCount(String retailerId, String dateAdded) {
+        String QUERY = "SELECT " +
+                StockCountContract.TABLE_NAME + "." + StockCountContract.PRODUCT_ID + ", "
+                + ProductContract.COLUMN_NAME + ", " +
+                StockCountContract.OC + "," +
+                StockCountContract.RETAILER_ID + " FROM " + StockCountContract.TABLE_NAME +
+                " INNER JOIN " + ProductContract.TABLE_NAME + " ON " +
+                StockCountContract.TABLE_NAME + "." + StockCountContract.PRODUCT_ID + " = " +
+                ProductContract.TABLE_NAME + "." + ProductContract.COLUMN_PRODUCT_ID +
+                " WHERE " + StockCountContract.RETAILER_ID + " = ? AND " +
+                StockCountContract.DATE_ADDED + " = ?" +
+                " ORDER BY " + ProductContract.COLUMN_NAME + " ASC";
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
-        return db.rawQuery(QUERY, new String[]{retailerId});
+        return db.rawQuery(QUERY, new String[]{retailerId, dateAdded});
     }
 }

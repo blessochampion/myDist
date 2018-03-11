@@ -120,6 +120,17 @@ public class RouteDbHelper extends SQLiteOpenHelper {
                     HighestPurchaseValueContract.RETAILER_ID + " TEXT UNIQUE," +
                     HighestPurchaseValueContract.VALUE + " TEXT )";
 
+    private static final String SQL_CREATE_STOCK_COUNT =
+            "CREATE TABLE "+ StockCountContract.TABLE_NAME + " (" +
+                    StockCountContract._ID + " INTEGER PRIMARY KEY,"+
+                    StockCountContract.PRODUCT_ID + " TEXT, "+
+                    StockCountContract.DATE_ADDED + " TEXT,"+
+                    StockCountContract.RETAILER_ID + " TEXT,"+
+                    StockCountContract.OC + " TEXT, UNIQUE(" +
+                    StockCountContract.PRODUCT_ID + "," +
+                    StockCountContract.RETAILER_ID+
+                    "))";
+
     private static final String SQL_DELETE_BRAND_ENTRIES =
             "DROP TABLE IF EXISTS " + BrandContract.TABLE_NAME;
 
@@ -156,6 +167,9 @@ public class RouteDbHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_HIGHEST_PURCHASING_VALUE =
             "DROP TABLE IF EXISTS " + HighestPurchaseValueContract.TABLE_NAME;
 
+    private static final String SQL_DELETE_STOCK_COUNT =
+            "DROP TABLE IF EXISTS " + StockCountContract.TABLE_NAME;
+
 
     public RouteDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -175,6 +189,7 @@ public class RouteDbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_PRODUCT_ORDER);
         db.execSQL(SQL_CREATE_MERCHANDIZING_VERIFICATION);
         db.execSQL(SQL_CREATE_HIGHEST_PURCHASE_VALUE);
+        db.execSQL(SQL_CREATE_STOCK_COUNT);
     }
 
     @Override
@@ -191,6 +206,7 @@ public class RouteDbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_PRODUCT_ORDER);
         db.execSQL(SQL_DELETE_MERCHANDIZING_VERIFICATION);
         db.execSQL(SQL_DELETE_HIGHEST_PURCHASING_VALUE);
+        db.execSQL(SQL_DELETE_STOCK_COUNT);
         onCreate(db);
     }
 
