@@ -1,26 +1,30 @@
 package mydist.mydist.activities;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
-import android.os.Build;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import mydist.mydist.R;
-import mydist.mydist.data.MasterContract;
+import mydist.mydist.data.DatabaseManager;
 import mydist.mydist.models.StockCount;
+import mydist.mydist.utils.Days;
 
 import static android.view.Gravity.CENTER;
 import static android.view.Gravity.CENTER_VERTICAL;
@@ -31,9 +35,10 @@ public class StockCountReviewActivity extends AppCompatActivity implements View.
     ArrayList<StockCount> stockCounts;
     private TableLayout mTableLayout;
     private TableLayout mPagination;
-    private static final int OC_POSITION = 1;
+    private static final int LOADER_ID = 600;
     String retailerId;
     private int currentPage = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +92,6 @@ public class StockCountReviewActivity extends AppCompatActivity implements View.
         }
     }
 
-
     private void initHeader() {
         TableRow header = new TableRow(this);
         mTableLayout.setPadding(16, 0, 16, 0);
@@ -120,7 +124,13 @@ public class StockCountReviewActivity extends AppCompatActivity implements View.
 
     @Override
     public void onClick(View v) {
-
+        int index = (Integer) v.getTag();
+        TextView oldChild = (TextView) ((TableRow) mPagination.getChildAt(0)).getChildAt(currentPage);
+        unFill(oldChild);
+        TextView newChild = (TextView) ((TableRow) mPagination.getChildAt(0)).getChildAt(index);
+        fill(newChild);
+        currentPage = index;
+        loadProducts();
     }
 
     private void fill(TextView page) {
@@ -192,5 +202,38 @@ public class StockCountReviewActivity extends AppCompatActivity implements View.
     public void getReferencesToViews() {
         mTableLayout = (TableLayout) findViewById(R.id.tl_products);
         mPagination = (TableLayout) findViewById(R.id.tl_pagination);
+        Button editButton = (Button) findViewById(R.id.edit);
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        Button saveButton = (Button) findViewById(R.id.save);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new StockCountSaveTask().execute();
+            }
+        });
     }
+
+    class StockCountSaveTask extends AsyncTask<String, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            return DatabaseManager.getInstance(StockCountReviewActivity.this).persistStockCount(retailerId, Days.getTodayDate(), stockCounts);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean data) {
+            if (data) {
+                Toast.makeText(StockCountReviewActivity.this, getString(R.string.stock_saved_successfully), Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(StockCountReviewActivity.this, getString(R.string.stock_not_saved), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+
 }

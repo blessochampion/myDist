@@ -40,6 +40,7 @@ import mydist.mydist.listeners.UploadMastersListener;
 import mydist.mydist.models.Invoice;
 import mydist.mydist.models.MerchandizingVerification;
 import mydist.mydist.models.NewRetailer;
+import mydist.mydist.models.StockCount;
 import mydist.mydist.models.UploadMastersResponse;
 import mydist.mydist.models.push.CallAnalysis;
 import mydist.mydist.models.push.CollectionPush;
@@ -132,7 +133,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
             } else {
                 if (mCloseForTheDay.isChecked()) {
                     AlertDialog dialog = new AlertDialog.Builder(SynchronizationActivity.this).
-                            setMessage(this.getString(R.string.closing_message,Days.getTodaysDay(),  Days.getTodayDate())).
+                            setMessage(this.getString(R.string.closing_message, Days.getTodaysDay(), Days.getTodayDate())).
                             setPositiveButton(this.getString(R.string.ok), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -256,39 +257,58 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
             Cursor cursor = DataUtils.getAllOrderTotal(retailerId, Invoice.KEY_STATUS_SUCCESS, this);
             String storeTarget = DatabaseManager.getInstance(this).getHighestPurchaseValue(retailerId);
             storeTarget = DatabaseLogicUtils.getHighestPurchaseEver(storeTarget);
-            String pskuTarget =  getPSKUM(null, retailerId);
+            String pskuTarget = getPSKUM(null, retailerId);
             String pskuCount = getPSKUM(Days.getTodayDate(), retailerId);
             String merchandizingTarget = getMerchandizingVerification(Days.getTodayDate(), retailerId);
+            List<StockCount> stockCounts = getStockCount(retailerId);
             double[] values = getValues(cursor);
             coverages.add(new Coverage(retailerId, date, invoicePushes, merchandizingPushes,
                     new CallAnalysis(values[0], values[1], 20), Double.valueOf(storeTarget), Integer.valueOf(pskuCount), Integer.valueOf(pskuTarget)
-            , merchandizingTarget));
+                    , stockCounts, merchandizingTarget));
         }
         return coverages;
     }
+
+    private List<StockCount> getStockCount(String retailerId) {
+        List<StockCount> stockCounts = new ArrayList<>();
+        Cursor stockCountCursor = DatabaseManager.getInstance(this).getStockCount(retailerId, Days.getTodayDate());
+        int count = stockCountCursor.getCount();
+        if (count > 0) {
+            stockCountCursor.moveToFirst();
+            while (count > 0) {
+                stockCounts.add(new StockCount(stockCountCursor.getString(stockCountCursor.getColumnIndex(MasterContract.StockCountContract.PRODUCT_ID)),
+                        stockCountCursor.getString(stockCountCursor.getColumnIndex(MasterContract.ProductContract.COLUMN_NAME)),
+                        stockCountCursor.getInt(stockCountCursor.getColumnIndex(MasterContract.StockCountContract.OC))));
+                stockCountCursor.moveToNext();
+                count--;
+            }
+        }
+        return stockCounts;
+    }
+
     private String getMerchandizingVerification(String date, String retailerId) {
         String result = "0";
         Cursor cursor = DatabaseManager.getInstance(this).getMerchandisingVerificationGroupByRetailerId(date,
                 MerchandizingVerification.STATUS_AVAILABLE, retailerId);
-        String merch =  DatabaseManager.getInstance(this).getMerchandizingCount(date);
+        String merch = DatabaseManager.getInstance(this).getMerchandizingCount(date);
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
             result = cursor.getString(cursor.getColumnIndex(MasterContract.MerchandizingListVerificationContract.COUNT));
         }
-        return getString(R.string.slashFormat, result,merch);
+        return getString(R.string.slashFormat, result, merch);
     }
-    private String  getPSKUM(String date, String retailerId) {
+
+    private String getPSKUM(String date, String retailerId) {
         String result = "0";
         Cursor cursor = DatabaseManager.getInstance(this).getDistributionRate(date, retailerId);
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
             result = cursor.getString(cursor.getColumnIndex(MasterContract.InvoiceContract.TOTAL_ALIAS));
         }
-       return result;
+        return result;
     }
 
     private double[] getValues(Cursor cursor) {
-
         float totalEarned = 0.00f;
         float amountCollected = 0.00f;
         try {
@@ -310,7 +330,6 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
     }
 
     public HashMap<String, List<String>> getVisitingInfo(String retailerId, String keyDays, String keyWeeks) {
-
         HashMap<String, List<String>> visitingInfo = new HashMap<>();
         List<String> days = new ArrayList<>();
         List<String> weeks = new ArrayList<>();
@@ -462,8 +481,8 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
     }
 
     @Override
-    public void onFailure()
-    { mProgressDialog.cancel();
+    public void onFailure() {
+        mProgressDialog.cancel();
         launchDialog(R.string.upload_failed);
     }
 

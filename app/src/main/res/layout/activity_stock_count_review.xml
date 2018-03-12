@@ -25,12 +25,13 @@
         android:layout_height="match_parent"
         android:background="@color/crispy_white"
         android:focusable="true"
+        android:paddingBottom="16dp"
         android:focusableInTouchMode="true">
 
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="48dp"
+            android:layout_marginBottom="64dp"
             android:layout_marginTop="16dp"
             android:scrollbars="none">
 
@@ -51,20 +52,59 @@
             </ScrollView>
         </HorizontalScrollView>
 
-        <HorizontalScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:scrollbars="none">
+            android:orientation="vertical">
 
-            <TableLayout
-                android:id="@+id/tl_pagination"
-                android:layout_width="wrap_content"
+            <HorizontalScrollView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp">
+                android:layout_marginBottom="16dp"
+                android:scrollbars="none">
 
-            </TableLayout>
-        </HorizontalScrollView>
+                <TableLayout
+                    android:id="@+id/tl_pagination"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp">
+
+                </TableLayout>
+            </HorizontalScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:orientation="horizontal"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp">
+
+                <Button
+                    android:id="@+id/edit"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:text="@string/edit"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/save"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:text="@string/save"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
 
     </FrameLayout>
 </LinearLayout>

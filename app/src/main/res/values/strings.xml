@@ -188,4 +188,6 @@
     <string name="camera_message">Please give permission to access Camera. This is required to capture  merchandize</string>
     <string name="title_activity_stock_count_reveiew">StockCountReveiewActivity</string>
     <string name="select_at_least_one_product">Select at least one Product</string>
+    <string name="stock_saved_successfully">Stock Saved Successfully</string>
+    <string name="stock_not_saved">Unable to Save Stock</string>
 </resources>

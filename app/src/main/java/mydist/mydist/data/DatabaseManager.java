@@ -17,6 +17,7 @@ import mydist.mydist.models.MerchandizingVerification;
 import mydist.mydist.models.NewRetailer;
 import mydist.mydist.models.Product;
 import mydist.mydist.models.ProductOrder;
+import mydist.mydist.models.StockCount;
 import mydist.mydist.models.SubChannel;
 
 import static mydist.mydist.data.MasterContract.AreaContract;
@@ -104,6 +105,26 @@ public class DatabaseManager {
             return isSuccess;
         }
         return false;
+    }
+
+    public boolean persistStockCount(String retailerId, String dateAdded, List<StockCount> stockCounts) {
+        ContentValues contentValues;
+        SQLiteDatabase mDatabase = mRouteDbHelper.getWritableDatabase();
+        boolean isSuccess = true;
+        long response;
+        mDatabase.delete(StockCountContract.TABLE_NAME
+                , StockCountContract.RETAILER_ID + " = ? AND " +
+                        StockCountContract.DATE_ADDED + " = ?", new String[]{retailerId, dateAdded});
+        for (StockCount stockCount : stockCounts) {
+            contentValues = new ContentValues();
+            contentValues.put(StockCountContract.DATE_ADDED, dateAdded);
+            contentValues.put(StockCountContract.OC, stockCount.getOc());
+            contentValues.put(StockCountContract.PRODUCT_ID, stockCount.getProductId());
+            contentValues.put(StockCountContract.RETAILER_ID, retailerId);
+            response = mDatabase.insertWithOnConflict(StockCountContract.TABLE_NAME, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+            isSuccess = isSuccess && response > -1;
+        }
+        return isSuccess;
     }
 
     public Cursor getProductsOrder(String invoiceId, String dateAdded) {

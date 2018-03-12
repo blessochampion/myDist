@@ -226,11 +226,11 @@ public class StockCountFragment extends Fragment implements LoaderManager.Loader
 
     private void loadProductIntoRow(TableRow productRow, int position) {
         //product name
-        String productId = getString(MasterContract.StockCountContract.PRODUCT_ID);
-        String productNameStr = getString(MasterContract.ProductContract.COLUMN_NAME);
+        String productId = getProductString(MasterContract.StockCountContract.PRODUCT_ID);
+        String productNameStr = getProductString(MasterContract.ProductContract.COLUMN_NAME);
         productRow.setMinimumHeight(104);
         TextView productName = new TextView(context);
-        productName.setText(getString(MasterContract.ProductContract.COLUMN_NAME));
+        productName.setText(getProductString(MasterContract.ProductContract.COLUMN_NAME));
         productName.setTextSize(17);
         productName.setTextColor(Color.parseColor("#212121"));
         TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
@@ -270,6 +270,11 @@ public class StockCountFragment extends Fragment implements LoaderManager.Loader
         }
     }
 
+    private String getProductString(String name)
+    {
+        return  productsCursor.getString(productsCursor.getColumnIndex(name));
+    }
+
     private void checkBoxClicked(CheckBox checkBox) {
         String[] values = ((String) checkBox.getTag()).split(DELIMITER);
         final String productId = values[0];
@@ -293,7 +298,6 @@ public class StockCountFragment extends Fragment implements LoaderManager.Loader
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     int length = s.toString().length();
-
                     if (length == 1 && s.toString().equalsIgnoreCase("0")) {
                         editText.setText("");
                     } else if (length >= 1) {
@@ -339,7 +343,7 @@ public class StockCountFragment extends Fragment implements LoaderManager.Loader
     }
 
     private String getString(String columnName) {
-        return productsCursor.getString(productsCursor.getColumnIndex(columnName));
+        return stockCountCursor.getString(stockCountCursor.getColumnIndex(columnName));
     }
 
     private void initHeader() {

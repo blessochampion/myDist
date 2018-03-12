@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
+import mydist.mydist.models.StockCount;
+
 /**
  * Created by Blessing.Ekundayo on 1/17/2018.
  */
@@ -24,13 +26,15 @@ public class Coverage {
     int pskuCount;
     @JsonProperty("merchandisingTarget")
     String merchandisingTarget;
+    @JsonProperty("stockCount")
+    List<StockCount> stockCount;
     @JsonProperty("merchandisingList")
     List<MerchandizingPush> merchandizingList;
     @JsonProperty("callAnalysis")
     CallAnalysis callAnalysis;
 
     public Coverage(String retailerId, String date, List<InvoicePush> invoices, List<MerchandizingPush> merchandizingList, CallAnalysis callAnalysis,
-                    double storeTarget,int pskuCount,  int pskuCountTarget, String merchandisingTarget) {
+                    double storeTarget, int pskuCount, int pskuCountTarget, List<StockCount> stockCount, String merchandisingTarget) {
         this.retailerId = retailerId;
         this.date = date;
         this.invoices = invoices;
@@ -39,6 +43,7 @@ public class Coverage {
         this.storeTarget = storeTarget;
         this.pskuCount = pskuCount;
         this.pskuCountTarget = pskuCountTarget;
+        this.stockCount = stockCount;
         this.merchandisingTarget = merchandisingTarget;
     }
 
