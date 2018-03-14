@@ -104,7 +104,7 @@ public class StoreInfoDetailsActivity extends AuthenticatedActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (storeKey != KEY_INVOICE) {
+        if (!(storeKey == KEY_INVOICE ||  storeKey == KEY_STOCK_COUNT)) {
             if (item.getItemId() == android.R.id.home) {
                 onBackPressed();
                 return true;

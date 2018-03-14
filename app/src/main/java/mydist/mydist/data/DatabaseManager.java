@@ -1074,6 +1074,8 @@ public class DatabaseManager {
         return db.rawQuery(QUERY, new String[]{retailerId, dateAdded});
     }
 
+
+
     public Cursor getMerchandizeImageUrls(String retailerId, String dateAdded){
         String[] projection = new String[]{
                 MerchandizeImageContract._ID,

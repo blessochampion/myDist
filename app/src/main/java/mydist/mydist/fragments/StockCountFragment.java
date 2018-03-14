@@ -39,6 +39,7 @@ import mydist.mydist.activities.StockCountReviewActivity;
 import mydist.mydist.data.DatabaseManager;
 import mydist.mydist.data.MasterContract;
 import mydist.mydist.models.StockCount;
+import mydist.mydist.utils.DataUtils;
 import mydist.mydist.utils.Days;
 import mydist.mydist.utils.FontManager;
 
@@ -49,16 +50,21 @@ import static mydist.mydist.activities.LoginActivity.EMPTY_STRING;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StockCountFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
+public class StockCountFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener, StoreFilterDialogFragment.FilterItemListener {
     private static final String KEY_RETAILER_ID = "retailerId";
     private static final int LOADER_ID = 4849494;
+    private static final int FILTER_LOADER_ID = 489494;
     private TableLayout mTableLayout;
     private TableLayout mPagination;
     private View containerView;
+    private boolean isInFilterMode = false;
     private static final int OC_POSITION = 2;
     private static final String DELIMITER = ":";
+    public static final String FILTER_ALL = "ALL";
+    private static String filter;
     Cursor stockCountCursor;
     Cursor productsCursor;
+    Cursor filteredProductsCursor;
     String retailerId;
     HashMap<String, StockCount> savedStockCountMap = new HashMap<>();
     Context context;
@@ -72,7 +78,7 @@ public class StockCountFragment extends Fragment implements LoaderManager.Loader
         mPagination.removeAllViews();
         TableRow pager = new TableRow(context);
         mPagination.setPadding(32, 0, 32, 0);
-        int pageCount = (int) Math.ceil(productsCursor.getCount() / 10.0);
+        int pageCount = (int) Math.ceil(getCursor().getCount() / 10.0);
         loadPageToRow(pager, pageCount);
         mPagination.addView(pager);
     }
@@ -99,6 +105,16 @@ public class StockCountFragment extends Fragment implements LoaderManager.Loader
                 mDialog.show();
             }
             return true;
+        }else if (item.getItemId() == R.id.filter) {
+            StoreFilterDialogFragment storeFilterDialogFragment = new StoreFilterDialogFragment();
+            storeFilterDialogFragment.setListener(this);
+            storeFilterDialogFragment.show(getActivity().getSupportFragmentManager(), "");
+            return true;
+        }else if (item.getItemId() == android.R.id.home && isInFilterMode) {
+            refreshProductsDisplayed();
+            return true;
+        }else if(item.getItemId() == android.R.id.home){
+            getActivity().onBackPressed();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -149,8 +165,11 @@ public class StockCountFragment extends Fragment implements LoaderManager.Loader
                 DatabaseManager manager = DatabaseManager.getInstance(getActivity());
                 if (id == LOADER_ID) {
                     stockCountCursor = manager.getStockCount(retailerId, Days.getTodayDate());
+                    return manager.queryAllProduct();
+                }else if(id == FILTER_LOADER_ID){
+                    return manager.queryAllProduct(filter);
                 }
-                return manager.queryAllProduct();
+               return null;
             }
         };
     }
@@ -191,17 +210,28 @@ public class StockCountFragment extends Fragment implements LoaderManager.Loader
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (loader.getId() == LOADER_ID) {
             cacheStockToMap();
-            bindView(data);
+            productsCursor = data;
+            bindView();
+        }else if(loader.getId() == FILTER_LOADER_ID){
+            cacheStockToMap();
+            filteredProductsCursor = data;
+            bindView();
         }
     }
 
-    private void bindView(Cursor data) {
-        productsCursor = data;
+    private void bindView() {
         initPagination();
         initHeader();
         loadProducts();
         setFonts();
     }
+    private Cursor getCursor(){
+        if(isInFilterMode){
+            return filteredProductsCursor;
+        }
+        return productsCursor;
+    }
+
     private void setFonts() {
         Typeface ralewayFont = FontManager.getTypeface(getActivity(), FontManager.RALEWAY_REGULAR);
         FontManager.setFontsForView(containerView.findViewById(R.id.parent_layout), ralewayFont);
@@ -211,8 +241,8 @@ public class StockCountFragment extends Fragment implements LoaderManager.Loader
         TableRow productRow;
         int start = currentPage * 10;
         int end = start + 10;
-        if (end > productsCursor.getCount()) {
-            end = productsCursor.getCount();
+        if (end > getCursor().getCount()) {
+            end = getCursor().getCount();
         }
         TableLayout.LayoutParams layoutParams = new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.bottomMargin = 10;
@@ -224,7 +254,7 @@ public class StockCountFragment extends Fragment implements LoaderManager.Loader
         }
         for (; start < end; start++, index++) {
             productRow = new TableRow(context);
-            productsCursor.moveToPosition(start);
+            getCursor().moveToPosition(start);
             loadProductIntoRow(productRow, index);
             productRow.setLayoutParams(layoutParams);
             mTableLayout.addView(productRow);
@@ -277,9 +307,8 @@ public class StockCountFragment extends Fragment implements LoaderManager.Loader
         }
     }
 
-    private String getProductString(String name)
-    {
-        return  productsCursor.getString(productsCursor.getColumnIndex(name));
+    private String getProductString(String name) {
+        return getCursor().getString(productsCursor.getColumnIndex(name));
     }
 
     private void checkBoxClicked(CheckBox checkBox) {
@@ -305,9 +334,7 @@ public class StockCountFragment extends Fragment implements LoaderManager.Loader
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     int length = s.toString().length();
-                    if (length == 1 && s.toString().equalsIgnoreCase("0")) {
-                        editText.setText("");
-                    } else if (length >= 1) {
+                    if (length >= 1) {
                         char lastChar = s.toString().charAt(length - 1);
                         if (!('0' <= lastChar && lastChar <= '9')) {
                             editText.setText(s.toString().substring(0, count - 1));
@@ -401,6 +428,7 @@ public class StockCountFragment extends Fragment implements LoaderManager.Loader
         fill(newChild);
         currentPage = index;
         loadProducts();
+        setFonts();
     }
 
     public ArrayList<StockCount> getSelectedStockCounts() {
@@ -409,5 +437,25 @@ public class StockCountFragment extends Fragment implements LoaderManager.Loader
             result.add(savedStockCountMap.get(key));
         }
         return result;
+    }
+
+    @Override
+    public void onFilterItemListener(String brandId) {
+        if (brandId.equalsIgnoreCase(FILTER_ALL)) {
+            refreshProductsDisplayed();
+        } else {
+            filter = String.valueOf((int) Double.parseDouble(brandId));
+            currentPage = 0;
+            isInFilterMode = true;
+            getActivity().getSupportLoaderManager().initLoader(FILTER_LOADER_ID, null, this);
+        }
+    }
+
+    private void refreshProductsDisplayed() {
+        isInFilterMode = false;
+        getActivity().getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+        currentPage = 0;
+        loadProducts();
+        initPagination();
     }
 }

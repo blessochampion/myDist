@@ -70,6 +70,7 @@ public class StoreInfoMerchandisingFragment extends Fragment implements Compound
                 Merchandize merchandize = getItem(position);
                 brandName.setText(merchandize.getBrandName());
                 item.setText(merchandize.getMerchandizeItem());
+                setFonts(brandName);
 
 
                 if (merchandizingTable.containsKey(merchandize.getMerchantId() + "_" + merchandize.getBrandId()) &&
@@ -88,6 +89,7 @@ public class StoreInfoMerchandisingFragment extends Fragment implements Compound
                             @Override
                             public void run() {
                                 item.setChecked(false);
+                                setFonts(item);
                             }
                         }, 100);
                     }
