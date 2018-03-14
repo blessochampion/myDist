@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -39,6 +40,7 @@ import mydist.mydist.data.DatabaseManager;
 import mydist.mydist.data.MasterContract;
 import mydist.mydist.models.StockCount;
 import mydist.mydist.utils.Days;
+import mydist.mydist.utils.FontManager;
 
 import static android.view.Gravity.CENTER;
 import static android.view.Gravity.CENTER_VERTICAL;
@@ -198,6 +200,11 @@ public class StockCountFragment extends Fragment implements LoaderManager.Loader
         initPagination();
         initHeader();
         loadProducts();
+        setFonts();
+    }
+    private void setFonts() {
+        Typeface ralewayFont = FontManager.getTypeface(getActivity(), FontManager.RALEWAY_REGULAR);
+        FontManager.setFontsForView(containerView.findViewById(R.id.parent_layout), ralewayFont);
     }
 
     private void loadProducts() {

@@ -33,6 +33,7 @@ import static mydist.mydist.data.MasterContract.RetailerContract;
 import static mydist.mydist.data.MasterContract.StockCountContract;
 import static mydist.mydist.data.MasterContract.SubChannelContract;
 import static mydist.mydist.data.MasterContract.VisitingInfoContract;
+import static mydist.mydist.data.MasterContract.MerchandizeImageContract;
 
 /**
  * Singleton that controls access to the SQLiteDatabase instance
@@ -125,6 +126,23 @@ public class DatabaseManager {
             isSuccess = isSuccess && response > -1;
         }
         return isSuccess;
+    }
+
+    public boolean persistMerchandizeImage(String retailerId, String dateAdded, String imageOnDisk){
+        ContentValues contentValues = new ContentValues();
+        SQLiteDatabase mDatabase = mRouteDbHelper.getWritableDatabase();
+        contentValues.put(MerchandizeImageContract.DATE_ADDED, dateAdded);
+        contentValues.put(MerchandizeImageContract.RETAILER_ID,retailerId);
+        contentValues.put(MerchandizeImageContract.IMAGE_URI_ON_DISK, imageOnDisk);
+        return mDatabase.insertWithOnConflict(MerchandizeImageContract.TABLE_NAME, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE)> -1;
+    }
+
+    public boolean removeImage(String retailerId, String dateAdded, String imageUrl){
+        SQLiteDatabase db = mRouteDbHelper.getWritableDatabase();
+       return db.delete(MerchandizeImageContract.TABLE_NAME
+                , MerchandizeImageContract.RETAILER_ID + " = ? AND " +
+                        MerchandizeImageContract.DATE_ADDED + " = ? " +
+                        " AND " + MerchandizeImageContract.IMAGE_URI_ON_DISK + " = ?", new String[]{retailerId, dateAdded,imageUrl }) > 0;
     }
 
     public Cursor getProductsOrder(String invoiceId, String dateAdded) {
@@ -1054,5 +1072,28 @@ public class DatabaseManager {
                 " ORDER BY " + ProductContract.COLUMN_NAME + " ASC";
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
         return db.rawQuery(QUERY, new String[]{retailerId, dateAdded});
+    }
+
+    public Cursor getMerchandizeImageUrls(String retailerId, String dateAdded){
+        String[] projection = new String[]{
+                MerchandizeImageContract._ID,
+                MerchandizeImageContract.CLOUDINARY_URL,
+                MerchandizeImageContract.DATE_ADDED,
+                MerchandizeImageContract.IMAGE_URI_ON_DISK,
+                MerchandizeImageContract.RETAILER_ID};
+        String selection = MerchandizeImageContract.RETAILER_ID + " = ? AND " + MerchandizeImageContract.DATE_ADDED+
+                " = ?";
+        String selectionArgs[] = new String[]{retailerId, dateAdded};
+        String sortOrder = MerchandizeImageContract.IMAGE_URI_ON_DISK + " ASC";
+        SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
+        return db.query(
+                MerchandizeImageContract.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
     }
 }

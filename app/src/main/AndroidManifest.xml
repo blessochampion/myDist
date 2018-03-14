@@ -8,6 +8,7 @@
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -20,7 +21,14 @@
         android:roundIcon="@drawable/route_144"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <provider
+            android:exported="false"
+            android:grantUriPermissions="true"
+            android:authorities="mydist.mydist.fileprovider"
+            android:name="android.support.v4.content.FileProvider">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
          <activity
              android:name=".activities.SplashActivity"
              android:noHistory="true">
@@ -32,11 +40,11 @@
          </activity>
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.HomeActivity">
-            <intent-filter>
+           <!-- <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
         <activity android:name=".activities.NewRetailerActivity" />
         <activity android:name=".activities.SynchronizationActivity" />

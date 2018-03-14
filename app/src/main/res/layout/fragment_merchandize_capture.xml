@@ -44,7 +44,7 @@
     </LinearLayout>
 
     <FrameLayout
-        android:paddingTop="16dp"
+        android:padding="16dp"
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -55,10 +55,18 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/no_images_captured" />
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="160dp"
-            android:layout_height="160dp" />
+        <GridView
+            android:id="@+id/gv_images"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:columnWidth="120dp"
+            android:scrollbars="none"
+            android:gravity="center"
+            android:horizontalSpacing="8dp"
+            android:numColumns="2"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="24dp"
+            />
 
     </FrameLayout>
 

@@ -42,7 +42,7 @@ public class StoreInfoDetailsActivity extends AuthenticatedActivity {
         setContentView(R.layout.activity_store_info_details);
         storeKey = getIntent().getIntExtra(KEY_STORE_INFO, DEFAULT_REPORT_KEY_VALUE);
         if (storeKey == DEFAULT_REPORT_KEY_VALUE || storeKey < DEFAULT_REPORT_KEY_VALUE
-                || storeKey > KEY_MERCHANDISE_CAPTURE) {
+                || storeKey > KEY_CALL_ANALYSIS) {
             finish();
         } else {
             displayStoreDetails(storeKey);

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import mydist.mydist.models.ProductOrder;
-
 import static mydist.mydist.data.MasterContract.*;
 
 /**
@@ -131,6 +129,14 @@ public class RouteDbHelper extends SQLiteOpenHelper {
                     StockCountContract.RETAILER_ID+
                     "))";
 
+    private static final String SQL_CREATE_MERCHANDIZE_IMAGE_URL =
+            "CREATE TABLE " + MerchandizeImageContract.TABLE_NAME + " ("+
+            MerchandizeImageContract._ID + " INTEGER PRIMARY KEY, "+
+            MerchandizeImageContract.DATE_ADDED + " TEXT, "+
+            MerchandizeImageContract.RETAILER_ID + " TEXT, "+
+            MerchandizeImageContract.CLOUDINARY_URL + " TEXT, " +
+            MerchandizeImageContract.IMAGE_URI_ON_DISK + " TEXT )";
+
     private static final String SQL_DELETE_BRAND_ENTRIES =
             "DROP TABLE IF EXISTS " + BrandContract.TABLE_NAME;
 
@@ -170,6 +176,9 @@ public class RouteDbHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_STOCK_COUNT =
             "DROP TABLE IF EXISTS " + StockCountContract.TABLE_NAME;
 
+    private static final String SQL_DELETE_MERCHANDIZE_IMAGE_URL =
+            "DROP TABLE IF EXISTST " + MerchandizeImageContract.TABLE_NAME;
+
 
     public RouteDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -190,6 +199,7 @@ public class RouteDbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_MERCHANDIZING_VERIFICATION);
         db.execSQL(SQL_CREATE_HIGHEST_PURCHASE_VALUE);
         db.execSQL(SQL_CREATE_STOCK_COUNT);
+        db.execSQL(SQL_CREATE_MERCHANDIZE_IMAGE_URL);
     }
 
     @Override
@@ -207,6 +217,7 @@ public class RouteDbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_MERCHANDIZING_VERIFICATION);
         db.execSQL(SQL_DELETE_HIGHEST_PURCHASING_VALUE);
         db.execSQL(SQL_DELETE_STOCK_COUNT);
+        db.execSQL(SQL_CREATE_MERCHANDIZE_IMAGE_URL);
         onCreate(db);
     }
 
