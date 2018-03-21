@@ -98,7 +98,7 @@ public class CoverageFragment extends Fragment implements View.OnClickListener, 
             weekDay = week + DELIMITER + day;
             LOAD_RETAILERS_ID += bundle.getInt(KEY_DAY_POSITION);
             FILTER_RETAILERS_ID += bundle.getInt(KEY_DAY_POSITION);
-            getActivity().getSupportLoaderManager().initLoader(LOAD_RETAILERS_ID, null, this);
+            getActivity().getSupportLoaderManager().restartLoader(LOAD_RETAILERS_ID, null, this);
         } else {
             throw new RuntimeException("Unable to Create Fragment, pass DAY and Week");
         }

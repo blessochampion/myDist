@@ -145,6 +145,5 @@ public class StoreOverviewActivity extends AuthenticatedActivity implements View
         Intent intent = new Intent(StoreOverviewActivity.this, StoreInfoDetailsActivity.class);
         intent.putExtra(KEY_STORE_INFO, storeKey);
         startActivity(intent);
-        //overridePendingTransition(R.anim.transition_enter, R.anim.transition_exit);
     }
 }

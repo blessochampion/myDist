@@ -21,6 +21,8 @@
         android:roundIcon="@drawable/route_144"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <!--<meta-data android:name="CLOUDINARY_URL" android:value="cloudinary://612615322999268:tyy58ne9vGjtM4NR21MR9G6SCvc@blessochampion"/>-->
+        <meta-data android:name="CLOUDINARY_URL" android:value="cloudinary://659674684125543:yuGenlC8jpArWWgBPFDH1or7d9U@scenario"/>
         <provider
             android:exported="false"
             android:grantUriPermissions="true"
@@ -32,19 +34,19 @@
          <activity
              android:name=".activities.SplashActivity"
              android:noHistory="true">
-            <!-- <intent-filter>
+             <intent-filter>
                  <action android:name="android.intent.action.MAIN" />
 
                  <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>-->
+             </intent-filter>
          </activity>
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.HomeActivity">
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
         <activity android:name=".activities.NewRetailerActivity" />
         <activity android:name=".activities.SynchronizationActivity" />

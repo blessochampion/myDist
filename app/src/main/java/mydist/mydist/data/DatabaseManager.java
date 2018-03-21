@@ -128,21 +128,23 @@ public class DatabaseManager {
         return isSuccess;
     }
 
-    public boolean persistMerchandizeImage(String retailerId, String dateAdded, String imageOnDisk){
+    public boolean persistMerchandizeImage(String retailerId, String dateAdded, String imageOnDisk, String uploadState) {
         ContentValues contentValues = new ContentValues();
         SQLiteDatabase mDatabase = mRouteDbHelper.getWritableDatabase();
         contentValues.put(MerchandizeImageContract.DATE_ADDED, dateAdded);
-        contentValues.put(MerchandizeImageContract.RETAILER_ID,retailerId);
+        contentValues.put(MerchandizeImageContract.RETAILER_ID, retailerId);
         contentValues.put(MerchandizeImageContract.IMAGE_URI_ON_DISK, imageOnDisk);
-        return mDatabase.insertWithOnConflict(MerchandizeImageContract.TABLE_NAME, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE)> -1;
+        contentValues.put(MerchandizeImageContract.UPLOAD_STATE, uploadState);
+        return mDatabase.insertWithOnConflict(MerchandizeImageContract.TABLE_NAME, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE) > -1;
     }
 
-    public boolean removeImage(String retailerId, String dateAdded, String imageUrl){
+
+    public boolean removeImage(String retailerId, String dateAdded, String imageUrl) {
         SQLiteDatabase db = mRouteDbHelper.getWritableDatabase();
-       return db.delete(MerchandizeImageContract.TABLE_NAME
+        return db.delete(MerchandizeImageContract.TABLE_NAME
                 , MerchandizeImageContract.RETAILER_ID + " = ? AND " +
                         MerchandizeImageContract.DATE_ADDED + " = ? " +
-                        " AND " + MerchandizeImageContract.IMAGE_URI_ON_DISK + " = ?", new String[]{retailerId, dateAdded,imageUrl }) > 0;
+                        " AND " + MerchandizeImageContract.IMAGE_URI_ON_DISK + " = ?", new String[]{retailerId, dateAdded, imageUrl}) > 0;
     }
 
     public Cursor getProductsOrder(String invoiceId, String dateAdded) {
@@ -385,6 +387,7 @@ public class DatabaseManager {
         );
         return allArea;
     }
+
 
     public Cursor queryAllMerchandize() {
         String[] projection = {
@@ -992,6 +995,21 @@ public class DatabaseManager {
         return result > 0;
     }
 
+    public boolean updateImageUploadState(String retailerId, String diskImageUrl, String uploadState, String cloudinaryUrl, String requestId) {
+        SQLiteDatabase db = mRouteDbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(MerchandizeImageContract.UPLOAD_STATE, uploadState);
+        cv.put(MerchandizeImageContract.CLOUDINARY_URL, cloudinaryUrl);
+        cv.put(MerchandizeImageContract.CLOUDINARY_REQUEST_ID, requestId);
+        return db.update(MerchandizeImageContract.TABLE_NAME, cv, MerchandizeImageContract.RETAILER_ID + " = ? AND " + MerchandizeImageContract.IMAGE_URI_ON_DISK + " = ?", new String[]{retailerId, diskImageUrl}) > 0;
+    }
+    public boolean updateImageUploadState(String retailerId, String diskImageUrl, String requestId) {
+        SQLiteDatabase db = mRouteDbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(MerchandizeImageContract.CLOUDINARY_REQUEST_ID, requestId);
+        return db.update(MerchandizeImageContract.TABLE_NAME, cv, MerchandizeImageContract.RETAILER_ID + " = ? AND " + MerchandizeImageContract.IMAGE_URI_ON_DISK + " = ?", new String[]{retailerId, diskImageUrl}) > 0;
+    }
+
     public boolean updateAmountPaidForInvoice(String invoiceId, String amount, String modeOfPayment, String modeOfPaymentValue) {
         SQLiteDatabase db = mRouteDbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -1075,16 +1093,19 @@ public class DatabaseManager {
     }
 
 
-
-    public Cursor getMerchandizeImageUrls(String retailerId, String dateAdded){
+    public Cursor getMerchandizeImageUrls(String retailerId, String dateAdded, String uploadState) {
         String[] projection = new String[]{
                 MerchandizeImageContract._ID,
                 MerchandizeImageContract.CLOUDINARY_URL,
                 MerchandizeImageContract.DATE_ADDED,
                 MerchandizeImageContract.IMAGE_URI_ON_DISK,
+                MerchandizeImageContract.UPLOAD_STATE,
                 MerchandizeImageContract.RETAILER_ID};
-        String selection = MerchandizeImageContract.RETAILER_ID + " = ? AND " + MerchandizeImageContract.DATE_ADDED+
+        String selection = MerchandizeImageContract.RETAILER_ID + " = ? AND " + MerchandizeImageContract.DATE_ADDED +
                 " = ?";
+        if(uploadState != null){
+            selection += " AND " + MerchandizeImageContract.UPLOAD_STATE + " = " + uploadState;
+        }
         String selectionArgs[] = new String[]{retailerId, dateAdded};
         String sortOrder = MerchandizeImageContract.IMAGE_URI_ON_DISK + " ASC";
         SQLiteDatabase db = mRouteDbHelper.getReadableDatabase();
@@ -1097,5 +1118,9 @@ public class DatabaseManager {
                 null,
                 sortOrder
         );
+    }
+
+    public Cursor getMerchandizeImageUrls(String retailerId, String dateAdded) {
+        return getMerchandizeImageUrls(retailerId, dateAdded, null);
     }
 }

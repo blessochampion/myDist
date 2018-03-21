@@ -1,7 +1,9 @@
 package mydist.mydist.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -25,6 +27,7 @@ import mydist.mydist.R;
 import mydist.mydist.data.DatabaseManager;
 import mydist.mydist.models.StockCount;
 import mydist.mydist.utils.Days;
+import mydist.mydist.utils.FontManager;
 
 import static android.view.Gravity.CENTER;
 import static android.view.Gravity.CENTER_VERTICAL;
@@ -51,6 +54,12 @@ public class StockCountReviewActivity extends AppCompatActivity implements View.
         initPagination();
         initHeader();
         loadProducts();
+        setFonts();
+    }
+
+    private void setFonts() {
+        Typeface ralewayFont = FontManager.getTypeface(this, FontManager.RALEWAY_REGULAR);
+        FontManager.setFontsForView(findViewById(R.id.parent_layout), ralewayFont);
     }
 
     private void setupToolbar() {
@@ -229,6 +238,9 @@ public class StockCountReviewActivity extends AppCompatActivity implements View.
         protected void onPostExecute(Boolean data) {
             if (data) {
                 Toast.makeText(StockCountReviewActivity.this, getString(R.string.stock_saved_successfully), Toast.LENGTH_LONG).show();
+                Intent newIntent = new Intent(StockCountReviewActivity.this, StoreInfoDetailsActivity.class);
+                newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(newIntent);
             } else {
                 Toast.makeText(StockCountReviewActivity.this, getString(R.string.stock_not_saved), Toast.LENGTH_LONG).show();
             }

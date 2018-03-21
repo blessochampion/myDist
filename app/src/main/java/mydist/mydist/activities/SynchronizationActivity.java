@@ -56,6 +56,7 @@ import mydist.mydist.utils.DatabaseLogicUtils;
 import mydist.mydist.utils.Days;
 import mydist.mydist.utils.FontManager;
 import mydist.mydist.utils.UIUtils;
+import mydist.mydist.utils.UploadState;
 
 public class SynchronizationActivity extends AuthenticatedActivity implements View.OnClickListener, UploadMastersListener, DialogInterface.OnClickListener {
 
@@ -261,12 +262,28 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
             String pskuCount = getPSKUM(Days.getTodayDate(), retailerId);
             String merchandizingTarget = getMerchandizingVerification(Days.getTodayDate(), retailerId);
             List<StockCount> stockCounts = getStockCount(retailerId);
+            List<String> merchandizeImageUrls = getsMerchandizeImageUrl(retailerId);
             double[] values = getValues(cursor);
             coverages.add(new Coverage(retailerId, date, invoicePushes, merchandizingPushes,
                     new CallAnalysis(values[0], values[1], 20), Double.valueOf(storeTarget), Integer.valueOf(pskuCount), Integer.valueOf(pskuTarget)
-                    , stockCounts, merchandizingTarget));
+                    , stockCounts, merchandizeImageUrls, merchandizingTarget));
         }
         return coverages;
+    }
+
+    private List<String> getsMerchandizeImageUrl(String retailerId) {
+        List<String> merchandizeImageUrls = new ArrayList<>();
+        Cursor cursor = DatabaseManager.getInstance(this).getMerchandizeImageUrls(retailerId, Days.getTodayDate(), String.valueOf(UploadState.COMPLETED));
+        int count = cursor.getCount();
+        if (count > 0) {
+            cursor.moveToFirst();
+            while (count > 0) {
+                merchandizeImageUrls.add(cursor.getString(cursor.getColumnIndex(MasterContract.MerchandizeImageContract.CLOUDINARY_URL)));
+                cursor.moveToNext();
+                count--;
+            }
+        }
+        return merchandizeImageUrls;
     }
 
     private List<StockCount> getStockCount(String retailerId) {

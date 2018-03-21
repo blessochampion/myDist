@@ -197,4 +197,5 @@
     <string name="delete">Delete</string>
     <string name="upload">Upload</string>
     <string name="unable_to_delete_image">Unable to delete image</string>
+    <string name="image_upload_success">Uploaded</string>
 </resources>

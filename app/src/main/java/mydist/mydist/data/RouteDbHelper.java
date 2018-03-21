@@ -119,23 +119,25 @@ public class RouteDbHelper extends SQLiteOpenHelper {
                     HighestPurchaseValueContract.VALUE + " TEXT )";
 
     private static final String SQL_CREATE_STOCK_COUNT =
-            "CREATE TABLE "+ StockCountContract.TABLE_NAME + " (" +
-                    StockCountContract._ID + " INTEGER PRIMARY KEY,"+
-                    StockCountContract.PRODUCT_ID + " TEXT, "+
-                    StockCountContract.DATE_ADDED + " TEXT,"+
-                    StockCountContract.RETAILER_ID + " TEXT,"+
+            "CREATE TABLE " + StockCountContract.TABLE_NAME + " (" +
+                    StockCountContract._ID + " INTEGER PRIMARY KEY," +
+                    StockCountContract.PRODUCT_ID + " TEXT, " +
+                    StockCountContract.DATE_ADDED + " TEXT," +
+                    StockCountContract.RETAILER_ID + " TEXT," +
                     StockCountContract.OC + " TEXT, UNIQUE(" +
                     StockCountContract.PRODUCT_ID + "," +
-                    StockCountContract.RETAILER_ID+
+                    StockCountContract.RETAILER_ID +
                     "))";
 
     private static final String SQL_CREATE_MERCHANDIZE_IMAGE_URL =
-            "CREATE TABLE " + MerchandizeImageContract.TABLE_NAME + " ("+
-            MerchandizeImageContract._ID + " INTEGER PRIMARY KEY, "+
-            MerchandizeImageContract.DATE_ADDED + " TEXT, "+
-            MerchandizeImageContract.RETAILER_ID + " TEXT, "+
-            MerchandizeImageContract.CLOUDINARY_URL + " TEXT, " +
-            MerchandizeImageContract.IMAGE_URI_ON_DISK + " TEXT )";
+            "CREATE TABLE " + MerchandizeImageContract.TABLE_NAME + " (" +
+                    MerchandizeImageContract._ID + " INTEGER PRIMARY KEY, " +
+                    MerchandizeImageContract.DATE_ADDED + " TEXT, " +
+                    MerchandizeImageContract.RETAILER_ID + " TEXT, " +
+                    MerchandizeImageContract.CLOUDINARY_URL + " TEXT, " +
+                    MerchandizeImageContract.CLOUDINARY_REQUEST_ID + " TEXT, " +
+                    MerchandizeImageContract.UPLOAD_STATE + " TEXT, " +
+                    MerchandizeImageContract.IMAGE_URI_ON_DISK + " TEXT )";
 
     private static final String SQL_DELETE_BRAND_ENTRIES =
             "DROP TABLE IF EXISTS " + BrandContract.TABLE_NAME;

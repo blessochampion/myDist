@@ -28,13 +28,15 @@ public class Coverage {
     String merchandisingTarget;
     @JsonProperty("stockCount")
     List<StockCount> stockCount;
+    @JsonProperty("merchandize_image_url")
+    List<String> merchandizeImageUrl;
     @JsonProperty("merchandisingList")
     List<MerchandizingPush> merchandizingList;
     @JsonProperty("callAnalysis")
     CallAnalysis callAnalysis;
 
     public Coverage(String retailerId, String date, List<InvoicePush> invoices, List<MerchandizingPush> merchandizingList, CallAnalysis callAnalysis,
-                    double storeTarget, int pskuCount, int pskuCountTarget, List<StockCount> stockCount, String merchandisingTarget) {
+                    double storeTarget, int pskuCount, int pskuCountTarget, List<StockCount> stockCount,  List<String> merchandizeImageUrl,String merchandisingTarget) {
         this.retailerId = retailerId;
         this.date = date;
         this.invoices = invoices;
@@ -44,6 +46,7 @@ public class Coverage {
         this.pskuCount = pskuCount;
         this.pskuCountTarget = pskuCountTarget;
         this.stockCount = stockCount;
+        this.merchandizeImageUrl = merchandizeImageUrl;
         this.merchandisingTarget = merchandisingTarget;
     }
 

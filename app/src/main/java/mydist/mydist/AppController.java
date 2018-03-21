@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.cloudinary.android.MediaManager;
 
 
 public class AppController extends Application
@@ -24,6 +25,7 @@ public class AppController extends Application
     public void onCreate() {
         super.onCreate();
         sInstance = this;
+        MediaManager.init(this);
     }
 
     public synchronized static AppController getInstance(){
@@ -34,7 +36,6 @@ public class AppController extends Application
         if(mRequestQueue == null){
             mRequestQueue = new Volley().newRequestQueue(getApplicationContext());
         }
-
         return  mRequestQueue;
     }
 

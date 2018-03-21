@@ -29,7 +29,7 @@ public enum Days {
     private final String text;
     private static final String WEEK_ABBREVIATION = "wk";
 
-    private Days(final String text) {
+     Days(final String text) {
         this.text = text;
     }
 

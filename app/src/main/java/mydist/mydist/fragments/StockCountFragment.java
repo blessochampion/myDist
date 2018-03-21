@@ -53,7 +53,7 @@ import static mydist.mydist.activities.LoginActivity.EMPTY_STRING;
 public class StockCountFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener, StoreFilterDialogFragment.FilterItemListener {
     private static final String KEY_RETAILER_ID = "retailerId";
     private static final int LOADER_ID = 4849494;
-    private static final int FILTER_LOADER_ID = 489494;
+    private static final int FILTER_LOADER_ID = 784;
     private TableLayout mTableLayout;
     private TableLayout mPagination;
     private View containerView;
@@ -81,6 +81,7 @@ public class StockCountFragment extends Fragment implements LoaderManager.Loader
         int pageCount = (int) Math.ceil(getCursor().getCount() / 10.0);
         loadPageToRow(pager, pageCount);
         mPagination.addView(pager);
+
     }
 
     @Override
@@ -113,8 +114,9 @@ public class StockCountFragment extends Fragment implements LoaderManager.Loader
         }else if (item.getItemId() == android.R.id.home && isInFilterMode) {
             refreshProductsDisplayed();
             return true;
-        }else if(item.getItemId() == android.R.id.home){
+        }else if(item.getItemId() == android.R.id.home ){
             getActivity().onBackPressed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -447,15 +449,13 @@ public class StockCountFragment extends Fragment implements LoaderManager.Loader
             filter = String.valueOf((int) Double.parseDouble(brandId));
             currentPage = 0;
             isInFilterMode = true;
-            getActivity().getSupportLoaderManager().initLoader(FILTER_LOADER_ID, null, this);
+            getActivity().getSupportLoaderManager().restartLoader(FILTER_LOADER_ID, null, this);
         }
     }
 
     private void refreshProductsDisplayed() {
         isInFilterMode = false;
-        getActivity().getSupportLoaderManager().initLoader(LOADER_ID, null, this);
         currentPage = 0;
-        loadProducts();
-        initPagination();
+        getActivity().getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
     }
 }

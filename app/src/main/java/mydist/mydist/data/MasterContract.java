@@ -129,6 +129,8 @@ public class MasterContract {
         public static final String DATE_ADDED = "date_added";
         public static final String RETAILER_ID = "retailer_id";
         public static final String IMAGE_URI_ON_DISK = "disk_url";
+        public static final String CLOUDINARY_REQUEST_ID ="request_id";
         public static final String CLOUDINARY_URL = "cloudinary_url";
+        public static final String UPLOAD_STATE = "upload_state";
     }
 }

@@ -110,7 +110,6 @@ public class StoreInfoDetailsActivity extends AuthenticatedActivity {
                 return true;
             }
         }
-
         return super.onOptionsItemSelected(item);
     }
 
