@@ -2,6 +2,7 @@ package mydist.mydist.utils;
 
 import android.util.Log;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,10 +34,15 @@ public enum Days {
         this.text = text;
     }
 
-    public static String getTodaysDay() {
-        Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE");
-        return dateFormat.format(date);
+    public static String getTodaysDay(String dateStr) {
+         try {
+             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+             Date date = dateFormat.parse(dateStr);
+             SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
+             return dayFormat.format(date);
+         }catch (ParseException e){
+             return null;
+         }
     }
 
     @Override

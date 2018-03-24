@@ -134,7 +134,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
             } else {
                 if (mCloseForTheDay.isChecked()) {
                     AlertDialog dialog = new AlertDialog.Builder(SynchronizationActivity.this).
-                            setMessage(this.getString(R.string.closing_message, Days.getTodaysDay(), Days.getTodayDate())).
+                            setMessage(this.getString(R.string.closing_message, Days.getTodaysDay(getSyncDate()), Days.getTodayDate())).
                             setPositiveButton(this.getString(R.string.ok), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -145,7 +145,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
                                             ObjectMapper mapper = new ObjectMapper();
                                             JSONObject masters = new JSONObject(mapper.writeValueAsString(push));
                                             Log.e(TAG, masters.toString());
-                                            new UploadMastersClient().uploadMasters(masters, SynchronizationActivity.this);
+                                           // new UploadMastersClient().uploadMasters(masters, SynchronizationActivity.this);
                                         } catch (JsonProcessingException e) {
 
                                         } catch (JSONException e) {
@@ -201,7 +201,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
 
     public List<NewRetailerPush> getNewRetailers() {
         List<NewRetailerPush> newRetailers = new ArrayList<>();
-        Cursor cursor = DatabaseManager.getInstance(this).getAllNewRetailers(Days.getRetailerDate());
+        Cursor cursor = DatabaseManager.getInstance(this).getAllNewRetailers("R"+getSyncDate());
         int count = cursor.getCount();
         if (count > 0) {
             cursor.moveToFirst();
@@ -224,7 +224,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
 
     public List<CollectionPush> getCollectionPushes() {
         List<CollectionPush> pushes = new ArrayList<>();
-        Cursor cursor = DataUtils.getAllInvoice(null, Invoice.KEY_STATUS_SUCCESS, this);
+        Cursor cursor = DataUtils.getAllInvoice(null, Invoice.KEY_STATUS_SUCCESS, this, getSyncDate());
         int count = cursor.getCount();
         if (count > 0) {
             cursor.moveToFirst();
@@ -235,11 +235,19 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
         }
         return pushes;
     }
+    private String getSyncDate(){
+        UserPreference userPreference = UserPreference.getInstance(this);
+        if(!userPreference.getLastMastersDownloadDate().equals(Days.getTodayDate())){
+            return  userPreference.getLastMastersDownloadDate();
+        }else {
+            return Days.getTodayDate();
+        }
+    }
 
     public List<Coverage> getCoverages() {
         List<Coverage> coverages = new ArrayList<>();
         List<String> retailers = getRetailerId();
-        String date = Days.getTodayDate();
+        String date =getSyncDate();
         HashMap<String, List<InvoicePush>> invoicePushesMap = getInvoicePushMap();
         HashMap<String, List<MerchandizingPush>> merchandizingPushesMap = getMerchandizingPushMap();
         List<InvoicePush> invoicePushes;
@@ -255,12 +263,12 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
             } else {
                 merchandizingPushes = new ArrayList<>();
             }
-            Cursor cursor = DataUtils.getAllOrderTotal(retailerId, Invoice.KEY_STATUS_SUCCESS, this);
+            Cursor cursor = DataUtils.getAllOrderTotal(retailerId, Invoice.KEY_STATUS_SUCCESS, this, getSyncDate());
             String storeTarget = DatabaseManager.getInstance(this).getHighestPurchaseValue(retailerId);
             storeTarget = DatabaseLogicUtils.getHighestPurchaseEver(storeTarget);
             String pskuTarget = getPSKUM(null, retailerId);
-            String pskuCount = getPSKUM(Days.getTodayDate(), retailerId);
-            String merchandizingTarget = getMerchandizingVerification(Days.getTodayDate(), retailerId);
+            String pskuCount = getPSKUM(getSyncDate(), retailerId);
+            String merchandizingTarget = getMerchandizingVerification(getSyncDate(), retailerId);
             List<StockCount> stockCounts = getStockCount(retailerId);
             List<String> merchandizeImageUrls = getsMerchandizeImageUrl(retailerId);
             double[] values = getValues(cursor);
@@ -273,7 +281,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
 
     private List<String> getsMerchandizeImageUrl(String retailerId) {
         List<String> merchandizeImageUrls = new ArrayList<>();
-        Cursor cursor = DatabaseManager.getInstance(this).getMerchandizeImageUrls(retailerId, Days.getTodayDate(), String.valueOf(UploadState.COMPLETED));
+        Cursor cursor = DatabaseManager.getInstance(this).getMerchandizeImageUrls(retailerId, getSyncDate(), String.valueOf(UploadState.COMPLETED));
         int count = cursor.getCount();
         if (count > 0) {
             cursor.moveToFirst();
@@ -288,7 +296,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
 
     private List<StockCount> getStockCount(String retailerId) {
         List<StockCount> stockCounts = new ArrayList<>();
-        Cursor stockCountCursor = DatabaseManager.getInstance(this).getStockCount(retailerId, Days.getTodayDate());
+        Cursor stockCountCursor = DatabaseManager.getInstance(this).getStockCount(retailerId,getSyncDate());
         int count = stockCountCursor.getCount();
         if (count > 0) {
             stockCountCursor.moveToFirst();
@@ -415,7 +423,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
     public HashMap<String, List<InvoicePush>> getInvoicePushMap() {
         HashMap<String, List<InvoicePush>> invoicePushMap = new HashMap<>();
         HashMap<String, List<InvoicePush>> result = new HashMap<>();
-        Cursor cursor = DatabaseManager.getInstance(this).getInvoicePush(Days.getTodayDate());
+        Cursor cursor = DatabaseManager.getInstance(this).getInvoicePush(getSyncDate());
         int count = cursor.getCount();
         List<InvoicePush> invoicePushes;
         String retailerId, invoiceId;
@@ -459,7 +467,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
 
     public HashMap<String, List<MerchandizingPush>> getMerchandizingPushMap() {
         HashMap<String, List<MerchandizingPush>> merchandizingPushMap = new HashMap<>();
-        Cursor cursor = DatabaseManager.getInstance(this).getAllMerchandising(Days.getTodayDate());
+        Cursor cursor = DatabaseManager.getInstance(this).getAllMerchandising(getSyncDate());
         int count = cursor.getCount();
         List<MerchandizingPush> merchandizingPushes;
         String retailerId;
@@ -490,7 +498,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
     public void onSuccess(UploadMastersResponse response) {
         mProgressDialog.cancel();
         if (response.getStatus().isSuccess()) {
-            UserPreference.getInstance(this).setUserCloseForTheDayDate(Days.getTodayDate().toString());
+            UserPreference.getInstance(this).setUserCloseForTheDayDate(getSyncDate());
             launchDialog(R.string.upload_success, this);
         } else {
             launchDialog(R.string.upload_failed);

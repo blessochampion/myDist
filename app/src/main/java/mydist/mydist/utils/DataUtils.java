@@ -213,6 +213,9 @@ public class DataUtils {
         return DatabaseManager.getInstance(context).getProductsOrder(id, Days.getTodayDate());
     }
 
+    public static final Cursor getAllInvoice(String retailerId, int status, Context context, String date) {
+        return DatabaseManager.getInstance(context).queryAllInvoiceByRetailerId(retailerId, date, status);
+    }
     public static final Cursor getAllInvoice(String retailerId, int status, Context context) {
         return DatabaseManager.getInstance(context).queryAllInvoiceByRetailerId(retailerId, Days.getTodayDate(), status);
     }
@@ -227,6 +230,9 @@ public class DataUtils {
 
     public static final Cursor getAllOrderTotal(String retailerId, int status, Context context) {
         return DatabaseManager.getInstance(context).queryAllOrderTotal(retailerId,Days.getTodayDate(), status);
+    }
+    public static final Cursor getAllOrderTotal(String retailerId, int status, Context context, String date) {
+        return DatabaseManager.getInstance(context).queryAllOrderTotal(retailerId,date, status);
     }
 
     public static List<Product> getAllProductsByBrandId(Context context, String brandId) {

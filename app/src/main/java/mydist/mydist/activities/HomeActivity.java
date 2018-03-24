@@ -91,7 +91,6 @@ public class HomeActivity extends AuthenticatedActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         if(userHasClosedSalesToday() && v.getId() != R.id.ll_reports ){
-
             AlertDialog alertDialog = new AlertDialog.Builder(HomeActivity.this).
                     setMessage(HomeActivity.this.getString(R.string.close_for_the_day)).
                     setPositiveButton(HomeActivity.this.getString(R.string.ok), null).create();

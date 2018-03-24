@@ -215,6 +215,7 @@ public class InvoiceActivity extends AuthenticatedActivity implements View.OnCli
                             invoiceNumber == null ?
                                     generateInvoiceNumber(StoreOverviewActivity.retailerId)
                                     : invoiceNumber, StoreOverviewActivity.retailerId);
+                    gotoOverviewActivity();
                 } else {
                     makeToast(getString(R.string.invoice_saved));
                 }
@@ -225,6 +226,12 @@ public class InvoiceActivity extends AuthenticatedActivity implements View.OnCli
             default:
                 break;
         }
+    }
+
+    private void gotoOverviewActivity() {
+        Intent newIntent = new Intent(InvoiceActivity.this, StoreInfoDetailsActivity.class);
+        newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(newIntent);
     }
 
     private void makeToast(String message) {
