@@ -132,7 +132,7 @@
                         android:background="@drawable/gradient"
                         android:gravity="center_vertical"
                         android:paddingLeft="40dp"
-                        android:text="@string/new_retailer"
+                        android:text="@string/new_sales_rep"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="@color/white_grey" />
 

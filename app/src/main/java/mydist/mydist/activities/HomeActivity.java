@@ -90,13 +90,21 @@ public class HomeActivity extends AuthenticatedActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if(userHasClosedSalesToday() && v.getId() != R.id.ll_reports ){
+        if(userHasClosedSalesToday() && v.getId() != R.id.ll_reports  && isAnewDay()){
             AlertDialog alertDialog = new AlertDialog.Builder(HomeActivity.this).
                     setMessage(HomeActivity.this.getString(R.string.close_for_the_day)).
                     setPositiveButton(HomeActivity.this.getString(R.string.ok), null).create();
             alertDialog.show();
             return;
         }
+       /* if(!isAnewDay()){
+            AlertDialog alertDialog = new AlertDialog.Builder(HomeActivity.this).
+                    setMessage(HomeActivity.this.getString(R.string.not_close_for_the_day)).
+                    setPositiveButton(HomeActivity.this.getString(R.string.ok), null).create();
+            alertDialog.show();
+            return;
+        }*/
+
         if (v.getId() == R.id.ll_new_retailer) {
             Intent intent = new Intent(HomeActivity.this, NewRetailerActivity.class);
             startActivity(intent);
@@ -164,5 +172,10 @@ public class HomeActivity extends AuthenticatedActivity implements View.OnClickL
             this.moveTaskToBack(true);
         }
 
+    }
+
+    public boolean isAnewDay() {
+        UserPreference userPreference = UserPreference.getInstance(this);
+        return userPreference.getLastUserClosedForTheDayDate().equals(userPreference.getLastMastersDownloadDate());
     }
 }

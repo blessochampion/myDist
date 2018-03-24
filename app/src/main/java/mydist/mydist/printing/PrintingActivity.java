@@ -109,9 +109,9 @@ public class PrintingActivity extends AppCompatActivity {
                             Thread.sleep(PRINTING_SLEEP_TIME); // Don't stress the printer while printing the Bitmap... it don't like it.
                             //bixolonPrinterApi.lineFeed(2, false);
                             PrintingModel printingModel = DataUtils.getPrintingModel();
-                            printText(PrintingFormatter.COMPANY_NAME, BixolonPrinter.ALIGNMENT_CENTER, BixolonPrinter.TEXT_ATTRIBUTE_FONT_A);
+                          /*  printText(PrintingFormatter.COMPANY_NAME, BixolonPrinter.ALIGNMENT_CENTER, BixolonPrinter.TEXT_ATTRIBUTE_FONT_A);
                             printText("\n");
-                            printText(PrintingFormatter.COMPANY_ADDRESS, BixolonPrinter.ALIGNMENT_CENTER, BixolonPrinter.TEXT_ATTRIBUTE_FONT_B);
+                            printText(PrintingFormatter.COMPANY_ADDRESS, BixolonPrinter.ALIGNMENT_CENTER, BixolonPrinter.TEXT_ATTRIBUTE_FONT_B);*/
                             printText("\n");
                             printText("\n");
                             if (getIntent().hasExtra(KEY_COLLECTION)) {
@@ -122,6 +122,8 @@ public class PrintingActivity extends AppCompatActivity {
 
                             bixolonPrinterApi.lineFeed(3, false);
                             printText("Terms and Conditions Apply", BixolonPrinter.ALIGNMENT_CENTER);
+                            printText("\n");
+                            printText("(Powered by Route)", BixolonPrinter.ALIGNMENT_CENTER);
                             bixolonPrinterApi.lineFeed(5, false);
                         } catch (Exception e) {
                             Log.e("ERROR", "Printing", e);
@@ -155,9 +157,9 @@ public class PrintingActivity extends AppCompatActivity {
         printText("\n");
         printText(divider);
         printText("\n");
-        printModelItem(PrintingFormatter.formatNameValuePair(PrintingFormatter.RETAILER, model.getRetailer()));
+        printModelItem(PrintingFormatter.formatNameValuePair(PrintingFormatter.SALES_REP, model.getRetailer()));
         printText("\n");
-        printModelItem(PrintingFormatter.formatNameValuePair(PrintingFormatter.SALES_REP, model.getSalesRep()));
+        printModelItem(PrintingFormatter.formatNameValuePair(PrintingFormatter.COMPANY, model.getSalesRep()));
         printText("\n");
         printModelItem(PrintingFormatter.formatNameValuePair(PrintingFormatter.INVOICE_NUMBER, model.getInvoiceNumber()));
         printText("\n");
@@ -177,9 +179,9 @@ public class PrintingActivity extends AppCompatActivity {
         printText("\n");
         printText(divider);
         printText("\n");
-        printModelItem(PrintingFormatter.formatNameValuePair(PrintingFormatter.RETAILER, printingModel.getRetailer()));
+        printModelItem(PrintingFormatter.formatNameValuePair(PrintingFormatter.SALES_REP, printingModel.getRetailer()));
         printText("\n");
-        printModelItem(PrintingFormatter.formatNameValuePair(PrintingFormatter.SALES_REP, printingModel.getSalesRep()));
+        printModelItem(PrintingFormatter.formatNameValuePair(PrintingFormatter.COMPANY, printingModel.getSalesRep()));
         printText("\n");
         printModelItem(PrintingFormatter.formatNameValuePair(PrintingFormatter.INVOICE_NUMBER, printingModel.getInvoiceNo()));
         printText("\n");

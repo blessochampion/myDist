@@ -56,7 +56,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="4.3"
-                            android:text="@string/retailer_name"
+                            android:text="@string/full_name"
                             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
                         <EditText
@@ -87,7 +87,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="4.3"
-                            android:text="@string/contact_person_name"
+                            android:text="@string/other_names"
                             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
                         <EditText

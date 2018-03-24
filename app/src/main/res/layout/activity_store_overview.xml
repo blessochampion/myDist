@@ -242,7 +242,7 @@
                         android:background="@drawable/gradient"
                         android:gravity="center_vertical"
                         android:paddingLeft="33dp"
-                        android:text="@string/invoice_manage"
+                        android:text="@string/invoice_reprint"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="@color/white_grey" />
 
