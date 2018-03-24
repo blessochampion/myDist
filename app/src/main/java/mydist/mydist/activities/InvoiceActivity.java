@@ -44,6 +44,7 @@ import static java.lang.String.valueOf;
 
 public class InvoiceActivity extends AuthenticatedActivity implements View.OnClickListener {
     private static final String TAG = InvoiceActivity.class.getSimpleName();
+    public static final int REQUEST_CODE = 0;
     TableLayout mInvoiceTableLayout;
     HashMap<String, ProductLogic> selectedProducts;
     double totalAmountTobePaid;
@@ -251,7 +252,7 @@ public class InvoiceActivity extends AuthenticatedActivity implements View.OnCli
                 invoiceNumber, dateFormat.format(new Date()));
         DataUtils.setPrintingModel(printingModel);
         Intent intent = new Intent(context, PrintingActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_CODE);
     }
 
     private void saveInvoice(String invoiceId, String retailerId) {
@@ -350,5 +351,11 @@ public class InvoiceActivity extends AuthenticatedActivity implements View.OnCli
                 makeToast(getString(R.string.invoice_saved));
             }
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        gotoOverviewActivity();
     }
 }
