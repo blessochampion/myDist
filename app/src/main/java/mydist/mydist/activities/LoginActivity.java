@@ -133,7 +133,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (userBasicAuth.equalsIgnoreCase(usernameValue + ":" + passwordValue)) {
                     launchHomeActivity();
                 } else {
-                    loginFailed();
+                    loginFailed(getString(R.string.login_error_message));
                 }
             }
         } else {
@@ -146,9 +146,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         client.authenticate(usernameValue, passwordValue, this);
     }
 
-    private void loginFailed() {
+    private void loginFailed(String message) {
         mDialog = new AlertDialog.Builder(LoginActivity.this).
-                setMessage(LoginActivity.this.getString(R.string.login_error_message)).
+                setMessage(message).
                 setPositiveButton(LoginActivity.this.getString(R.string.ok), null).create();
         mDialog.show();
     }
@@ -211,7 +211,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onFailure() {
         dismissDialog();
-        loginFailed();
+        loginFailed(getString(R.string.error_message_check_network));
     }
 
     private void dismissDialog() {
