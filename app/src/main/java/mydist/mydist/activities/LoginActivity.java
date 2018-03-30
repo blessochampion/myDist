@@ -103,6 +103,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void doDownload() {
+        if(!mastersDownloadedToday() && !Days.userHasUploadedPreviousDayCoverage(userPreference)){
+            launchDialog(getString(R.string.close_previous_day_message));
+            return;
+        }
         if (!userHasClosedSalesToday()
                 || userPreference.getLastUserClosedForTheDayDate().isEmpty()) {
             if (!mastersDownloadedToday()) {
