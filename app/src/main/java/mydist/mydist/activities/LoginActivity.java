@@ -26,6 +26,7 @@ import mydist.mydist.network.AuthenticationClient;
 import mydist.mydist.network.DownloadMastersClient;
 import mydist.mydist.network.NetworkUtils;
 import mydist.mydist.utils.DataUtils;
+import mydist.mydist.utils.Days;
 import mydist.mydist.utils.FontManager;
 import mydist.mydist.utils.UIUtils;
 
@@ -127,7 +128,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void doLogin() {
-        if (mastersDownloadedToday()) {
+        if (mastersDownloadedToday() || !Days.userHasUploadedPreviousDayCoverage(userPreference)) {
             if (userInputIsValid()) {
                 String userBasicAuth = userPreference.getPassword();
                 if (userBasicAuth.equalsIgnoreCase(usernameValue + ":" + passwordValue)) {

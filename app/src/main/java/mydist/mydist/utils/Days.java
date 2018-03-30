@@ -7,6 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import mydist.mydist.data.UserPreference;
+
 /**
  * Created by Blessing.Ekundayo on 12/28/2017.
  */
@@ -30,19 +32,19 @@ public enum Days {
     private final String text;
     private static final String WEEK_ABBREVIATION = "wk";
 
-     Days(final String text) {
+    Days(final String text) {
         this.text = text;
     }
 
     public static String getTodaysDay(String dateStr) {
-         try {
-             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-             Date date = dateFormat.parse(dateStr);
-             SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
-             return dayFormat.format(date);
-         }catch (ParseException e){
-             return null;
-         }
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Date date = dateFormat.parse(dateStr);
+            SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
+            return dayFormat.format(date);
+        } catch (ParseException e) {
+            return null;
+        }
     }
 
     @Override
@@ -110,5 +112,11 @@ public enum Days {
             default:
                 return "";
         }
+    }
+
+    public static boolean userHasUploadedPreviousDayCoverage(UserPreference userPreference) {
+        String lastDownloadDate = userPreference.getLastMastersDownloadDate();
+        String lastUploadDate = userPreference.getLastUserClosedForTheDayDate();
+        return lastDownloadDate.equals(lastUploadDate);
     }
 }
