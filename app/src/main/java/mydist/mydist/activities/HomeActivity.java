@@ -176,6 +176,6 @@ public class HomeActivity extends AuthenticatedActivity implements View.OnClickL
 
     public boolean isAnewDay() {
         UserPreference userPreference = UserPreference.getInstance(this);
-        return userPreference.getLastUserClosedForTheDayDate().equals(userPreference.getLastMastersDownloadDate());
+        return userPreference.getLastMastersDownloadDate().equals(Days.getTodayDate());
     }
 }

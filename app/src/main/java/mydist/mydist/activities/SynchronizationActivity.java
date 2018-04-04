@@ -2,6 +2,7 @@ package mydist.mydist.activities;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -145,7 +146,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
                                             ObjectMapper mapper = new ObjectMapper();
                                             JSONObject masters = new JSONObject(mapper.writeValueAsString(push));
                                             Log.e(TAG, masters.toString());
-                                           // new UploadMastersClient().uploadMasters(masters, SynchronizationActivity.this);
+                                           new UploadMastersClient().uploadMasters(masters, SynchronizationActivity.this);
                                         } catch (JsonProcessingException e) {
 
                                         } catch (JSONException e) {
@@ -237,11 +238,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
     }
     private String getSyncDate(){
         UserPreference userPreference = UserPreference.getInstance(this);
-        if(!userPreference.getLastMastersDownloadDate().equals(Days.getTodayDate())){
             return  userPreference.getLastMastersDownloadDate();
-        }else {
-            return Days.getTodayDate();
-        }
     }
 
     public List<Coverage> getCoverages() {
@@ -404,7 +401,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
 
     public List<String> getRetailerId() {
         List<String> retailerIds = new ArrayList<>();
-        allInvoiceCursor = DataUtils.getAllInvoice(null, Invoice.KEY_STATUS_SUCCESS, this);
+        allInvoiceCursor = DataUtils.getAllInvoice(null, Invoice.KEY_STATUS_SUCCESS, this, getSyncDate());
         int count = allInvoiceCursor.getCount();
         String retailerId;
         if (count > 0) {
@@ -500,6 +497,7 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
         if (response.getStatus().isSuccess()) {
             UserPreference.getInstance(this).setUserCloseForTheDayDate(getSyncDate());
             launchDialog(R.string.upload_success, this);
+            logoutIfNecessary();
         } else {
             launchDialog(R.string.upload_failed);
         }
@@ -514,5 +512,25 @@ public class SynchronizationActivity extends AuthenticatedActivity implements Vi
     @Override
     public void onClick(DialogInterface dialog, int which) {
         onBackPressed();
+    }
+
+    public void logoutIfNecessary(){
+        if(!userPreference.getLastUserClosedForTheDayDate().equals(Days.getTodayDate())){
+            launchDialog(getString(R.string.you_have_closed_for_previous_day));
+        }
+    }
+
+    private void launchDialog(String message) {
+        AlertDialog dialog = new AlertDialog.Builder(SynchronizationActivity.this).
+                setMessage(message).
+                setPositiveButton(SynchronizationActivity.this.getText(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent newIntent = new Intent(SynchronizationActivity.this,LoginActivity.class);
+                        newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(newIntent);
+                    }
+                }).create();
+        dialog.show();
     }
 }
