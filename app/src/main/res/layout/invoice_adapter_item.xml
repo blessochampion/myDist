@@ -42,10 +42,25 @@
         <TextView
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:id="@+id/icon_invoice_delete"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:text="@string/fa_icon_invoice_delete"
             android:textColor="@color/crispy_red"
             android:textSize="24sp" />
+
+    <Button
+        android:text="@string/details"
+        android:id="@+id/btn_details"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:textColor="@color/white"
+        android:layout_alignTop="@+id/btn_reprint"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/gradient"
+        android:layout_toRightOf="@id/btn_reprint"
+        android:layout_toEndOf="@id/btn_reprint"
+        />
 </RelativeLayout>

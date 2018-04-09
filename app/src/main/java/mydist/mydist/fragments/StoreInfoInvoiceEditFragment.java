@@ -11,6 +11,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import mydist.mydist.R;
+import mydist.mydist.activities.InvoiceContentActivity;
 import mydist.mydist.activities.InvoiceEditActivity;
 import mydist.mydist.adapters.InvoiceAdapter;
 import mydist.mydist.data.MasterContract;
@@ -48,7 +50,7 @@ public class StoreInfoInvoiceEditFragment extends Fragment implements View.OnCli
     String invoiceId = "";
     View page;
     private static final int LOADER_ID_REPRINT = 1000;
-    private static final int LOADER_ID_EDIT = 999;
+    private static final int LOADER_ID_DETAILS = 999;
     public static final String KEY_RETAILER_ID = "retailer_id";
 
     @Override
@@ -94,9 +96,10 @@ public class StoreInfoInvoiceEditFragment extends Fragment implements View.OnCli
     public void onClick(View v) {
         invoiceId = v.getTag().toString();
         if (v.getId() == R.id.icon_invoice_edit) {
-            getActivity().getSupportLoaderManager().initLoader(LOADER_ID_EDIT, null, this);
         } else if (v.getId() == R.id.btn_reprint) {
             getActivity().getSupportLoaderManager().initLoader(LOADER_ID_REPRINT, null, this);
+        } else if (v.getId() == R.id.btn_details) {
+            getActivity().getSupportLoaderManager().initLoader(LOADER_ID_DETAILS, null, this);
         } else if (v.getId() == R.id.icon_invoice_delete) {
             AlertDialog mDialog = new AlertDialog.Builder(getActivity()).
                     setMessage(getString(R.string.inoice_delete_question)).
@@ -139,7 +142,7 @@ public class StoreInfoInvoiceEditFragment extends Fragment implements View.OnCli
                     case LOADER_ID_REPRINT:
                         loadSavedInvoice();
                         break;
-                    case LOADER_ID_EDIT:
+                    case LOADER_ID_DETAILS:
                         loadSavedInvoice();
                         break;
                     default:
@@ -193,8 +196,8 @@ public class StoreInfoInvoiceEditFragment extends Fragment implements View.OnCli
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (loader.getId() == LOADER_ID_EDIT) {
-            Intent intent = new Intent(getActivity(), InvoiceEditActivity.class);
+        if (loader.getId() == LOADER_ID_DETAILS) {
+            Intent intent = new Intent(getActivity(), InvoiceContentActivity.class);
             startActivity(intent);
         } else if (loader.getId() == LOADER_ID_REPRINT) {
             Intent intent = new Intent(getActivity(), PrintingActivity.class);

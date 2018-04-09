@@ -206,4 +206,5 @@
     <string name="error_message_check_network">Error connecting... Please check your Internet connection</string>
     <string name="close_previous_day_message">You need to close for previous day before you can download Masters</string>
     <string name="you_have_closed_for_previous_day">You have closed for previous day. \n You need to Download masters for today.</string>
+    <string name="details">DETAILS</string>
 </resources>

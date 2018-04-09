@@ -43,6 +43,9 @@ public class InvoiceAdapter extends CursorAdapter {
         TextView deleteIcon = (TextView) view.findViewById(R.id.icon_invoice_delete);
         TextView message = (TextView) view.findViewById(R.id.invoice_cancelled);
         Button reprint = (Button) view.findViewById(R.id.btn_reprint);
+        Button details = view.findViewById(R.id.btn_details);
+        details.setOnClickListener(listener);
+        details.setTag(orderId);
         reprint.setOnClickListener(listener);
         reprint.setTag(orderId);
         int status = cursor.getInt(cursor.getColumnIndex(MasterContract.InvoiceContract.STATUS));

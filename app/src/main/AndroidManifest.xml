@@ -64,6 +64,7 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".activities.StoreInfoDetailsActivity" />
         <activity android:name=".activities.InvoiceActivity" />
+        <activity android:name=".activities.InvoiceContentActivity" />
         <activity android:name=".activities.AuthenticatedActivity" />
         <activity android:name=".activities.InvoiceEditActivity" />
         <activity

@@ -67,7 +67,7 @@ public class DatabaseManager {
             values = new ContentValues();
             values.put(BrandContract.COLUMN_BRAND_ID, brand.getBrandId());
             values.put(BrandContract.COLUMN_NAME, brand.getBrandName());
-            mDataBase.insertWithOnConflict(BrandContract.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+            mDataBase.insertWithOnConflict(BrandContract.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
         }
         mDataBase.close();
 
@@ -182,7 +182,7 @@ public class DatabaseManager {
             values = new ContentValues();
             values.put(ChannelContract.COLUMN_CHANNEL_ID, channel.getChannelId());
             values.put(ChannelContract.COLUMN_NAME, channel.getChannelName());
-            mDataBase.insertWithOnConflict(ChannelContract.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+            mDataBase.insertWithOnConflict(ChannelContract.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
         }
         mDataBase.close();
     }
@@ -212,7 +212,7 @@ public class DatabaseManager {
             values.put(ProductContract.COLUMN_NAME, product.getProductName());
             values.put(ProductContract.COLUMN_PIECE_PRICE, Double.valueOf(product.getPiecePrice()));
             values.put(ProductContract.COLUMN_PRODUCT_ID, product.getProductId());
-            mDataBase.insertWithOnConflict(ProductContract.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+            mDataBase.insertWithOnConflict(ProductContract.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
         }
         mDataBase.close();
     }
@@ -224,7 +224,7 @@ public class DatabaseManager {
             values = new ContentValues();
             values.put(SubChannelContract.COLUMN_SUB_CHANNEL_ID, subChannel.getSubChannelId());
             values.put(SubChannelContract.COLUMN_NAME, subChannel.getSubChannelName());
-            mDataBase.insertWithOnConflict(SubChannelContract.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+            mDataBase.insertWithOnConflict(SubChannelContract.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
         }
         mDataBase.close();
     }
@@ -236,7 +236,7 @@ public class DatabaseManager {
             values = new ContentValues();
             values.put(AreaContract.COLUMN_AREA_ID, area.getAreaId());
             values.put(AreaContract.COLUMN_NAME, area.getAreaName());
-            mDataBase.insertWithOnConflict(AreaContract.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+            mDataBase.insertWithOnConflict(AreaContract.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
         }
         mDataBase.close();
     }
